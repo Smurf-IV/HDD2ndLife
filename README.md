@@ -1,4 +1,5 @@
-# HDD2ndLife
+# HDD2ndLife ![Icon](./HDD2ndLife/HDD2ndLife.ico)
+
 Give your HDD one last job with "Removed Bad Sector Degredation Areas" via Marked Unusable Partitioning Scheme
 
 

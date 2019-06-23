@@ -22,6 +22,7 @@
 //  Email: https://github.com/Smurf-IV
 //  </summary>
 // --------------------------------------------------------------------------------------------------------------------
+// Icon Source : <a title = "Recycle PNG" href="http://pluspng.com/recycle-png-522.html">Recycle PNG</a>
 #endregion
 
 using ComponentFactory.Krypton.Toolkit;
