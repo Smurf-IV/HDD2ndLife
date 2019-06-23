@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29009.5
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HDD2ndLife", "HDD2ndLife.csproj", "{ECFAC773-F16E-4413-ACE4-0ED0D3E93ACA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TextFiles", "TextFiles", "{FA8D7D82-4D69-4DF0-AB75-C19EBBFD7AD9}"
+	ProjectSection(SolutionItems) = preProject
+		..\.gitignore = ..\.gitignore
+		..\LICENSE = ..\LICENSE
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{8E562B16-83C3-400E-A031-1EB3EECD9A84}"
+EndProject
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "HDD2ndLife_Installer", "..\HDD2ndLife_Installer\HDD2ndLife_Installer.wixproj", "{7BA424D3-858E-439D-B45B-E3D637BA6AE6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ECFAC773-F16E-4413-ACE4-0ED0D3E93ACA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECFAC773-F16E-4413-ACE4-0ED0D3E93ACA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECFAC773-F16E-4413-ACE4-0ED0D3E93ACA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECFAC773-F16E-4413-ACE4-0ED0D3E93ACA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BA424D3-858E-439D-B45B-E3D637BA6AE6}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{7BA424D3-858E-439D-B45B-E3D637BA6AE6}.Release|Any CPU.ActiveCfg = Release|x86
+		{7BA424D3-858E-439D-B45B-E3D637BA6AE6}.Release|Any CPU.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E9C5D424-6F0C-4B2D-AE14-C24B564740FE}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"     xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension"
+     xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+
+  <?define MgtSource=$(sys.SOURCEFILEDIR)..\HDD2ndLife\bin\Release ?>
+
+  <!-- do not change this ever !-->
+  <?define UpgradeCode = "286914A1-0F97-4A06-A0A5-A5A011354DE9" ?>
+
+  <?define Version = "!(bind.FileVersion.HDD2ndLife.exe)" ?>
+
+  <?define ProductName = "HDD2ndLife: Give your HDD one last job"?>
+
+
+  <Product
+    Version="$(var.Version)"
+    Id="*"
+    UpgradeCode="$(var.UpgradeCode)"
+    Name="$(var.ProductName)"
+    Language="1033"
+    Manufacturer="https://github.com/Smurf-IV/HDD2ndLife/" >
+    <Package Id="*" Keywords='Installer'
+             InstallScope='perMachine'
+             Description="$(var.ProductName)"
+             Comments=" Version: $(var.Version)"
+             InstallerVersion="500" Compressed="yes"
+             AdminImage='no'
+             Platform='x64' />
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed. Downgrades are not allowed - Use add/remove from the control panel." />
+
+    <!-- Support Information shown in Add/Remove programs -->
+    <Property Id="ARPHELPLINK" Value="https://github.com/Smurf-IV/HDD2ndLife/blob/master/docs/Documentation.md" />
+    <Property Id="ARPCOMMENTS" Value="https://github.com/Smurf-IV/HDD2ndLife/issues"/>
+    <Property Id="ARPCONTACT" Value="Smurf-IV" />
+    <Property Id="ARPURLINFOABOUT" Value="https://github.com/Smurf-IV/HDD2ndLife" />
+    <Icon Id="InstallerIcon" SourceFile="$(sys.SOURCEFILEDIR)..\HDD2ndLife\HDD2ndLife.ico" />
+    <Property Id="ARPPRODUCTICON" Value="InstallerIcon" />
+    <WixVariable Id="WixUILicenseRtf" Value="GPLv3.rtf" />
+
+    <Property Id="ARPNOMODIFY" Value="1" />
+
+    <!-- +++++++++++++++++++++++++++ Advertised shortcuts will not produce ICE errors, but will be converted to non-advertised shortcuts when installed -->
+    <Property Id="DISABLEADVTSHORTCUTS" Value="1" />
+
+    <!-- This property enables verbose logging in WiX custom actions. It writes extra entries to the MSI log. -->
+    <Property Id="LOGVERBOSE" Value="1"/>
+
+    <MediaTemplate />
+
+    <Feature Id="ProductFeature" Title="HDD2ndLife_Installer" Level="1">
+      <ComponentGroupRef Id="ProductComponents" />
+    </Feature>
+  </Product>
+
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLFOLDER" Name="HDD2ndLife_Installer" />
+      </Directory>
+    </Directory>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
+      <!-- <Component Id="ProductComponent"> -->
+      <!-- TODO: Insert files, registry keys, and other resources here. -->
+      <!-- </Component> -->
+    </ComponentGroup>
+  </Fragment>
+</Wix>
