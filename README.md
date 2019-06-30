@@ -38,3 +38,24 @@ It also did not have a very interactive display, which did not show the areas th
 
 ## I have heard that a Low-Level Format makes things work
 I've heard that as well, and have tried it on drives that start to report SMART count errors, But it always seems that the warnings go away, and then the drive fails anyway, just when you don't want it to, which means that your data has been in jepordy twice (1st time to identify that a LLFormat is required, then again with the sudden failure!)
+
+# Roadmap:
+- [x] Phase I
+  - [x] Start this Site
+  - [ ] Add basic drive details list
+  - [ ] Allow Disk selection and open form
+  - [ ] Allow basic disk scan
+
+<br />
+
+- [ ] Phase II
+  - [ ] List details to include current partitions
+  - [ ] Detailed scan (blocks, bad locations, Partition locations)
+  - [ ] Attempt RePartitioning and show results
+
+<br />
+
+- [ ] Phase III
+  - [ ] S.M.A.R.T Details
+  - [ ] Extended Partitiong Schemes
+  - [ ] Other features I haven't thought of yet ;-)
