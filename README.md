@@ -42,20 +42,20 @@ I've heard that as well, and have tried it on drives that start to report SMART 
 # Roadmap:
 - [x] Phase I
   - [x] Start this Site
-  - [ ] Add basic drive details list
-  - [ ] Allow Disk selection and open form
-  - [ ] Allow basic disk scan
+  - [x] Add basic drive details list
+  - [x] Allow Disk selection and open form
+  - [x] List details to include current partitions
 
 <br />
 
 - [ ] Phase II
-  - [ ] List details to include current partitions
+  - [ ] S.M.A.R.T Details
+  - [ ] Allow basic disk scan
   - [ ] Detailed scan (blocks, bad locations, Partition locations)
   - [ ] Attempt RePartitioning and show results
 
 <br />
 
 - [ ] Phase III
-  - [ ] S.M.A.R.T Details
   - [ ] Extended Partitiong Schemes
   - [ ] Other features I haven't thought of yet ;-)
