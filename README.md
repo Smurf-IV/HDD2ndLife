@@ -48,8 +48,8 @@ I've heard that as well, and have tried it on drives that start to report SMART 
 
 <br />
 
-- [ ] Phase II
-  - [ ] S.M.A.R.T Details
+- [x] Phase II
+  - [x] More details from windows WMI
   - [ ] Allow basic disk scan
   - [ ] Detailed scan (blocks, bad locations, Partition locations)
   - [ ] Attempt RePartitioning and show results
@@ -59,3 +59,14 @@ I've heard that as well, and have tried it on drives that start to report SMART 
 - [ ] Phase III
   - [ ] Extended Partitiong Schemes
   - [ ] Other features I haven't thought of yet ;-)
+  - [ ] 
+
+# Will not be done:
+- S.M.A.R.T Details
+  - Turns out that trying to get this work on just the few machines that I have is a pain. 
+  - WMI does not work with 
+      - Raid controllers
+      - PCIExpress SSD controllers that use their own drivers (Even the latest smartmon tools do not work with them, but the oder version does!)
+  - `Crystal Disk Info` does a really good job !
+  - Your using *this* app because you know that the drive is failing !
+

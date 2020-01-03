@@ -5,7 +5,7 @@
     <Setting Name="Theme" Type="System.String" Scope="User">
       <Value Profile="(Default)">Office2010Silver</Value>
     </Setting>
-    <Setting Name="UpdateRequired" Type="System.Boolean" Scope="User">
+    <Setting Name="UpdateRequired" Type="System.bool" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>

@@ -2,7 +2,7 @@
 
 namespace HDD2ndLife.WMI
 {
-    static class Decode
+    internal static class Decode
     {
         public static string StatusInfo(ushort statusInfo)
         {
