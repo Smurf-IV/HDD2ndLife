@@ -207,48 +207,6 @@ namespace HDD2ndLife
             }
         }
 
-        struct DiskEX
-        {
-            internal DISK_GEOMETRY_EX? dge;
-            internal PARTITION_INFORMATION_EX? pie;
-
-            internal DRIVE_LAYOUT_INFORMATION_EX? dlie;
-
-            //internal GETVERSIONINPARAMS ? vip;
-            //internal DISK_CACHE_INFORMATION ? dci;
-            internal GET_DISK_ATTRIBUTES? da;
-
-            internal STORAGE_DEVICE_DESCRIPTOR_PARSED? sddp;
-
-            public DiskEX(SafeFileHandle diskHandle)
-            {
-                dge = null;
-                pie = null;
-                dlie = null;
-                da = null;
-                sddp = null;
-                try
-                {
-                    DiskDeviceWrapper diskDeviceWrapper = new DiskDeviceWrapper(diskHandle, false);
-                    dge = diskDeviceWrapper.DiskGetDriveGeometryEx();
-                    pie = diskDeviceWrapper.DiskGetPartitionInfoEx();
-                    dlie = diskDeviceWrapper.DiskGetDriveLayoutEx();
-                    //GETVERSIONINPARAMS vip = diskDeviceWrapper.DiskGetSmartVersion();
-                    //DISK_CACHE_INFORMATION dci = diskDeviceWrapper.DiskGetCacheInformation();
-                    da = diskDeviceWrapper.DiskGetDiskAttributes();
-
-                    StorageDeviceWrapper sdw = new StorageDeviceWrapper(diskHandle, false);
-                    sddp = sdw.StorageGetDeviceProperty();
-
-                    //MountManagerWrapper mmw = new MountManagerWrapper(disk.DiskHandle, false);
-                    //List<MountPoint> mps = mmw.MountQueryPoints();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                }
-            }
-        };
 
         private void FillInStorageDeviceDirectoryType(TreeNode parentNode, RawDisk disk)
         {
@@ -266,219 +224,25 @@ namespace HDD2ndLife
 
         private void driveTree_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            StringBuilder details = new StringBuilder();
 
             switch (e.Node.Tag)
             {
                 case Win32DiskDrive device:
-                    details.Append(device);
+                    lblDetails.Text = device.ToString();
+                    diskStatsView1.DriveSize = device.Size;
                     break;
                 case Win32LogicalDisk ld:
-                    details.Append(ld);
+                    lblDetails.Text = ld.ToString();
+                    diskStatsView1.DriveSize = ld.Size;
                     break;
                 case DiskEX diskEx:
-                    details.AppendLine(e.Node.Parent.Text);
-                    if (diskEx.dge.HasValue)
-                    {
-                        DISK_GEOMETRY_EX dge = diskEx.dge.Value;
-                        details.Append('\t').AppendLine("DISK_GEOMETRY:");
-                        details.Append("\t\t").Append("Cylinders: ").AppendLine(dge.Geometry.Cylinders.ToString());
-                        //public MEDIA_TYPE MediaType;
-                        details.Append("\t\t").Append("TracksPerCylinder: ")
-                            .AppendLine(dge.Geometry.TracksPerCylinder.ToString());
-                        details.Append("\t\t").Append("SectorsPerTrack: ")
-                            .AppendLine(dge.Geometry.SectorsPerTrack.ToString());
-                        details.Append("\t\t").Append("BytesPerSector: ")
-                            .AppendLine(dge.Geometry.BytesPerSector.ToString());
-                        details.Append("\t\t").Append("DiskSize: ").AppendLine(dge.Geometry.DiskSize.ToString());
-
-                        details.Append('\t').AppendLine("DISK_PARTITION_INFO:");
-                        //details.Append("\t\t").Append("SizeOfPartitionInfo: ").AppendLine(dge.PartitionInformation.SizeOfPartitionInfo.ToString());
-                        details.Append("\t\t").Append("PartitionStyle: ")
-                            .AppendLine(dge.PartitionInformation.PartitionStyle.ToString());
-                        switch (dge.PartitionInformation.PartitionStyle)
-                        {
-                            case PartitionStyle.PARTITION_STYLE_MBR:
-                                details.Append("\t\t").Append("MbrSignature: ")
-                                    .AppendLine(dge.PartitionInformation.MbrSignature.ToString());
-                                break;
-                            case PartitionStyle.PARTITION_STYLE_GPT:
-                                details.Append("\t\t").Append("GptGuidId: ")
-                                    .AppendLine(dge.PartitionInformation.GptGuidId.ToString());
-                                break;
-                            case PartitionStyle.PARTITION_STYLE_RAW:
-                                break;
-                            default:
-                                throw new ArgumentOutOfRangeException();
-                        }
-
-                        details.Append('\t').AppendLine("DISK_EX_INT13_INFO:");
-                        details.Append("\t\t").Append("ExBufferSize: ")
-                            .AppendLine(dge.DiskInt13Info.ExBufferSize.ToString());
-                        details.Append("\t\t").Append("ExFlags: ").AppendLine(dge.DiskInt13Info.ExFlags.ToString());
-                        details.Append("\t\t").Append("ExCylinders: ")
-                            .AppendLine(dge.DiskInt13Info.ExCylinders.ToString());
-                        //public uint ExHeads;
-                        //public uint ExSectorsPerTrack;
-                        //public ulong ExSectorsPerDrive;
-                        //public ushort ExSectorSize;
-                        //public ushort ExReserved;
-                    }
-
-                    if (diskEx.pie.HasValue)
-                    {
-                        PARTITION_INFORMATION_EX pie = diskEx.pie.Value;
-                        details.Append('\t').AppendLine("PARTITION_INFORMATION_EX:");
-                        details.Append("\t\t").Append("PartitionStyle: ").AppendLine(pie.PartitionStyle.ToString());
-                        details.Append("\t\t").Append("StartingOffset: ").AppendLine(pie.StartingOffset.ToString());
-                        details.Append("\t\t").Append("PartitionLength: ").AppendLine(pie.PartitionLength.ToString());
-                        details.Append("\t\t").Append("PartitionNumber: ").AppendLine(pie.PartitionNumber.ToString());
-                        details.Append("\t\t").Append("RewritePartition: ").AppendLine(pie.RewritePartition.ToString());
-                        switch (pie.PartitionStyle)
-                        {
-                            case PartitionStyle.PARTITION_STYLE_MBR:
-                                details.Append("\t\t").AppendLine("PARTITION_INFORMATION_MBR: ");
-                                details.Append("\t\t\t").Append("PartitionType: ")
-                                    .AppendLine(pie.DriveLayoutInformaiton.Mbr.PartitionType.ToString());
-                                details.Append("\t\t\t").Append("BootIndicator: ")
-                                    .AppendLine(pie.DriveLayoutInformaiton.Mbr.BootIndicator.ToString());
-                                details.Append("\t\t\t").Append("RecognizedPartition: ")
-                                    .AppendLine(pie.DriveLayoutInformaiton.Mbr.RecognizedPartition.ToString());
-                                details.Append("\t\t\t").Append("HiddenSectors: ")
-                                    .AppendLine(pie.DriveLayoutInformaiton.Mbr.HiddenSectors.ToString());
-                                break;
-                            case PartitionStyle.PARTITION_STYLE_GPT:
-                                details.Append("\t\t").AppendLine("PARTITION_INFORMATION_GPT: ");
-                                details.Append("\t\t\t").Append("PartitionType: ")
-                                    .AppendLine(pie.DriveLayoutInformaiton.Gpt.PartitionType.ToString());
-                                details.Append("\t\t\t").Append("PartitionId: ")
-                                    .AppendLine(pie.DriveLayoutInformaiton.Gpt.PartitionId.ToString());
-                                details.Append("\t\t\t").Append("EFIPartitionAttributes: ")
-                                    .AppendLine(pie.DriveLayoutInformaiton.Gpt.Attributes.ToString());
-                                details.Append("\t\t\t").Append("Name: ")
-                                    .AppendLine(pie.DriveLayoutInformaiton.Gpt.Name.ToString());
-                                break;
-                            case PartitionStyle.PARTITION_STYLE_RAW:
-                                break;
-                            default:
-                                throw new ArgumentOutOfRangeException();
-                        }
-                    }
-
-                    if (diskEx.dlie.HasValue)
-                    {
-                        DRIVE_LAYOUT_INFORMATION_EX dlie = diskEx.dlie.Value;
-                        details.Append('\t').AppendLine("DRIVE_LAYOUT_INFORMATION_EX:");
-                        details.Append("\t\t").Append("PartitionStyle: ").AppendLine(dlie.PartitionStyle.ToString());
-                        details.Append("\t\t").Append("PartitionCount: ").AppendLine(dlie.PartitionCount.ToString());
-                        switch (dlie.PartitionStyle)
-                        {
-                            case PartitionStyle.PARTITION_STYLE_MBR:
-                                details.Append("\t\t").AppendLine("DRIVE_LAYOUT_INFORMATION_MBR: ");
-                                details.Append("\t\t\t").Append("Signature: ")
-                                    .AppendLine(dlie.DriveLayoutInformaiton.Mbr.Signature.ToString());
-                                break;
-                            case PartitionStyle.PARTITION_STYLE_GPT:
-                                details.Append("\t\t").AppendLine("DRIVE_LAYOUT_INFORMATION_GPT: ");
-                                details.Append("\t\t\t").Append("DiskId: ")
-                                    .AppendLine(dlie.DriveLayoutInformaiton.Gpt.DiskId.ToString());
-                                details.Append("\t\t\t").Append("StartingUsableOffset: ")
-                                    .AppendLine(dlie.DriveLayoutInformaiton.Gpt.StartingUsableOffset.ToString());
-                                details.Append("\t\t\t").Append("UsableLength: ")
-                                    .AppendLine(dlie.DriveLayoutInformaiton.Gpt.UsableLength.ToString());
-                                details.Append("\t\t\t").Append("MaxPartitionCount: ")
-                                    .AppendLine(dlie.DriveLayoutInformaiton.Gpt.MaxPartitionCount.ToString());
-                                break;
-                            case PartitionStyle.PARTITION_STYLE_RAW:
-                                break;
-                            default:
-                                throw new ArgumentOutOfRangeException();
-                        }
-
-                        for (int entry = 0; entry < dlie.PartitionCount; entry++)
-                        {
-                            PARTITION_INFORMATION_EX pie = dlie.PartitionEntry[entry];
-                            details.Append("\t\t").AppendLine("PARTITION_INFORMATION_EX:");
-                            details.Append("\t\t\t").Append("PartitionStyle: ")
-                                .AppendLine(pie.PartitionStyle.ToString());
-                            details.Append("\t\t\t").Append("StartingOffset: ")
-                                .AppendLine(pie.StartingOffset.ToString());
-                            details.Append("\t\t\t").Append("PartitionLength: ")
-                                .AppendLine(pie.PartitionLength.ToString());
-                            details.Append("\t\t\t").Append("PartitionNumber: ")
-                                .AppendLine(pie.PartitionNumber.ToString());
-                            details.Append("\t\t\t").Append("RewritePartition: ")
-                                .AppendLine(pie.RewritePartition.ToString());
-                            switch (pie.PartitionStyle)
-                            {
-                                case PartitionStyle.PARTITION_STYLE_MBR:
-                                    details.Append("\t\t\t").AppendLine("PARTITION_INFORMATION_MBR: ");
-                                    details.Append("\t\t\t\t").Append("PartitionType: ")
-                                        .AppendLine(pie.DriveLayoutInformaiton.Mbr.PartitionType.ToString());
-                                    details.Append("\t\t\t\t").Append("BootIndicator: ")
-                                        .AppendLine(pie.DriveLayoutInformaiton.Mbr.BootIndicator.ToString());
-                                    details.Append("\t\t\t\t").Append("RecognizedPartition: ")
-                                        .AppendLine(pie.DriveLayoutInformaiton.Mbr.RecognizedPartition.ToString());
-                                    details.Append("\t\t\t\t").Append("HiddenSectors: ")
-                                        .AppendLine(pie.DriveLayoutInformaiton.Mbr.HiddenSectors.ToString());
-                                    break;
-                                case PartitionStyle.PARTITION_STYLE_GPT:
-                                    details.Append("\t\t\t").AppendLine("PARTITION_INFORMATION_GPT: ");
-                                    details.Append("\t\t\t\t").Append("PartitionType: ")
-                                        .AppendLine(pie.DriveLayoutInformaiton.Gpt.PartitionType.ToString());
-                                    details.Append("\t\t\t\t").Append("PartitionId: ")
-                                        .AppendLine(pie.DriveLayoutInformaiton.Gpt.PartitionId.ToString());
-                                    details.Append("\t\t\t\t").Append("EFIPartitionAttributes: ")
-                                        .AppendLine(pie.DriveLayoutInformaiton.Gpt.Attributes.ToString());
-                                    details.Append("\t\t\t\t").Append("Name: ")
-                                        .AppendLine(pie.DriveLayoutInformaiton.Gpt.Name.ToString());
-                                    break;
-                                case PartitionStyle.PARTITION_STYLE_RAW:
-                                    break;
-                                default:
-                                    throw new ArgumentOutOfRangeException();
-                            }
-                        }
-                    }
-
-                    if (diskEx.da.HasValue)
-                    {
-                        GET_DISK_ATTRIBUTES da = diskEx.da.Value;
-                        details.Append('\t').AppendLine("DISK_ATTRIBUTES:");
-                        details.Append("\t\t").Append("Version: ").AppendLine(da.Version.ToString());
-                        //public int Reserved1;
-                        details.Append("\t\t").Append("Attributes: ").AppendLine(da.Attributes.ToString());
-                    }
-
-                    if (diskEx.sddp.HasValue)
-                    {
-                        STORAGE_DEVICE_DESCRIPTOR_PARSED sddp = diskEx.sddp.Value;
-                        details.Append('\t').AppendLine("STORAGE_DEVICE_DESCRIPTOR_PARSED:");
-                        details.Append("\t\t").Append("Size: ").AppendLine(sddp.Size.ToString());
-                        details.Append("\t\t").Append("DeviceType: ").AppendLine(sddp.DeviceType.ToString());
-                        details.Append("\t\t").Append("DeviceTypeModifier: ")
-                            .AppendLine(sddp.DeviceTypeModifier.ToString());
-                        details.Append("\t\t").Append("RemovableMedia: ").AppendLine(sddp.RemovableMedia.ToString());
-                        details.Append("\t\t").Append("CommandQueueing: ").AppendLine(sddp.CommandQueueing.ToString());
-                        details.Append("\t\t").Append("VendorIdOffset: ").AppendLine(sddp.VendorIdOffset.ToString());
-                        details.Append("\t\t").Append("ProductIdOffset: ").AppendLine(sddp.ProductIdOffset.ToString());
-                        details.Append("\t\t").Append("ProductRevisionOffset: ")
-                            .AppendLine(sddp.ProductRevisionOffset.ToString());
-                        details.Append("\t\t").Append("SerialNumberOffset: ")
-                            .AppendLine(sddp.SerialNumberOffset.ToString());
-                        details.Append("\t\t").Append("BusType: ").AppendLine(sddp.BusType.ToString());
-                        details.Append("\t\t").Append("RawPropertiesLength: ")
-                            .AppendLine(sddp.RawPropertiesLength.ToString());
-                        details.Append("\t\t").Append("RawDeviceProperties: ")
-                            .AppendLine(sddp.RawDeviceProperties.ToString());
-                        //public byte[] RawDeviceProperties;
-                        details.Append("\t\t").Append("SerialNumber: ").AppendLine(sddp.SerialNumbe);
-                    }
+                    lblDetails.Text = diskEx.ToString();
+                    diskStatsView1.DriveSize =
+                        diskEx.dge.HasValue ? (ulong) diskEx.dge.Value.Geometry.DiskSize : (ulong) 0;
 
                     break;
             }
 
-            lblDetails.Text = details.ToString();
         }
 
 

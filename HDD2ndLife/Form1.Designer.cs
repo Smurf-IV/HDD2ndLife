@@ -45,11 +45,11 @@
             this.driveImageList = new System.Windows.Forms.ImageList(this.components);
             this.driveContainer = new ComponentFactory.Krypton.Toolkit.KryptonSplitContainer();
             this.kryptonBorderEdge1 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.lblDrive = new ComponentFactory.Krypton.Toolkit.KryptonRichTextBox();
             this.driveHeader = new ComponentFactory.Krypton.Toolkit.KryptonHeader();
             this.kryptonBorderEdge2 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.lblDetails = new ComponentFactory.Krypton.Toolkit.KryptonRichTextBox();
             this.detailsHeader = new ComponentFactory.Krypton.Toolkit.KryptonHeader();
+            this.diskStatsView1 = new HDD2ndLife.Controls.DiskStatsView();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.treeContainer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.treeContainer.Panel1)).BeginInit();
@@ -212,8 +212,8 @@
             // 
             // driveContainer.Panel1
             // 
+            this.driveContainer.Panel1.Controls.Add(this.diskStatsView1);
             this.driveContainer.Panel1.Controls.Add(this.kryptonBorderEdge1);
-            this.driveContainer.Panel1.Controls.Add(this.lblDrive);
             this.driveContainer.Panel1.Controls.Add(this.driveHeader);
             // 
             // driveContainer.Panel2
@@ -234,18 +234,6 @@
             this.kryptonBorderEdge1.Orientation = System.Windows.Forms.Orientation.Vertical;
             this.kryptonBorderEdge1.Size = new System.Drawing.Size(1, 202);
             this.kryptonBorderEdge1.Text = "kryptonBorderEdge1";
-            // 
-            // lblDrive
-            // 
-            this.lblDrive.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblDrive.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblDrive.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(57)))), ((int)(((byte)(91)))));
-            this.lblDrive.Location = new System.Drawing.Point(0, 31);
-            this.lblDrive.Name = "lblDrive";
-            this.lblDrive.ReadOnly = true;
-            this.lblDrive.Size = new System.Drawing.Size(529, 202);
-            this.lblDrive.TabIndex = 1;
-            this.lblDrive.Text = "kryptonWrapLabel1";
             // 
             // driveHeader
             // 
@@ -285,6 +273,14 @@
             this.detailsHeader.Size = new System.Drawing.Size(529, 31);
             this.detailsHeader.TabIndex = 0;
             this.detailsHeader.Values.Heading = "Details:";
+            // 
+            // diskStatsView1
+            // 
+            this.diskStatsView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.diskStatsView1.Location = new System.Drawing.Point(0, 31);
+            this.diskStatsView1.Name = "diskStatsView1";
+            this.diskStatsView1.Size = new System.Drawing.Size(528, 202);
+            this.diskStatsView1.TabIndex = 1;
             // 
             // Form1
             // 
@@ -339,7 +335,6 @@
         private ComponentFactory.Krypton.Toolkit.KryptonHeaderGroup treeGroup;
         private ComponentFactory.Krypton.Toolkit.KryptonTreeView driveTree;
         private ComponentFactory.Krypton.Toolkit.KryptonSplitContainer driveContainer;
-        private ComponentFactory.Krypton.Toolkit.KryptonRichTextBox lblDrive;
         private ComponentFactory.Krypton.Toolkit.KryptonHeader driveHeader;
         private ComponentFactory.Krypton.Toolkit.KryptonRichTextBox lblDetails;
         private ComponentFactory.Krypton.Toolkit.KryptonHeader detailsHeader;
@@ -347,6 +342,7 @@
         private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge2;
         private System.Windows.Forms.ImageList driveImageList;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+        private Controls.DiskStatsView diskStatsView1;
     }
 }
 

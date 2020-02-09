@@ -40,7 +40,7 @@ namespace HDD2ndLife.WMI
         private bool QuotasDisabled;
         private bool QuotasIncomplete;
         private bool QuotasRebuilding;
-        private ulong Size;
+        public ulong Size;
         private string Status;
         private ushort StatusInfo;
         private bool SupportsDiskQuotas;

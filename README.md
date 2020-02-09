@@ -43,7 +43,7 @@ I've heard that as well, and have tried it on drives that start to report SMART 
 # Further reading:
 - https://en.wikipedia.org/wiki/Hard_disk_drive_failure#Metrics_of_failures
 - https://www.howtogeek.com/173463/bad-sectors-explained-why-hard-drives-get-bad-sectors-and-what-you-can-do-about-it/
-
+- https://www.uwe-sieber.de/drivetools_e.html#drivecleanup
 
 # Roadmap:
 - [x] Phase I
@@ -56,7 +56,7 @@ I've heard that as well, and have tried it on drives that start to report SMART 
 
 - [x] Phase II
   - [x] More details from windows WMI
-  - [ ] Create Control for legend, feedback, progress, etc.
+  - [ ] Create Control for legend, feedback, progress, etc. [<- in progress]
   - [ ] Allow basic disk scan
   - [ ] Detailed scan (blocks, bad locations, Partition locations)
   - [ ] Add feedback (time to complete, speed, utilisation, etc.)

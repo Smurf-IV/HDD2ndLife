@@ -12,7 +12,7 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
-    <AssemblyVersion>20.1.8.3</AssemblyVersion>
+    <AssemblyVersion>20.2.21.9</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -66,6 +66,16 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\DiskSectors.cs" />
+    <Compile Include="Controls\DiskSectors.Designer.cs">
+      <DependentUpon>DiskSectors.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DiskStatsView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DiskStatsView.Designer.cs">
+      <DependentUpon>DiskStatsView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -75,9 +85,17 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WMI\Decode.cs" />
+    <Compile Include="WMI\DiskEx.cs" />
+    <Compile Include="WMI\StorageDeviceWrapperEx.cs" />
     <Compile Include="WMI\Win32DiskDrive.cs" />
     <Compile Include="WMI\Win32DiskPartition.cs" />
     <Compile Include="WMI\Win32LogicalDisk.cs" />
+    <EmbeddedResource Include="Controls\DiskSectors.resx">
+      <DependentUpon>DiskSectors.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\DiskStatsView.resx">
+      <DependentUpon>DiskStatsView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -108,6 +126,9 @@
     <Content Include="HDD2ndLife.ico" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="ByteSize">
+      <Version>2.0.0-beta1</Version>
+    </PackageReference>
     <PackageReference Include="DeviceIOControlLib">
       <Version>0.1.4</Version>
     </PackageReference>
@@ -129,4 +150,8 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>md Y:\HDD2ndLife\HDD2ndLife\bin\Debug
+xcopy Z:\HDD2ndLife\HDD2ndLife\bin\Debug\*.* Y:\HDD2ndLife\HDD2ndLife\bin\Debug /I /C /Y /D</PostBuildEvent>
+  </PropertyGroup>
 </Project>
