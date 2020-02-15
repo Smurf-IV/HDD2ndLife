@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+
 using ComponentFactory.Krypton.Toolkit;
 
 namespace HDD2ndLife.Controls
@@ -16,6 +9,11 @@ namespace HDD2ndLife.Controls
         public DiskSectors()
         {
         }
+
+        /// <summary>
+        /// How Many blocks does this drive have
+        /// </summary>
+        public ulong NumberOfDriveBlocks { get; set; }
 
         private void DiskSectors_Resize(object sender, EventArgs e)
         {

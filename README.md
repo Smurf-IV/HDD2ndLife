@@ -38,12 +38,15 @@ I used to use that other tool, but when the HDD's got above 1TB, then the calcul
 It also did not have a very interactive display, which did not show the areas that would be excluded, when entering partition scheme values (they had to be entered before starting).
 
 ## I have heard that a Low-Level Format makes things work
-I've heard that as well, and have tried it on drives that start to report SMART count errors, But it always seems that the warnings go away, and then the drive fails anyway, just when you don't want it to, which means that your data has been in jepordy twice (1st time to identify that a LLFormat is required, then again with the sudden failure!)
+I've heard that as well, and I have tried it on drives that start to report SMART count errors, But it always seems that the warnings go away, and then the drive fails anyway, just when you don't want it to, which means that your data has been in jepordy twice (1st time to identify that a LLFormat is required, then again with the sudden failure!)
 
 # Further reading:
 - https://en.wikipedia.org/wiki/Hard_disk_drive_failure#Metrics_of_failures
 - https://www.howtogeek.com/173463/bad-sectors-explained-why-hard-drives-get-bad-sectors-and-what-you-can-do-about-it/
 - https://www.uwe-sieber.de/drivetools_e.html#drivecleanup
+- https://gsmartcontrol.sourceforge.io/home/
+- https://www.hdsentinel.com/help/en/61_surfacetest.html
+- [HDDScan – FREE HDD Test Diagnostics Software with RAID and USB Flash support](https://hddscan.com/)
 
 # Roadmap:
 - [x] Phase I
@@ -56,17 +59,19 @@ I've heard that as well, and have tried it on drives that start to report SMART 
 
 - [x] Phase II
   - [x] More details from windows WMI
-  - [ ] Create Control for legend, feedback, progress, etc. [<- in progress]
-  - [ ] Allow basic disk scan
-  - [ ] Detailed scan (blocks, bad locations, Partition locations)
-  - [ ] Add feedback (time to complete, speed, utilisation, etc.)
+  - [x] Create Control for options, feedback, progress, etc.
+  - [ ] Allow basic disk scan                               [<- in progress]
+  - [ ] Add feedback (time to complete, speed, etc.)        [<- in progress]
+  - [ ] Detailed scan UI (blocks, bad locations, Partition locations)
   - [ ] Show existing Partitioning
-  - [ ] Attempt Basic RePartitioning (Min Distance from bad blocks to be ignored)
+  - [ ] Attempt Basic RePartitioning (e.g. Min Distance from bad blocks to be ignored)
 
 <br />
 
 - [ ] Phase III
-  - [ ] Allow selections for Partitioning schem
+  - [ ] Display (And use) information about the "Slow reads / writes" which can be used to determine a "weakened" block which may indicate signs of wear.
+  - [ ] Allow selections for Partitioning scheme
+  - [ ] Test that the updates and UI interactions are not slowing down the throughput of scans.
   - [ ] Extended Partitiong Schemes
   - [ ] Other features I haven't thought of yet ;-)
   - [ ] 
