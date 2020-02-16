@@ -1,6 +1,6 @@
 ﻿namespace HDD2ndLife
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.kryptonManager1 = new ComponentFactory.Krypton.Toolkit.KryptonManager(this.components);
             this.miniToolStrip = new System.Windows.Forms.MenuStrip();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -292,7 +292,7 @@
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.miniToolStrip;
-            this.Name = "Form1";
+            this.Name = "MainForm";
             this.Text = "HDD 2nd Life";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.Form1_Load);

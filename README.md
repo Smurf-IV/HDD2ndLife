@@ -60,9 +60,9 @@ I've heard that as well, and I have tried it on drives that start to report SMAR
 - [x] Phase II
   - [x] More details from windows WMI
   - [x] Create Control for options, feedback, progress, etc.
-  - [ ] Allow basic disk scan                               [<- in progress]
-  - [ ] Add feedback (time to complete, speed, etc.)        [<- in progress]
-  - [ ] Detailed scan UI (blocks, bad locations, Partition locations)
+  - [x] Allow basic disk scan                               
+  - [x] Add feedback (time to complete, speed, etc.)        
+  - [ ] Detailed scan UI (blocks, bad locations, Partition locations)[<- in progress]
   - [ ] Show existing Partitioning
   - [ ] Attempt Basic RePartitioning (e.g. Min Distance from bad blocks to be ignored)
 

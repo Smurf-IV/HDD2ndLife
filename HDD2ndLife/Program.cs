@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="Program.cs" company="Smurf-IV">
 // 
-//  Copyright (C) 2019-2020 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2020 Simon Coghlan (Aka Smurf-IV)
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -109,7 +109,7 @@ namespace HDD2ndLife
                 {
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
-                    Application.Run(new Form1());
+                    Application.Run(new MainForm());
                 }
                 else
                 {

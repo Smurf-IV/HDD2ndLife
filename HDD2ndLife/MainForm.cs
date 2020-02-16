@@ -1,8 +1,8 @@
 ﻿#region Copyright (C)
 // ---------------------------------------------------------------------------------------------------------------
-//  <copyright file="HDD2ndLife.cs" company="Smurf-IV">
+//  <copyright file="MainForm.cs" company="Smurf-IV">
 // 
-//  Copyright (C) 2019-2020 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2020 Simon Coghlan (Aka Smurf-IV)
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -26,26 +26,18 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.IO;
-using System.Linq;
 using System.Management;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Windows.Forms;
 
 
 using ComponentFactory.Krypton.Toolkit;
 
 using DeviceIOControlLib.Objects.Disk;
-using DeviceIOControlLib.Objects.Enums;
-using DeviceIOControlLib.Objects.Storage;
-using DeviceIOControlLib.Wrapper;
+
 using HDD2ndLife.WMI;
-using Microsoft.Win32.SafeHandles;
 
 using NLog;
 
@@ -53,11 +45,11 @@ using RawDiskLib;
 
 namespace HDD2ndLife
 {
-    public partial class Form1 : KryptonForm
+    public partial class MainForm : KryptonForm
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
 
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
 
@@ -81,7 +73,7 @@ namespace HDD2ndLife
                 ThemeManager.ReturnPaletteModeManagerAsString(PaletteModeManager.Office2007Blue, kryptonManager1);
         }
 
-        private void Form1_Load(object sender, System.EventArgs e)
+        private void Form1_Load(object sender, EventArgs e)
         {
             TextExtra = Assembly.GetExecutingAssembly().GetName().Version.ToString();
         }
@@ -139,7 +131,7 @@ namespace HDD2ndLife
                 driveImageList.Images.Add(iconForFile);
 
                 Log.Debug("Create the root node.");
-                TreeNode tvwRoot = new TreeNode {Text = Environment.MachineName, ImageIndex = 0};
+                TreeNode tvwRoot = new TreeNode { Text = Environment.MachineName, ImageIndex = 0 };
                 tvwRoot.SelectedImageIndex = tvwRoot.ImageIndex;
                 driveTree.Nodes.Add(tvwRoot);
 
@@ -215,7 +207,7 @@ namespace HDD2ndLife
             TreeNode thisNode = new TreeNode
             {
                 Text = disk.DosDeviceName,
-                Tag = new DiskEX(disk.DiskHandle)
+                Tag = new DiskExGet(disk.DiskHandle)
             };
 
             parentNode.Nodes.Add(thisNode);
@@ -224,25 +216,38 @@ namespace HDD2ndLife
 
         private void driveTree_AfterSelect(object sender, TreeViewEventArgs e)
         {
-
+            bool useParent = true;
             switch (e.Node.Tag)
             {
                 case Win32DiskDrive device:
                     lblDetails.Text = device.ToString();
                     diskStatsView1.DriveSize = device.Size;
+                    useParent = false;
                     break;
                 case Win32LogicalDisk ld:
                     lblDetails.Text = ld.ToString();
                     diskStatsView1.DriveSize = ld.Size;
                     break;
-                case DiskEX diskEx:
+                case DiskExGet diskEx:
                     lblDetails.Text = diskEx.ToString();
-                    diskStatsView1.DriveSize =
-                        diskEx.dge.HasValue ? (ulong) diskEx.dge.Value.Geometry.DiskSize : (ulong) 0;
-
+                    diskStatsView1.DriveSize = diskEx.dge.HasValue ? (ulong)diskEx.dge.Value.Geometry.DiskSize : 0UL;
                     break;
             }
 
+            var nameNode = e.Node;
+            if (useParent)
+            {
+                nameNode = nameNode.Parent;
+            }
+
+            if (nameNode?.Tag is Win32DiskDrive wDrv)
+            {
+                diskStatsView1.DeviceId = wDrv.DeviceId;
+            }
+            else
+            {
+                diskStatsView1.DeviceId = String.Empty;
+            }
         }
 
 
