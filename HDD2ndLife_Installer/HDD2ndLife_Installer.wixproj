@@ -24,6 +24,7 @@
     <SuppressPdbOutput>True</SuppressPdbOutput>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CheckFor.Net.wxs" />
     <Compile Include="HDD2ndLife.wxs" />
     <Compile Include="Product.wxs" />
   </ItemGroup>

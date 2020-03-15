@@ -46,6 +46,19 @@
     <!-- This property enables verbose logging in WiX custom actions. It writes extra entries to the MSI log. -->
     <Property Id="LOGVERBOSE" Value="1"/>
 
+    <PropertyRef Id="NETFRAMEWORK45" /> <!-- Pull in the checks for .Net 4.x-->
+    <PropertyRef Id="WIX_IS_NETFRAMEWORK_480_OR_LATER_INSTALLED"/>
+
+    <!-- Taken from https://github.com/wixtoolset/issues/issues/5977 -->
+    <Condition Message="[ProductName] Requires .NET Framework 4.8.0 or later to be installed. Please install from the `Pre-Reqs` folder.">
+      <![CDATA[Installed OR WIX_IS_NETFRAMEWORK_480_OR_LATER_INSTALLED]]>
+    </Condition>
+
+    <InstallExecuteSequence>
+      <!-- This disables removing shortcuts except on uninstall. -->
+      <RemoveShortcuts>Installed AND NOT UPGRADINGPRODUCTCODE</RemoveShortcuts>
+    </InstallExecuteSequence>
+
     <!--Allow 7z / zip compression to squeeze this tighter -->
     <Media Id="1" Cabinet="Setup.cab" EmbedCab="yes" CompressionLevel="high" />
 
