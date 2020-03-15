@@ -16,6 +16,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{8E562B
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "HDD2ndLife_Installer", "..\HDD2ndLife_Installer\HDD2ndLife_Installer.wixproj", "{7BA424D3-858E-439D-B45B-E3D637BA6AE6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{868C968A-B4C0-4A42-B87F-763A673C22E9}"
+	ProjectSection(SolutionItems) = preProject
+		..\Docs\Documentation.md = ..\Docs\Documentation.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -237,7 +237,6 @@
             // 
             // rb75
             // 
-            this.rb75.Checked = true;
             this.rb75.Location = new System.Drawing.Point(61, 32);
             this.rb75.Name = "rb75";
             this.rb75.Size = new System.Drawing.Size(46, 20);
@@ -410,10 +409,22 @@
             // 
             // diskSectors1
             // 
+            this.diskSectors1.AllowUserToAddRows = false;
+            this.diskSectors1.AllowUserToDeleteRows = false;
+            this.diskSectors1.AllowUserToResizeColumns = false;
+            this.diskSectors1.AllowUserToResizeRows = false;
+            this.diskSectors1.ColumnHeadersVisible = false;
             this.diskSectors1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.diskSectors1.Location = new System.Drawing.Point(0, 0);
             this.diskSectors1.Name = "diskSectors1";
             this.diskSectors1.NumberOfDriveBlocks = ((ulong)(0ul));
+            this.diskSectors1.ReadOnly = true;
+            this.diskSectors1.RowHeadersVisible = false;
+            this.diskSectors1.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.diskSectors1.ShowCellErrors = false;
+            this.diskSectors1.ShowCellToolTips = false;
+            this.diskSectors1.ShowEditingIcon = false;
+            this.diskSectors1.ShowRowErrors = false;
             this.diskSectors1.Size = new System.Drawing.Size(646, 574);
             this.diskSectors1.TabIndex = 0;
             // 

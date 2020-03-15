@@ -25,12 +25,11 @@
 #endregion
 
 using System.Collections.Generic;
-using System.IO.MemoryMappedFiles;
 using System.Linq;
-using System.Threading;
 using System.Windows.Forms;
 
 using ByteSizeLib;
+
 using ComponentFactory.Krypton.Toolkit;
 
 namespace HDD2ndLife.Controls
@@ -38,7 +37,7 @@ namespace HDD2ndLife.Controls
     public partial class DiskStatsView : UserControl
     {
         private bool scanning;
-    
+
         private readonly Dictionary<KryptonRadioButton, ScanType> mapOptions;
         private readonly Dictionary<KryptonRadioButton, int> speedOptions;
         private ScanDrive scanDrive;
@@ -120,13 +119,13 @@ namespace HDD2ndLife.Controls
             tmrUpdate.Enabled = false;
             scanning = false;
             scanDrive = null;
-            BeginInvoke((MethodInvoker) delegate
-            {
-                btnStartStop.Text = @"&Start";
-                lblPhase.Text = @"Stopped";
-                lblTimeRemaining.Text = string.Empty;
-                lblSpeed.Text = string.Empty;
-            });
+            BeginInvoke((MethodInvoker)delegate
+           {
+               btnStartStop.Text = @"&Start";
+               lblPhase.Text = @"Stopped";
+               lblTimeRemaining.Text = string.Empty;
+               lblSpeed.Text = string.Empty;
+           });
         }
 
         private void tmrUpdate_Tick(object sender, System.EventArgs e)

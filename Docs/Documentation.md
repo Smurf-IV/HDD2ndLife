@@ -1,6 +1,7 @@
-# HDD2ndLife ![Icon](./HDD2ndLife/HDD2ndLife.ico)
+# HDD 2nd Life
 
-Give your HDD one last job with "Removed Bad Sector Degredation Areas" via Marked Unusable Partitioning Scheme.
+Give your HDD one last job with "Removed Bad Sector Degredation Areas" via Marked Unusable Partitioning.
+
 
 
 ## What is this ?
@@ -47,42 +48,3 @@ I've heard that as well, and I have tried it on drives that start to report SMAR
 - https://gsmartcontrol.sourceforge.io/home/
 - https://www.hdsentinel.com/help/en/61_surfacetest.html
 - [HDDScan – FREE HDD Test Diagnostics Software with RAID and USB Flash support](https://hddscan.com/)
-
-# Roadmap:
-- [x] Phase I
-  - [x] Start this Site
-  - [x] Add basic drive details list
-  - [x] Allow Disk selection and open form
-  - [x] List details to include current partitions
-
-<br />
-
-- [x] Phase II
-  - [x] More details from windows WMI
-  - [x] Create Control for options, feedback, progress, etc.
-  - [x] Allow basic disk scan                               
-  - [x] Add feedback (time to complete, speed, etc.)        
-  - [ ] Detailed scan UI (blocks, bad locations, Partition locations) &nbsp; &nbsp; &nbsp; [<- in progress]
-  - [ ] Show existing Partitioning
-  - [ ] Attempt Basic RePartitioning (e.g. Min Distance from bad blocks to be ignored)
-  - [ ] Start Documentation &nbsp; &nbsp; &nbsp; [<- in progress]
-
-<br />
-
-- [ ] Phase III
-  - [ ] Display (And use) information about the "Slow reads / writes" which can be used to determine a "weakened" block which may indicate signs of wear.
-  - [ ] Allow selections for Partitioning scheme
-  - [ ] Test that the updates and UI interactions are not slowing down the throughput of scans.
-  - [ ] Extended Partitiong Schemes
-  - [ ] Other features I haven't thought of yet ;-)
-  - [ ] 
-
-# Will not be done:
-- S.M.A.R.T Details
-  - Turns out that trying to get this work on just the few machines that I have is a pain. 
-  - WMI does not work with 
-      - Raid controllers
-      - PCIExpress SSD controllers that use their own drivers (Even the latest smartmon tools do not work with them, but the oder version does!)
-  - `Crystal Disk Info` does a really good job !
-  - Your using *this* app because you know that the drive is failing !
-

@@ -33,6 +33,7 @@ namespace HDD2ndLife.Controls
 {
     public partial class DiskSectors : KryptonDataGridView
     {
+        private const int BlockSize = 4;
         public DiskSectors()
         {
         }
@@ -42,9 +43,21 @@ namespace HDD2ndLife.Controls
         /// </summary>
         public ulong NumberOfDriveBlocks { get; set; }
 
+        private int horizontalDisplay;
+        private int verticalDisplay;
+        private BlockStatus[] blocks;
+
         private void DiskSectors_Resize(object sender, EventArgs e)
         {
-
+            horizontalDisplay = Width / BlockSize;
+            verticalDisplay = Height / BlockSize;
+            blocks  = new BlockStatus[horizontalDisplay * verticalDisplay];
+            RowCount = verticalDisplay;
+            ColumnCount = horizontalDisplay;
         }
+    }
+
+    internal class BlockStatus
+    {
     }
 }
