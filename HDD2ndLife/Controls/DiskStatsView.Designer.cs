@@ -91,16 +91,16 @@
             this.kryptonPanel1.Controls.Add(this.lblDriveSize);
             this.kryptonPanel1.Controls.Add(this.kryptonLabel1);
             this.kryptonPanel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.kryptonPanel1.Location = new System.Drawing.Point(646, 0);
+            this.kryptonPanel1.Location = new System.Drawing.Point(633, 0);
             this.kryptonPanel1.Name = "kryptonPanel1";
-            this.kryptonPanel1.Size = new System.Drawing.Size(153, 574);
+            this.kryptonPanel1.Size = new System.Drawing.Size(166, 574);
             this.kryptonPanel1.TabIndex = 0;
             // 
             // lblPhase
             // 
             this.lblPhase.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblPhase.AutoSize = false;
-            this.lblPhase.Location = new System.Drawing.Point(28, 483);
+            this.lblPhase.Location = new System.Drawing.Point(41, 483);
             this.lblPhase.Name = "lblPhase";
             this.lblPhase.Size = new System.Drawing.Size(122, 19);
             this.lblPhase.TabIndex = 11;
@@ -123,7 +123,7 @@
             this.btnPartitioning.Enabled = false;
             this.btnPartitioning.Location = new System.Drawing.Point(7, 508);
             this.btnPartitioning.Name = "btnPartitioning";
-            this.btnPartitioning.Size = new System.Drawing.Size(140, 25);
+            this.btnPartitioning.Size = new System.Drawing.Size(153, 25);
             this.btnPartitioning.TabIndex = 9;
             this.btnPartitioning.Values.Text = "&Partition Scheme";
             // 
@@ -133,7 +133,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnStartStop.Location = new System.Drawing.Point(7, 272);
             this.btnStartStop.Name = "btnStartStop";
-            this.btnStartStop.Size = new System.Drawing.Size(140, 25);
+            this.btnStartStop.Size = new System.Drawing.Size(153, 25);
             this.btnStartStop.TabIndex = 8;
             this.btnStartStop.Values.Text = "&Start";
             this.btnStartStop.Click += new System.EventHandler(this.btnStartStop_Click);
@@ -150,7 +150,7 @@
             this.kryptonGroupBox2.Panel.Controls.Add(this.chkUseSpeed);
             this.kryptonGroupBox2.Panel.Controls.Add(this.chkFailFirst);
             this.kryptonGroupBox2.Panel.Controls.Add(this.pnlSpeed);
-            this.kryptonGroupBox2.Size = new System.Drawing.Size(153, 125);
+            this.kryptonGroupBox2.Size = new System.Drawing.Size(166, 125);
             this.kryptonGroupBox2.TabIndex = 7;
             this.kryptonGroupBox2.Values.Heading = "Options";
             // 
@@ -198,7 +198,7 @@
             this.pnlSpeed.Enabled = false;
             this.pnlSpeed.Location = new System.Drawing.Point(11, 41);
             this.pnlSpeed.Name = "pnlSpeed";
-            this.pnlSpeed.Size = new System.Drawing.Size(135, 55);
+            this.pnlSpeed.Size = new System.Drawing.Size(148, 55);
             this.pnlSpeed.TabIndex = 2;
             // 
             // kryptonBorderEdge4
@@ -215,13 +215,13 @@
             this.kryptonBorderEdge3.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.kryptonBorderEdge3.Location = new System.Drawing.Point(0, 54);
             this.kryptonBorderEdge3.Name = "kryptonBorderEdge3";
-            this.kryptonBorderEdge3.Size = new System.Drawing.Size(134, 1);
+            this.kryptonBorderEdge3.Size = new System.Drawing.Size(147, 1);
             this.kryptonBorderEdge3.Text = "kryptonBorderEdge3";
             // 
             // kryptonBorderEdge2
             // 
             this.kryptonBorderEdge2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.kryptonBorderEdge2.Location = new System.Drawing.Point(134, 1);
+            this.kryptonBorderEdge2.Location = new System.Drawing.Point(147, 1);
             this.kryptonBorderEdge2.Name = "kryptonBorderEdge2";
             this.kryptonBorderEdge2.Orientation = System.Windows.Forms.Orientation.Vertical;
             this.kryptonBorderEdge2.Size = new System.Drawing.Size(1, 54);
@@ -232,7 +232,7 @@
             this.kryptonBorderEdge1.Dock = System.Windows.Forms.DockStyle.Top;
             this.kryptonBorderEdge1.Location = new System.Drawing.Point(0, 0);
             this.kryptonBorderEdge1.Name = "kryptonBorderEdge1";
-            this.kryptonBorderEdge1.Size = new System.Drawing.Size(135, 1);
+            this.kryptonBorderEdge1.Size = new System.Drawing.Size(148, 1);
             this.kryptonBorderEdge1.Text = "kryptonBorderEdge1";
             // 
             // rb75
@@ -281,7 +281,7 @@
             this.grpScanType.Panel.Controls.Add(this.rbVerify);
             this.grpScanType.Panel.Controls.Add(this.rbWrite);
             this.grpScanType.Panel.Controls.Add(this.rbRead);
-            this.grpScanType.Size = new System.Drawing.Size(153, 134);
+            this.grpScanType.Size = new System.Drawing.Size(166, 134);
             this.grpScanType.TabIndex = 6;
             this.grpScanType.Values.Heading = "Scan Type:";
             // 
@@ -346,7 +346,7 @@
             // 
             this.lblTimeRemaining.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblTimeRemaining.AutoSize = false;
-            this.lblTimeRemaining.Location = new System.Drawing.Point(28, 432);
+            this.lblTimeRemaining.Location = new System.Drawing.Point(41, 432);
             this.lblTimeRemaining.Name = "lblTimeRemaining";
             this.lblTimeRemaining.Size = new System.Drawing.Size(122, 19);
             this.lblTimeRemaining.TabIndex = 5;
@@ -366,7 +366,7 @@
             // 
             this.lblSpeed.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblSpeed.AutoSize = false;
-            this.lblSpeed.Location = new System.Drawing.Point(28, 381);
+            this.lblSpeed.Location = new System.Drawing.Point(41, 381);
             this.lblSpeed.Name = "lblSpeed";
             this.lblSpeed.Size = new System.Drawing.Size(122, 19);
             this.lblSpeed.TabIndex = 3;
@@ -386,7 +386,7 @@
             // 
             this.lblDriveSize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblDriveSize.AutoSize = false;
-            this.lblDriveSize.Location = new System.Drawing.Point(26, 329);
+            this.lblDriveSize.Location = new System.Drawing.Point(39, 329);
             this.lblDriveSize.Name = "lblDriveSize";
             this.lblDriveSize.Size = new System.Drawing.Size(122, 20);
             this.lblDriveSize.TabIndex = 1;
@@ -425,7 +425,7 @@
             this.diskSectors1.ShowCellToolTips = false;
             this.diskSectors1.ShowEditingIcon = false;
             this.diskSectors1.ShowRowErrors = false;
-            this.diskSectors1.Size = new System.Drawing.Size(646, 574);
+            this.diskSectors1.Size = new System.Drawing.Size(633, 574);
             this.diskSectors1.TabIndex = 0;
             // 
             // DiskStatsView

@@ -44,12 +44,12 @@
             this.driveTree = new ComponentFactory.Krypton.Toolkit.KryptonTreeView();
             this.driveImageList = new System.Windows.Forms.ImageList(this.components);
             this.driveContainer = new ComponentFactory.Krypton.Toolkit.KryptonSplitContainer();
+            this.diskStatsView1 = new HDD2ndLife.Controls.DiskStatsView();
             this.kryptonBorderEdge1 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.driveHeader = new ComponentFactory.Krypton.Toolkit.KryptonHeader();
             this.kryptonBorderEdge2 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.lblDetails = new ComponentFactory.Krypton.Toolkit.KryptonRichTextBox();
             this.detailsHeader = new ComponentFactory.Krypton.Toolkit.KryptonHeader();
-            this.diskStatsView1 = new HDD2ndLife.Controls.DiskStatsView();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.treeContainer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.treeContainer.Panel1)).BeginInit();
@@ -124,7 +124,7 @@
             this.changeLogToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(800, 27);
+            this.menuStrip1.Size = new System.Drawing.Size(984, 27);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -142,10 +142,10 @@
             // statusStrip1
             // 
             this.statusStrip1.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.statusStrip1.Location = new System.Drawing.Point(0, 428);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 591);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.ManagerRenderMode;
-            this.statusStrip1.Size = new System.Drawing.Size(800, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(984, 22);
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -164,8 +164,8 @@
             // 
             this.treeContainer.Panel2.Controls.Add(this.driveContainer);
             this.treeContainer.SeparatorStyle = ComponentFactory.Krypton.Toolkit.SeparatorStyle.HighInternalProfile;
-            this.treeContainer.Size = new System.Drawing.Size(800, 401);
-            this.treeContainer.SplitterDistance = 266;
+            this.treeContainer.Size = new System.Drawing.Size(984, 564);
+            this.treeContainer.SplitterDistance = 275;
             this.treeContainer.TabIndex = 2;
             // 
             // treeGroup
@@ -177,7 +177,7 @@
             // treeGroup.Panel
             // 
             this.treeGroup.Panel.Controls.Add(this.driveTree);
-            this.treeGroup.Size = new System.Drawing.Size(266, 401);
+            this.treeGroup.Size = new System.Drawing.Size(275, 564);
             this.treeGroup.TabIndex = 0;
             this.treeGroup.ValuesPrimary.Heading = "Drives";
             this.treeGroup.ValuesSecondary.Heading = "Select a drive";
@@ -192,7 +192,7 @@
             this.driveTree.Location = new System.Drawing.Point(0, 0);
             this.driveTree.Name = "driveTree";
             this.driveTree.SelectedImageIndex = 0;
-            this.driveTree.Size = new System.Drawing.Size(264, 348);
+            this.driveTree.Size = new System.Drawing.Size(273, 511);
             this.driveTree.TabIndex = 0;
             this.driveTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.driveTree_AfterSelect);
             // 
@@ -222,17 +222,25 @@
             this.driveContainer.Panel2.Controls.Add(this.lblDetails);
             this.driveContainer.Panel2.Controls.Add(this.detailsHeader);
             this.driveContainer.SeparatorStyle = ComponentFactory.Krypton.Toolkit.SeparatorStyle.HighProfile;
-            this.driveContainer.Size = new System.Drawing.Size(529, 401);
-            this.driveContainer.SplitterDistance = 233;
+            this.driveContainer.Size = new System.Drawing.Size(704, 564);
+            this.driveContainer.SplitterDistance = 327;
             this.driveContainer.TabIndex = 0;
+            // 
+            // diskStatsView1
+            // 
+            this.diskStatsView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.diskStatsView1.Location = new System.Drawing.Point(0, 31);
+            this.diskStatsView1.Name = "diskStatsView1";
+            this.diskStatsView1.Size = new System.Drawing.Size(703, 296);
+            this.diskStatsView1.TabIndex = 1;
             // 
             // kryptonBorderEdge1
             // 
             this.kryptonBorderEdge1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.kryptonBorderEdge1.Location = new System.Drawing.Point(528, 31);
+            this.kryptonBorderEdge1.Location = new System.Drawing.Point(703, 31);
             this.kryptonBorderEdge1.Name = "kryptonBorderEdge1";
             this.kryptonBorderEdge1.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge1.Size = new System.Drawing.Size(1, 202);
+            this.kryptonBorderEdge1.Size = new System.Drawing.Size(1, 296);
             this.kryptonBorderEdge1.Text = "kryptonBorderEdge1";
             // 
             // driveHeader
@@ -240,17 +248,17 @@
             this.driveHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.driveHeader.Location = new System.Drawing.Point(0, 0);
             this.driveHeader.Name = "driveHeader";
-            this.driveHeader.Size = new System.Drawing.Size(529, 31);
+            this.driveHeader.Size = new System.Drawing.Size(704, 31);
             this.driveHeader.TabIndex = 0;
             this.driveHeader.Values.Heading = "Drive:";
             // 
             // kryptonBorderEdge2
             // 
             this.kryptonBorderEdge2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.kryptonBorderEdge2.Location = new System.Drawing.Point(528, 31);
+            this.kryptonBorderEdge2.Location = new System.Drawing.Point(703, 31);
             this.kryptonBorderEdge2.Name = "kryptonBorderEdge2";
             this.kryptonBorderEdge2.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge2.Size = new System.Drawing.Size(1, 132);
+            this.kryptonBorderEdge2.Size = new System.Drawing.Size(1, 201);
             this.kryptonBorderEdge2.Text = "kryptonBorderEdge2";
             // 
             // lblDetails
@@ -261,7 +269,7 @@
             this.lblDetails.Location = new System.Drawing.Point(0, 31);
             this.lblDetails.Name = "lblDetails";
             this.lblDetails.ReadOnly = true;
-            this.lblDetails.Size = new System.Drawing.Size(529, 132);
+            this.lblDetails.Size = new System.Drawing.Size(704, 201);
             this.lblDetails.TabIndex = 1;
             this.lblDetails.Text = "kryptonWrapLabel1";
             // 
@@ -270,23 +278,15 @@
             this.detailsHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.detailsHeader.Location = new System.Drawing.Point(0, 0);
             this.detailsHeader.Name = "detailsHeader";
-            this.detailsHeader.Size = new System.Drawing.Size(529, 31);
+            this.detailsHeader.Size = new System.Drawing.Size(704, 31);
             this.detailsHeader.TabIndex = 0;
             this.detailsHeader.Values.Heading = "Details:";
             // 
-            // diskStatsView1
-            // 
-            this.diskStatsView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.diskStatsView1.Location = new System.Drawing.Point(0, 31);
-            this.diskStatsView1.Name = "diskStatsView1";
-            this.diskStatsView1.Size = new System.Drawing.Size(528, 202);
-            this.diskStatsView1.TabIndex = 1;
-            // 
-            // Form1
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(984, 613);
             this.Controls.Add(this.treeContainer);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
