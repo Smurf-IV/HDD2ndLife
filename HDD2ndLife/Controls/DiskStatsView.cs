@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="DiskStatsView.cs" company="Smurf-IV">
 // 
-//  Copyright (C) 2020 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2020 - 2020 Simon Coghlan (Aka Smurf-IV)
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ namespace HDD2ndLife.Controls
 {
     public partial class DiskStatsView : UserControl
     {
-        private bool scanning;
+        public bool Scanning { get; private set; }
 
         private readonly Dictionary<KryptonRadioButton, ScanType> mapOptions;
         private readonly Dictionary<KryptonRadioButton, int> speedOptions;
@@ -80,6 +80,9 @@ namespace HDD2ndLife.Controls
                 var byteSize = ByteSize.FromBytes(value);
                 lblDriveSize.Text =
                     $@"{byteSize.LargestWholeNumberBinaryValue:N2} {byteSize.LargestWholeNumberBinarySymbol}";
+
+                if (value > 0)
+                    diskSectors1.ScaledClusterCount = (value / (ulong)ScanDrive.DISK_BUFFER_SIZE);
             }
         }
 
@@ -90,7 +93,7 @@ namespace HDD2ndLife.Controls
 
         private void btnStartStop_Click(object sender, System.EventArgs e)
         {
-            if (scanning)
+            if (Scanning)
             {
                 btnStartStop.Text = @"&Stopping";
                 lblPhase.Text = @"Stopping";
@@ -98,7 +101,9 @@ namespace HDD2ndLife.Controls
             }
             else
             {
-                scanning = true;
+                grpScanType.Enabled = false;
+                kryptonGroupBox2.Enabled = false;
+                Scanning = true;
                 btnStartStop.Text = @"&Stop";
                 lblPhase.Text = @"Starting";
                 ScanType st = mapOptions[mapOptions.Keys.First(r => r.Checked)];
@@ -107,25 +112,41 @@ namespace HDD2ndLife.Controls
                 {
                     speedOption = speedOptions[speedOptions.Keys.First(r => r.Checked)];
                 }
-                scanDrive = new ScanDrive(st, Cancellation, chkFailFirst.Checked, speedOption, DeviceId);
+
+                scanDrive = new ScanDrive(st, Cancellation, chkFailFirst.Checked, speedOption, DeviceId)
+                {
+                    SetScaledClusterStatus = diskSectors1.SetScaledClusterStatus
+                };
+                scanDrive.PropertyChanged += ScanDrive_PropertyChanged;
                 scanDrive.Start();
                 lblPhase.Text = @"Scanning";
                 tmrUpdate.Enabled = true;
             }
         }
 
+        private void ScanDrive_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            lblPhase.Text = e.PropertyName switch
+            {
+                @"Phase" => scanDrive?.Phase,
+                _ => lblPhase.Text
+            };
+        }
+
         private void Cancellation()
         {
             tmrUpdate.Enabled = false;
-            scanning = false;
+            Scanning = false;
             scanDrive = null;
             BeginInvoke((MethodInvoker)delegate
-           {
-               btnStartStop.Text = @"&Start";
-               lblPhase.Text = @"Stopped";
-               lblTimeRemaining.Text = string.Empty;
-               lblSpeed.Text = string.Empty;
-           });
+          {
+              btnStartStop.Text = @"&Start";
+              lblPhase.Text = @"Stopped";
+              lblTimeRemaining.Text = string.Empty;
+              lblSpeed.Text = string.Empty;
+              grpScanType.Enabled = true;
+              kryptonGroupBox2.Enabled = true;
+          });
         }
 
         private void tmrUpdate_Tick(object sender, System.EventArgs e)
@@ -136,7 +157,8 @@ namespace HDD2ndLife.Controls
             var speedBytes = ByteSize.FromMegaBytes(local.SpeedInMBytesPerSec);
             lblTimeRemaining.Text = timeSpan.ToString(@"dd\.hh\:mm\:ss");
             lblSpeed.Text =
-                $@"{speedBytes.LargestWholeNumberBinaryValue:N2} {speedBytes.LargestWholeNumberBinarySymbol}";
+                $@"{speedBytes.LargestWholeNumberDecimalValue:N2} {speedBytes.LargestWholeNumberDecimalSymbol}/s";
+            diskSectors1.RecalcStatus();
         }
     }
 }

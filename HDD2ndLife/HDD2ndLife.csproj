@@ -24,6 +24,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <LangVersion>latest</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -34,6 +35,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <LangVersion>latest</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>HDD2ndLife.ico</ApplicationIcon>
@@ -66,9 +68,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\DiskSectors.cs" />
-    <Compile Include="Controls\DiskSectors.Designer.cs">
-      <DependentUpon>DiskSectors.cs</DependentUpon>
+    <Compile Include="Controls\DiskSectors.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\DiskStatsView.cs">
       <SubType>UserControl</SubType>
@@ -84,7 +85,9 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Thirdparty\BitVector64.cs" />
     <Compile Include="Thirdparty\CircularList.cs" />
     <Compile Include="WMI\Decode.cs" />
     <Compile Include="WMI\DiskExGet.cs" />
@@ -93,9 +96,6 @@
     <Compile Include="WMI\Win32DiskDrive.cs" />
     <Compile Include="WMI\Win32DiskPartition.cs" />
     <Compile Include="WMI\Win32LogicalDisk.cs" />
-    <EmbeddedResource Include="Controls\DiskSectors.resx">
-      <DependentUpon>DiskSectors.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Controls\DiskStatsView.resx">
       <DependentUpon>DiskStatsView.cs</DependentUpon>
     </EmbeddedResource>
@@ -133,28 +133,34 @@
       <Version>2.0.0</Version>
     </PackageReference>
     <PackageReference Include="DeviceIOControlLib">
-      <Version>0.1.5</Version>
+      <Version>0.1.6</Version>
+    </PackageReference>
+    <PackageReference Include="Enums.NET">
+      <Version>3.0.3</Version>
     </PackageReference>
     <PackageReference Include="Exceptionless.NLog">
-      <Version>4.4.0</Version>
+      <Version>4.4.1</Version>
     </PackageReference>
     <PackageReference Include="Exceptionless.Windows">
-      <Version>4.4.0</Version>
+      <Version>4.4.1</Version>
     </PackageReference>
     <PackageReference Include="KryptonToolkitSuite5480">
       <Version>5.480.2098</Version>
     </PackageReference>
     <PackageReference Include="NLog">
-      <Version>4.7.0</Version>
+      <Version>4.7.4</Version>
     </PackageReference>
     <PackageReference Include="RawDiskLib">
-      <Version>0.2.0</Version>
+      <Version>0.2.1</Version>
+    </PackageReference>
+    <PackageReference Include="System.Memory">
+      <Version>4.5.4</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>md Y:\HDD2ndLife\HDD2ndLife\bin\Debug
-xcopy Z:\HDD2ndLife\HDD2ndLife\bin\Debug\*.* Y:\HDD2ndLife\HDD2ndLife\bin\Debug /I /C /Y /D</PostBuildEvent>
+    <PostBuildEvent>rem md Y:\HDD2ndLife\HDD2ndLife\bin\Debug
+rem xcopy Z:\HDD2ndLife\HDD2ndLife\bin\Debug\*.* Y:\HDD2ndLife\HDD2ndLife\bin\Debug /I /C /Y /D</PostBuildEvent>
   </PropertyGroup>
 </Project>

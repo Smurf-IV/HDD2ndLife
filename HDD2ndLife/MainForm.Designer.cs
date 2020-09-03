@@ -76,6 +76,7 @@
             this.miniToolStrip.AutoSize = false;
             this.miniToolStrip.Dock = System.Windows.Forms.DockStyle.None;
             this.miniToolStrip.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.miniToolStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.miniToolStrip.Location = new System.Drawing.Point(77, 4);
             this.miniToolStrip.Name = "miniToolStrip";
             this.miniToolStrip.Size = new System.Drawing.Size(800, 27);
@@ -87,7 +88,7 @@
             this.themeToolStripMenuItem});
             this.settingsToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(77, 23);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(96, 28);
             this.settingsToolStripMenuItem.Text = "&Settings";
             // 
             // themeToolStripMenuItem
@@ -96,14 +97,14 @@
             this.themeComboBox});
             this.themeToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.themeToolStripMenuItem.Name = "themeToolStripMenuItem";
-            this.themeToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.themeToolStripMenuItem.Size = new System.Drawing.Size(152, 28);
             this.themeToolStripMenuItem.Text = "&Theme";
             // 
             // themeComboBox
             // 
             this.themeComboBox.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.themeComboBox.Name = "themeComboBox";
-            this.themeComboBox.Size = new System.Drawing.Size(221, 26);
+            this.themeComboBox.Size = new System.Drawing.Size(221, 31);
             this.themeComboBox.SelectedIndexChanged += new System.EventHandler(this.themeComboBox_SelectedIndexChanged);
             // 
             // changeLogToolStripMenuItem
@@ -111,20 +112,21 @@
             this.changeLogToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.changeLogToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.changeLogToolStripMenuItem.Name = "changeLogToolStripMenuItem";
-            this.changeLogToolStripMenuItem.Size = new System.Drawing.Size(109, 23);
+            this.changeLogToolStripMenuItem.Size = new System.Drawing.Size(134, 28);
             this.changeLogToolStripMenuItem.Text = "Change_Log";
             this.changeLogToolStripMenuItem.Click += new System.EventHandler(this.changeLogToolStripMenuItem_Click);
             // 
             // menuStrip1
             // 
             this.menuStrip1.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.settingsToolStripMenuItem,
             this.helpToolStripMenuItem,
             this.changeLogToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(984, 27);
+            this.menuStrip1.Size = new System.Drawing.Size(1312, 32);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -134,7 +136,7 @@
             this.helpToolStripMenuItem.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(53, 23);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(65, 28);
             this.helpToolStripMenuItem.Text = "Help";
             this.helpToolStripMenuItem.ToolTipText = "Goto the Help page.";
             this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
@@ -142,10 +144,12 @@
             // statusStrip1
             // 
             this.statusStrip1.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.statusStrip1.Location = new System.Drawing.Point(0, 591);
+            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 732);
             this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 19, 0);
             this.statusStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.ManagerRenderMode;
-            this.statusStrip1.Size = new System.Drawing.Size(984, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1312, 22);
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -153,7 +157,8 @@
             // 
             this.treeContainer.Cursor = System.Windows.Forms.Cursors.Default;
             this.treeContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeContainer.Location = new System.Drawing.Point(0, 27);
+            this.treeContainer.Location = new System.Drawing.Point(0, 32);
+            this.treeContainer.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.treeContainer.Name = "treeContainer";
             // 
             // treeContainer.Panel1
@@ -164,20 +169,21 @@
             // 
             this.treeContainer.Panel2.Controls.Add(this.driveContainer);
             this.treeContainer.SeparatorStyle = ComponentFactory.Krypton.Toolkit.SeparatorStyle.HighInternalProfile;
-            this.treeContainer.Size = new System.Drawing.Size(984, 564);
-            this.treeContainer.SplitterDistance = 275;
+            this.treeContainer.Size = new System.Drawing.Size(1312, 700);
+            this.treeContainer.SplitterDistance = 366;
             this.treeContainer.TabIndex = 2;
             // 
             // treeGroup
             // 
             this.treeGroup.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeGroup.Location = new System.Drawing.Point(0, 0);
+            this.treeGroup.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.treeGroup.Name = "treeGroup";
             // 
             // treeGroup.Panel
             // 
             this.treeGroup.Panel.Controls.Add(this.driveTree);
-            this.treeGroup.Size = new System.Drawing.Size(275, 564);
+            this.treeGroup.Size = new System.Drawing.Size(366, 700);
             this.treeGroup.TabIndex = 0;
             this.treeGroup.ValuesPrimary.Heading = "Drives";
             this.treeGroup.ValuesSecondary.Heading = "Select a drive";
@@ -190,11 +196,13 @@
             this.driveTree.ImageIndex = 0;
             this.driveTree.ImageList = this.driveImageList;
             this.driveTree.Location = new System.Drawing.Point(0, 0);
+            this.driveTree.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.driveTree.Name = "driveTree";
             this.driveTree.SelectedImageIndex = 0;
-            this.driveTree.Size = new System.Drawing.Size(273, 511);
+            this.driveTree.Size = new System.Drawing.Size(364, 637);
             this.driveTree.TabIndex = 0;
             this.driveTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.driveTree_AfterSelect);
+            this.driveTree.BeforeSelect += new System.Windows.Forms.TreeViewCancelEventHandler(this.driveTree_BeforeSelect);
             // 
             // driveImageList
             // 
@@ -207,6 +215,7 @@
             this.driveContainer.Cursor = System.Windows.Forms.Cursors.Default;
             this.driveContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.driveContainer.Location = new System.Drawing.Point(0, 0);
+            this.driveContainer.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.driveContainer.Name = "driveContainer";
             this.driveContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -222,43 +231,47 @@
             this.driveContainer.Panel2.Controls.Add(this.lblDetails);
             this.driveContainer.Panel2.Controls.Add(this.detailsHeader);
             this.driveContainer.SeparatorStyle = ComponentFactory.Krypton.Toolkit.SeparatorStyle.HighProfile;
-            this.driveContainer.Size = new System.Drawing.Size(704, 564);
-            this.driveContainer.SplitterDistance = 327;
+            this.driveContainer.Size = new System.Drawing.Size(941, 700);
+            this.driveContainer.SplitterDistance = 405;
             this.driveContainer.TabIndex = 0;
             // 
             // diskStatsView1
             // 
             this.diskStatsView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.diskStatsView1.Location = new System.Drawing.Point(0, 31);
+            this.diskStatsView1.Location = new System.Drawing.Point(0, 37);
+            this.diskStatsView1.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
             this.diskStatsView1.Name = "diskStatsView1";
-            this.diskStatsView1.Size = new System.Drawing.Size(703, 296);
+            this.diskStatsView1.Size = new System.Drawing.Size(940, 368);
             this.diskStatsView1.TabIndex = 1;
             // 
             // kryptonBorderEdge1
             // 
             this.kryptonBorderEdge1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.kryptonBorderEdge1.Location = new System.Drawing.Point(703, 31);
+            this.kryptonBorderEdge1.Location = new System.Drawing.Point(940, 37);
+            this.kryptonBorderEdge1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.kryptonBorderEdge1.Name = "kryptonBorderEdge1";
             this.kryptonBorderEdge1.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge1.Size = new System.Drawing.Size(1, 296);
+            this.kryptonBorderEdge1.Size = new System.Drawing.Size(1, 368);
             this.kryptonBorderEdge1.Text = "kryptonBorderEdge1";
             // 
             // driveHeader
             // 
             this.driveHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.driveHeader.Location = new System.Drawing.Point(0, 0);
+            this.driveHeader.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.driveHeader.Name = "driveHeader";
-            this.driveHeader.Size = new System.Drawing.Size(704, 31);
+            this.driveHeader.Size = new System.Drawing.Size(941, 37);
             this.driveHeader.TabIndex = 0;
             this.driveHeader.Values.Heading = "Drive:";
             // 
             // kryptonBorderEdge2
             // 
             this.kryptonBorderEdge2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.kryptonBorderEdge2.Location = new System.Drawing.Point(703, 31);
+            this.kryptonBorderEdge2.Location = new System.Drawing.Point(940, 37);
+            this.kryptonBorderEdge2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.kryptonBorderEdge2.Name = "kryptonBorderEdge2";
             this.kryptonBorderEdge2.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge2.Size = new System.Drawing.Size(1, 201);
+            this.kryptonBorderEdge2.Size = new System.Drawing.Size(1, 253);
             this.kryptonBorderEdge2.Text = "kryptonBorderEdge2";
             // 
             // lblDetails
@@ -266,10 +279,11 @@
             this.lblDetails.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblDetails.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblDetails.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(57)))), ((int)(((byte)(91)))));
-            this.lblDetails.Location = new System.Drawing.Point(0, 31);
+            this.lblDetails.Location = new System.Drawing.Point(0, 37);
+            this.lblDetails.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.lblDetails.Name = "lblDetails";
             this.lblDetails.ReadOnly = true;
-            this.lblDetails.Size = new System.Drawing.Size(704, 201);
+            this.lblDetails.Size = new System.Drawing.Size(941, 253);
             this.lblDetails.TabIndex = 1;
             this.lblDetails.Text = "kryptonWrapLabel1";
             // 
@@ -277,21 +291,23 @@
             // 
             this.detailsHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.detailsHeader.Location = new System.Drawing.Point(0, 0);
+            this.detailsHeader.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.detailsHeader.Name = "detailsHeader";
-            this.detailsHeader.Size = new System.Drawing.Size(704, 31);
+            this.detailsHeader.Size = new System.Drawing.Size(941, 37);
             this.detailsHeader.TabIndex = 0;
             this.detailsHeader.Values.Heading = "Details:";
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(984, 613);
+            this.ClientSize = new System.Drawing.Size(1312, 754);
             this.Controls.Add(this.treeContainer);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.miniToolStrip;
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "MainForm";
             this.Text = "HDD 2nd Life";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;

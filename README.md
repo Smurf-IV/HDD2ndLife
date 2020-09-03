@@ -54,6 +54,7 @@ I've heard that as well, and I have tried it on drives that start to report SMAR
   - [x] Add basic drive details list
   - [x] Allow Disk selection and open form
   - [x] List details to include current partitions
+  - [x] Show existing Partitioning
 
 <br />
 
@@ -62,8 +63,8 @@ I've heard that as well, and I have tried it on drives that start to report SMAR
   - [x] Create Control for options, feedback, progress, etc.
   - [x] Allow basic disk scan                               
   - [x] Add feedback (time to complete, speed, etc.)        
-  - [ ] Detailed scan UI (blocks, bad locations, Partition locations) &nbsp; &nbsp; &nbsp; [<- in progress]
-  - [ ] Show existing Partitioning
+  - [x] Detailed scan UI blocks -> failed / reading / writing / verifying / passed / unused
+  - [ ] Test that the updates and UI interactions are not slowing down the throughput of scans. &nbsp; &nbsp; &nbsp; [<- in progress]
   - [ ] Attempt Basic RePartitioning (e.g. Min Distance from bad blocks to be ignored)
   - [ ] Start Documentation &nbsp; &nbsp; &nbsp; [<- in progress]
 
@@ -71,8 +72,8 @@ I've heard that as well, and I have tried it on drives that start to report SMAR
 
 - [ ] Phase III
   - [ ] Display (And use) information about the "Slow reads / writes" which can be used to determine a "weakened" block which may indicate signs of wear.
+  - [ ] More Detailed UI showing relative Partition locations (& types ?)
   - [ ] Allow selections for Partitioning scheme
-  - [ ] Test that the updates and UI interactions are not slowing down the throughput of scans.
   - [ ] Extended Partitiong Schemes
   - [ ] Other features I haven't thought of yet ;-)
   - [ ] 
@@ -82,7 +83,7 @@ I've heard that as well, and I have tried it on drives that start to report SMAR
   - Turns out that trying to get this work on just the few machines that I have is a pain. 
   - WMI does not work with 
       - Raid controllers
-      - PCIExpress SSD controllers that use their own drivers (Even the latest smartmon tools do not work with them, but the oder version does!)
+      - PCIExpress SSD controllers that use their own drivers (Even the latest `smartmon tools` do not work with them, but the older version does!)
   - `Crystal Disk Info` does a really good job !
   - Your using *this* app because you know that the drive is failing !
 

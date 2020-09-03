@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="ScanDrive.cs" company="Smurf-IV">
 // 
-//  Copyright (C) 2020 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2020 - 2020 Simon Coghlan (Aka Smurf-IV)
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -30,9 +30,13 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Clifton.Collections.Generic;
+using HDD2ndLife.Annotations;
 using HDD2ndLife.WMI;
 
 using NLog;
@@ -50,11 +54,11 @@ namespace HDD2ndLife.Controls
         Pass2
     };
 
-    internal class ScanDrive
+    internal class ScanDrive : INotifyPropertyChanged
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
         private static int AVERAGE_BUFFER_SIZE = 64;
-        private static int DISK_BUFFER_SIZE = 1024 * 1024;  // Seems to be "Optimum" for Sata II HDD and PCIE cards, giving > 90% read utilisation
+        internal static int DISK_BUFFER_SIZE = 1024 * 1024;  // Seems to be "Optimum" for Sata II HDD and PCIE cards, giving > 95% read utilisation
 
         private readonly ScanType scanType;
         private readonly bool failFirst;
@@ -79,23 +83,25 @@ namespace HDD2ndLife.Controls
         }
 
         public double SpeedInMBytesPerSec => lastSpeedInMBytesPerSec.Average();
-        public TimeSpan TimeRemaining => TimeSpan.FromTicks((long) lastTimeRemaining.Average());
+        public TimeSpan TimeRemaining => TimeSpan.FromTicks((long)lastTimeRemaining.Average());
 
-        public int CurrentSector;
+        private int CurrentCluster;
+        private string phase;
 
         public void Cancel()
         {
             Log.Info(@"Cancelling");
             cancelTokenSrc.Cancel();
+            Phase = @"Errored";
         }
 
         public void Start()
         {
             try
             {
-
+                Phase = @"Initialising";
                 Log.Debug(@"Creating Disk interface");
-                RawDisk disk = new RawDisk(deviceId, FileAccess.ReadWrite);
+                var disk = new RawDisk(deviceId, FileAccess.ReadWrite);
                 Log.Info(@"Setting [{0}] offline", deviceId);
                 if (!DiskExSet.SetOnline(disk.DiskHandle, false, false))
                 {
@@ -114,77 +120,288 @@ namespace HDD2ndLife.Controls
 
         private void ProcessDrive(RawDisk disk)
         {
-            try
+            switch (scanType)
             {
-                int multiplier = DISK_BUFFER_SIZE / disk.SectorSize;
-                byte[] buffer = new byte[disk.SectorSize * multiplier];
-
-                Stopwatch sw = new Stopwatch();
-                long sectorCount = disk.SectorCount;    // prevent this from being calculated each time
-                int bufferLength = buffer.Length - 1;
-                CurrentSector = 0;
-                for (; CurrentSector < sectorCount && !cancelTokenSrc.IsCancellationRequested; CurrentSector+= multiplier)
-                {
-                    ReadGroup(disk, sw, buffer, multiplier, sectorCount, bufferLength);
-                }
-                // Do the last few sectors of the drive
-                multiplier = 1;
-                buffer = new byte[disk.SectorSize * multiplier];
-                bufferLength = buffer.Length - 1;
-                for (; CurrentSector < sectorCount && !cancelTokenSrc.IsCancellationRequested; CurrentSector += multiplier)
-                {
-                    ReadGroup(disk, sw, buffer, multiplier, sectorCount, bufferLength);
-                }
-            }
-            catch (Exception e)
-            {
-                Log.Error(e);
+                case ScanType.Unknown:
+                    break;
+                case ScanType.Read:
+                    PerformRead(disk);
+                    break;
+                case ScanType.Write:
+                    if (PerformWrite(disk))
+                    {
+                        PerformRead(disk);
+                    }
+                    break;
+                case ScanType.Verify:
+                    if (PerformWrite(disk, 0xAA))
+                    {
+                        PerformRead(disk, 0xAA);
+                    }
+                    break;
+                case ScanType.Pass2:
+                    if (PerformWrite(disk, 0xAA))
+                    {
+                        if (PerformRead(disk, 0xAA))
+                        {
+                            if (PerformWrite(disk, 0x55))
+                            {
+                                PerformRead(disk, 0x55);
+                            }
+                        }
+                    }
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
             cancelTokenSrc.Cancel();
         }
 
-        private void ReadGroup(RawDisk disk, Stopwatch sw, byte[] buffer, int multiplier, long sectorCount, int bufferLength)
+        public string Phase
+        {
+            get => phase;
+            set
+            {
+                if (phase != value)
+                {
+                    phase = value;
+                    OnPropertyChanged(nameof(Phase));
+                }
+            }
+        }
+
+        // 0xAA = 1010 1010 pattern
+        private bool PerformWrite(RawDisk disk, byte pattern = 0xAA)
+        {
+            Phase = $@"Writing 0x{pattern:X}";
+            var multiplier = DISK_BUFFER_SIZE / disk.ClusterSize;
+            var buffer = InitByteArray(pattern, disk.ClusterSize * multiplier);
+            var sw = new Stopwatch();
+            var clusterCount = disk.ClusterCount;    // prevent this from being calculated each time
+            CurrentCluster = 0;
+            for (; CurrentCluster < clusterCount && !cancelTokenSrc.IsCancellationRequested; CurrentCluster += multiplier)
+            {
+                SetScaledClusterStatus(CurrentCluster / multiplier, BlockStatus.Writing);
+                if (!WriteGroup(disk, sw, buffer, multiplier, CurrentCluster, clusterCount))
+                {
+                    SetScaledClusterStatus(CurrentCluster / multiplier, BlockStatus.Failed);
+                    if (failFirst)
+                    {
+                        // TODO: Add to the list of failed sectors
+                        return false;
+                    }
+                }
+            }
+            // Do the last few sectors of the drive
+            multiplier = 1;
+            buffer = new byte[disk.ClusterSize /* * multiplier*/];
+            for (; CurrentCluster < clusterCount && !cancelTokenSrc.IsCancellationRequested; CurrentCluster += multiplier)
+            {
+                SetScaledClusterStatus(CurrentCluster / multiplier, BlockStatus.Writing);
+                if (!WriteGroup(disk, sw, buffer, multiplier, CurrentCluster, clusterCount))
+                {
+                    SetScaledClusterStatus(CurrentCluster / multiplier, BlockStatus.Failed);
+                    if (failFirst)
+                    {
+                        // TODO: Add to the list of failed sectors
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        public Action<long, BlockStatus> SetScaledClusterStatus;
+
+        private bool WriteGroup(RawDisk disk, Stopwatch sw, byte[] buffer, int multiplier, long currentCluster, long clusterCount)
         {
             try
             {
                 sw.Restart();
-                double read = disk.ReadSectors(buffer, 0, CurrentSector, multiplier);
+                disk.WriteClusters(buffer, currentCluster);
                 sw.Stop();
-                long elapsedTicks = sw.Elapsed.Ticks;
-                lastSpeedInMBytesPerSec.Value = (read / elapsedTicks) * 10; // Sw.Elapsed.Ticks are always the same distance
+                var elapsedTicks = sw.Elapsed.Ticks;
+                lastSpeedInMBytesPerSec.Value = (buffer.Length / elapsedTicks) * 10; // Sw.Elapsed.Ticks are always the same distance
                 lastSpeedInMBytesPerSec.Next();
-                lastTimeRemaining.Value = (sectorCount - CurrentSector) * elapsedTicks / multiplier;
+                lastTimeRemaining.Value = (clusterCount - currentCluster) * elapsedTicks / multiplier;
                 lastTimeRemaining.Next();
-                if (read < bufferLength)
-                {
-                    throw new FileLoadException($@"read != buffer.Length. [{read}] != [{buffer.Length}]");
-                }
+                return true;
             }
             catch (IOException ex1)
             {
                 int errorCode1 = GetWin32ErrorCode(ex1);
                 Log.Error(ex1, new Win32Exception(errorCode1).Message);
-                // TODO: Add to the list of failed sectors
             }
             catch (Exception ex2)
             {
                 Log.Error(ex2);
-                // TODO: Add to the list of failed sectors
             }
+
+            return false;
         }
 
-        public static ushort GetWin32ErrorCode(IOException ex)
+        private bool PerformRead(RawDisk disk, byte? pattern = null)
         {
-            int hResult = GetExceptionHResult(ex);
+            Phase = @"Reading";
+            try
+            {
+                var multiplier = DISK_BUFFER_SIZE / disk.ClusterSize;
+                var buffer = new byte[disk.ClusterSize * multiplier];
+                var bufferLength = buffer.Length;
+                ReadOnlySpan<byte> checkPattern = null;
+                if (pattern.HasValue)
+                {
+                    Phase = $@"Reading [0x{pattern:X}]";
+                    checkPattern = InitByteArray(pattern.Value, bufferLength);
+                }
+
+                var sw = new Stopwatch();
+                var clusterCount = disk.ClusterCount;    // prevent this from being calculated each time
+                CurrentCluster = 0;
+                for (; CurrentCluster < clusterCount && !cancelTokenSrc.IsCancellationRequested; CurrentCluster += multiplier)
+                {
+                    var currentCluster = CurrentCluster / multiplier;
+                    SetScaledClusterStatus(currentCluster, BlockStatus.Reading);
+                    if (!ReadGroup(disk, sw, buffer, multiplier, clusterCount, bufferLength))
+                    {
+                        SetScaledClusterStatus(currentCluster, BlockStatus.Failed);
+                        if (failFirst)
+                            return false;
+                    }
+                    // TODO: When doing a verify the disk read utilisation drops from 98% down to 85%
+                    else if (checkPattern != null)
+                    {
+                        SetScaledClusterStatus(currentCluster, BlockStatus.Validating);
+                        if (!checkPattern.SequenceEqual(buffer))
+                        {
+                            SetScaledClusterStatus(currentCluster, BlockStatus.Failed);
+                            if (failFirst)
+                                return false;
+                            // TODO: Add to the list of failed sectors
+                        }
+                        else
+                        {
+                            SetScaledClusterStatus(currentCluster, BlockStatus.Passed);
+                        }
+                    }
+                    else
+                    {
+                        SetScaledClusterStatus(currentCluster, BlockStatus.Passed);
+                    }
+                }
+                // Do the last few sectors of the drive
+                multiplier = 1;
+                buffer = new byte[disk.ClusterSize /* * multiplier*/];
+                bufferLength = buffer.Length;
+                if (pattern.HasValue)
+                {
+                    checkPattern = InitByteArray(pattern.Value, bufferLength);
+                }
+                for (; CurrentCluster < clusterCount && !cancelTokenSrc.IsCancellationRequested; CurrentCluster += multiplier)
+                {
+                    var currentCluster = CurrentCluster / multiplier;
+                    SetScaledClusterStatus(currentCluster, BlockStatus.Reading);
+                    if (!ReadGroup(disk, sw, buffer, multiplier, clusterCount, bufferLength))
+                    {
+                        SetScaledClusterStatus(currentCluster, BlockStatus.Failed);
+                        if (failFirst)
+                            return false;
+                    }
+                    else if (checkPattern != null)
+                    {
+                        SetScaledClusterStatus(currentCluster, BlockStatus.Validating);
+                        if (!checkPattern.SequenceEqual(buffer))
+                        {
+                            SetScaledClusterStatus(currentCluster, BlockStatus.Failed);
+                            if (failFirst)
+                                return false;
+                        }
+                        else
+                        {
+                            SetScaledClusterStatus(currentCluster, BlockStatus.Passed);
+                        }
+                    }
+                    else
+                    {
+                        SetScaledClusterStatus(currentCluster, BlockStatus.Passed);
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+                // TODO: Add to the list of failed sectors
+            }
+
+            return false;
+        }
+
+        private bool ReadGroup(RawDisk disk, Stopwatch sw, byte[] buffer, int multiplier, long clusterCount, int bufferLength)
+        {
+            try
+            {
+                sw.Restart();
+                double read = disk.ReadClusters(buffer, 0, CurrentCluster, multiplier);
+                sw.Stop();
+                var elapsedTicks = sw.Elapsed.Ticks;
+                lastSpeedInMBytesPerSec.Value = (read / elapsedTicks) * 10; // Sw.Elapsed.Ticks are always the same distance
+                lastSpeedInMBytesPerSec.Next();
+                lastTimeRemaining.Value = (clusterCount - CurrentCluster) * elapsedTicks / multiplier;
+                lastTimeRemaining.Next();
+                if (read < bufferLength)
+                {
+                    throw new FileLoadException($@"read != buffer.Length. [{read}] != [{buffer.Length}]");
+                }
+
+                return true;
+            }
+            catch (IOException ex1)
+            {
+                int errorCode1 = GetWin32ErrorCode(ex1);
+                Log.Error(ex1, new Win32Exception(errorCode1).Message);
+            }
+            catch (Exception ex2)
+            {
+                Log.Error(ex2);
+            }
+
+            return false;
+        }
+
+        private static ushort GetWin32ErrorCode(IOException ex)
+        {
+            var hResult = GetExceptionHResult(ex);
             // The Win32 error code is stored in the 16 first bits of the value
             return (ushort)(hResult & 0x0000FFFF);
         }
 
-        public static int GetExceptionHResult(IOException ex)
+        private static int GetExceptionHResult(IOException ex)
         {
-            PropertyInfo hResult = ex.GetType().GetProperty("HResult", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+            var hResult = ex.GetType().GetProperty("HResult", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
             return (int)hResult.GetValue(ex, null);
         }
 
+        [DllImport(@"msvcrt.dll",EntryPoint = @"memset", CallingConvention = CallingConvention.Cdecl, SetLastError = false)]
+        private static extern IntPtr MemSet(IntPtr dest, int c, int count);
+
+        //If you need super speed, calling out to M$ memset optimized method using P/invoke
+        private static byte[] InitByteArray(byte fillWith, int size)
+        {
+            var arrayBytes = new byte[size];
+            var gch = GCHandle.Alloc(arrayBytes, GCHandleType.Pinned);
+            MemSet(gch.AddrOfPinnedObject(), fillWith, arrayBytes.Length);
+            return arrayBytes;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

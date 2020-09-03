@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="MainForm.cs" company="Smurf-IV">
 // 
-//  Copyright (C) 2020 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2020 - 2020 Simon Coghlan (Aka Smurf-IV)
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@
 using System;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Management;
 using System.Reflection;
 using System.Windows.Forms;
@@ -37,6 +38,7 @@ using ComponentFactory.Krypton.Toolkit;
 
 using DeviceIOControlLib.Objects.Disk;
 
+using HDD2ndLife.Controls;
 using HDD2ndLife.WMI;
 
 using NLog;
@@ -246,10 +248,13 @@ namespace HDD2ndLife
             }
             else
             {
-                diskStatsView1.DeviceId = String.Empty;
+                diskStatsView1.DeviceId = string.Empty;
             }
         }
 
-
+        private void driveTree_BeforeSelect(object sender, TreeViewCancelEventArgs e)
+        {
+            e.Cancel = diskStatsView1.Scanning;
+        }
     }
 }
