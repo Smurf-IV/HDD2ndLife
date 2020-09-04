@@ -28,7 +28,6 @@
 using System;
 using System.Diagnostics;
 using System.Drawing;
-using System.IO;
 using System.Management;
 using System.Reflection;
 using System.Windows.Forms;
@@ -38,7 +37,6 @@ using ComponentFactory.Krypton.Toolkit;
 
 using DeviceIOControlLib.Objects.Disk;
 
-using HDD2ndLife.Controls;
 using HDD2ndLife.WMI;
 
 using NLog;

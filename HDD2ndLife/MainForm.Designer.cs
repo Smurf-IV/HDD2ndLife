@@ -158,7 +158,7 @@
             this.treeContainer.Cursor = System.Windows.Forms.Cursors.Default;
             this.treeContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeContainer.Location = new System.Drawing.Point(0, 32);
-            this.treeContainer.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.treeContainer.Margin = new System.Windows.Forms.Padding(4);
             this.treeContainer.Name = "treeContainer";
             // 
             // treeContainer.Panel1
@@ -177,7 +177,7 @@
             // 
             this.treeGroup.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeGroup.Location = new System.Drawing.Point(0, 0);
-            this.treeGroup.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.treeGroup.Margin = new System.Windows.Forms.Padding(4);
             this.treeGroup.Name = "treeGroup";
             // 
             // treeGroup.Panel
@@ -186,6 +186,7 @@
             this.treeGroup.Size = new System.Drawing.Size(366, 700);
             this.treeGroup.TabIndex = 0;
             this.treeGroup.ValuesPrimary.Heading = "Drives";
+            this.treeGroup.ValuesPrimary.Image = null;
             this.treeGroup.ValuesSecondary.Heading = "Select a drive";
             // 
             // driveTree
@@ -196,7 +197,7 @@
             this.driveTree.ImageIndex = 0;
             this.driveTree.ImageList = this.driveImageList;
             this.driveTree.Location = new System.Drawing.Point(0, 0);
-            this.driveTree.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.driveTree.Margin = new System.Windows.Forms.Padding(4);
             this.driveTree.Name = "driveTree";
             this.driveTree.SelectedImageIndex = 0;
             this.driveTree.Size = new System.Drawing.Size(364, 637);
@@ -215,7 +216,7 @@
             this.driveContainer.Cursor = System.Windows.Forms.Cursors.Default;
             this.driveContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.driveContainer.Location = new System.Drawing.Point(0, 0);
-            this.driveContainer.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.driveContainer.Margin = new System.Windows.Forms.Padding(4);
             this.driveContainer.Name = "driveContainer";
             this.driveContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -239,7 +240,7 @@
             // 
             this.diskStatsView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.diskStatsView1.Location = new System.Drawing.Point(0, 37);
-            this.diskStatsView1.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.diskStatsView1.Margin = new System.Windows.Forms.Padding(5);
             this.diskStatsView1.Name = "diskStatsView1";
             this.diskStatsView1.Size = new System.Drawing.Size(940, 368);
             this.diskStatsView1.TabIndex = 1;
@@ -248,7 +249,7 @@
             // 
             this.kryptonBorderEdge1.Dock = System.Windows.Forms.DockStyle.Right;
             this.kryptonBorderEdge1.Location = new System.Drawing.Point(940, 37);
-            this.kryptonBorderEdge1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.kryptonBorderEdge1.Margin = new System.Windows.Forms.Padding(4);
             this.kryptonBorderEdge1.Name = "kryptonBorderEdge1";
             this.kryptonBorderEdge1.Orientation = System.Windows.Forms.Orientation.Vertical;
             this.kryptonBorderEdge1.Size = new System.Drawing.Size(1, 368);
@@ -258,17 +259,19 @@
             // 
             this.driveHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.driveHeader.Location = new System.Drawing.Point(0, 0);
-            this.driveHeader.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.driveHeader.Margin = new System.Windows.Forms.Padding(4);
             this.driveHeader.Name = "driveHeader";
             this.driveHeader.Size = new System.Drawing.Size(941, 37);
             this.driveHeader.TabIndex = 0;
+            this.driveHeader.Values.Description = "";
             this.driveHeader.Values.Heading = "Drive:";
+            this.driveHeader.Values.Image = null;
             // 
             // kryptonBorderEdge2
             // 
             this.kryptonBorderEdge2.Dock = System.Windows.Forms.DockStyle.Right;
             this.kryptonBorderEdge2.Location = new System.Drawing.Point(940, 37);
-            this.kryptonBorderEdge2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.kryptonBorderEdge2.Margin = new System.Windows.Forms.Padding(4);
             this.kryptonBorderEdge2.Name = "kryptonBorderEdge2";
             this.kryptonBorderEdge2.Orientation = System.Windows.Forms.Orientation.Vertical;
             this.kryptonBorderEdge2.Size = new System.Drawing.Size(1, 253);
@@ -280,7 +283,7 @@
             this.lblDetails.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblDetails.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(57)))), ((int)(((byte)(91)))));
             this.lblDetails.Location = new System.Drawing.Point(0, 37);
-            this.lblDetails.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lblDetails.Margin = new System.Windows.Forms.Padding(4);
             this.lblDetails.Name = "lblDetails";
             this.lblDetails.ReadOnly = true;
             this.lblDetails.Size = new System.Drawing.Size(941, 253);
@@ -291,11 +294,13 @@
             // 
             this.detailsHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.detailsHeader.Location = new System.Drawing.Point(0, 0);
-            this.detailsHeader.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.detailsHeader.Margin = new System.Windows.Forms.Padding(4);
             this.detailsHeader.Name = "detailsHeader";
             this.detailsHeader.Size = new System.Drawing.Size(941, 37);
             this.detailsHeader.TabIndex = 0;
+            this.detailsHeader.Values.Description = "";
             this.detailsHeader.Values.Heading = "Details:";
+            this.detailsHeader.Values.Image = null;
             // 
             // MainForm
             // 
@@ -307,7 +312,7 @@
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.miniToolStrip;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MainForm";
             this.Text = "HDD 2nd Life";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;

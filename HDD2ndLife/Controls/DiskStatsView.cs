@@ -146,6 +146,8 @@ namespace HDD2ndLife.Controls
               lblSpeed.Text = string.Empty;
               grpScanType.Enabled = true;
               kryptonGroupBox2.Enabled = true;
+              // Make sure on fast systems the redraw is done for the final "Squares"
+              diskSectors1.RecalcStatus();
           });
         }
 

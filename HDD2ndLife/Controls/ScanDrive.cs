@@ -96,6 +96,8 @@ namespace HDD2ndLife.Controls
             Phase = @"Errored";
         }
 
+        public Action<long, BlockStatus> SetScaledClusterStatus { get; set; }
+
         public void Start()
         {
             try
@@ -182,54 +184,62 @@ namespace HDD2ndLife.Controls
         {
             string phaseWrite = $@"Writing 0x{pattern:X}";
             var multiplier = DISK_BUFFER_SIZE / disk.ClusterSize;
-            var buffer = InitByteArray(pattern, disk.ClusterSize * multiplier);
-            var sw = new Stopwatch();
-            var clusterCount = disk.ClusterCount;    // prevent this from being calculated each time
-            CurrentCluster = 0;
-            for (; CurrentCluster < clusterCount && !cancelTokenSrc.IsCancellationRequested; CurrentCluster += multiplier)
+            try
             {
-                SetScaledClusterStatus(CurrentCluster / multiplier, BlockStatus.Writing);
-                SetCurrentProgress(phaseWrite, clusterCount);
-                if (!WriteGroup(disk, sw, buffer, multiplier, CurrentCluster, clusterCount))
+                var buffer = InitByteArray(pattern, disk.ClusterSize * multiplier);
+                var sw = new Stopwatch();
+                var clusterCount = disk.ClusterCount;    // prevent this from being calculated each time
+                CurrentCluster = 0;
+                for (; CurrentCluster < clusterCount && !cancelTokenSrc.IsCancellationRequested; CurrentCluster += multiplier)
                 {
-                    SetScaledClusterStatus(CurrentCluster / multiplier, BlockStatus.Failed);
-                    if (failFirst)
+                    var currentScaledCluster = CurrentCluster / multiplier;
+                    SetScaledClusterStatus(currentScaledCluster, BlockStatus.Writing);
+                    SetCurrentProgress(phaseWrite, clusterCount);
+                    if (!WriteGroup(disk, sw, buffer, multiplier, CurrentCluster, clusterCount))
                     {
-                        // TODO: Add to the list of failed sectors
-                        return false;
+                        SetScaledClusterStatus(currentScaledCluster, BlockStatus.Failed);
+                        if (failFirst)
+                        {
+                            // TODO: Add to the list of failed sectors
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        SetScaledClusterStatus(currentScaledCluster, BlockStatus.WriteDone);
                     }
                 }
-                else
+                // Do the last few sectors of the drive
+                multiplier = 1;
+                buffer = new byte[disk.ClusterSize /* * multiplier*/];
+                for (; CurrentCluster < clusterCount && !cancelTokenSrc.IsCancellationRequested; CurrentCluster += multiplier)
                 {
-                    SetScaledClusterStatus(CurrentCluster / multiplier, BlockStatus.WriteDone);
-                }
-            }
-            // Do the last few sectors of the drive
-            multiplier = 1;
-            buffer = new byte[disk.ClusterSize /* * multiplier*/];
-            for (; CurrentCluster < clusterCount && !cancelTokenSrc.IsCancellationRequested; CurrentCluster += multiplier)
-            {
-                SetScaledClusterStatus(CurrentCluster / multiplier, BlockStatus.Writing);
-                SetCurrentProgress(phaseWrite, clusterCount);
-                if (!WriteGroup(disk, sw, buffer, multiplier, CurrentCluster, clusterCount))
-                {
-                    SetScaledClusterStatus(CurrentCluster / multiplier, BlockStatus.Failed);
-                    if (failFirst)
+                    var currentScaledCluster = CurrentCluster / multiplier;
+                    SetScaledClusterStatus(currentScaledCluster, BlockStatus.Writing);
+                    SetCurrentProgress(phaseWrite, clusterCount);
+                    if (!WriteGroup(disk, sw, buffer, multiplier, CurrentCluster, clusterCount))
                     {
-                        // TODO: Add to the list of failed sectors
-                        return false;
+                        SetScaledClusterStatus(currentScaledCluster, BlockStatus.Failed);
+                        if (failFirst)
+                        {
+                            // TODO: Add to the list of failed sectors
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        SetScaledClusterStatus(currentScaledCluster, BlockStatus.WriteDone);
                     }
                 }
-                else
-                {
-                    SetScaledClusterStatus(CurrentCluster / multiplier, BlockStatus.WriteDone);
-                }
             }
-
+            catch (Exception e)
+            {
+                Log.Error(e, @"[{2}]: CurrentCluster [{0}] attempting to write to scaled [{1}]",
+                    CurrentCluster, CurrentCluster / multiplier, phaseWrite);
+                // TODO: Add to the list of failed sectors
+            }
             return true;
         }
-
-        public Action<long, BlockStatus> SetScaledClusterStatus;
 
         private bool WriteGroup(RawDisk disk, Stopwatch sw, byte[] buffer, int multiplier, long currentCluster, long clusterCount)
         {
@@ -261,9 +271,9 @@ namespace HDD2ndLife.Controls
         private bool PerformRead(RawDisk disk, byte? pattern = null)
         {
             var phaseRead = @"Reading";
+            var multiplier = DISK_BUFFER_SIZE / disk.ClusterSize;
             try
             {
-                var multiplier = DISK_BUFFER_SIZE / disk.ClusterSize;
                 var buffer = new byte[disk.ClusterSize * multiplier];
                 var bufferLength = buffer.Length;
                 ReadOnlySpan<byte> checkPattern = null;
@@ -278,34 +288,34 @@ namespace HDD2ndLife.Controls
                 CurrentCluster = 0;
                 for (; CurrentCluster < clusterCount && !cancelTokenSrc.IsCancellationRequested; CurrentCluster += multiplier)
                 {
-                    var currentCluster = CurrentCluster / multiplier;
-                    SetScaledClusterStatus(currentCluster, BlockStatus.Reading);
+                    var currentScaledCluster = CurrentCluster / multiplier;
+                    SetScaledClusterStatus(currentScaledCluster, BlockStatus.Reading);
                     SetCurrentProgress(phaseRead, clusterCount);
                     if (!ReadGroup(disk, sw, buffer, multiplier, clusterCount, bufferLength))
                     {
-                        SetScaledClusterStatus(currentCluster, BlockStatus.Failed);
+                        SetScaledClusterStatus(currentScaledCluster, BlockStatus.Failed);
                         if (failFirst)
                             return false;
                     }
                     // TODO: When doing a verify the disk read utilisation drops from 98% down to 85%
                     else if (checkPattern != null)
                     {
-                        SetScaledClusterStatus(currentCluster, BlockStatus.Validating);
+                        SetScaledClusterStatus(currentScaledCluster, BlockStatus.Validating);
                         if (!checkPattern.SequenceEqual(buffer))
                         {
-                            SetScaledClusterStatus(currentCluster, BlockStatus.Failed);
+                            SetScaledClusterStatus(currentScaledCluster, BlockStatus.Failed);
                             if (failFirst)
                                 return false;
                             // TODO: Add to the list of failed sectors
                         }
                         else
                         {
-                            SetScaledClusterStatus(currentCluster, BlockStatus.Passed);
+                            SetScaledClusterStatus(currentScaledCluster, BlockStatus.Passed);
                         }
                     }
                     else
                     {
-                        SetScaledClusterStatus(currentCluster, BlockStatus.Passed);
+                        SetScaledClusterStatus(currentScaledCluster, BlockStatus.Passed);
                     }
                 }
                 // Do the last few sectors of the drive
@@ -318,32 +328,32 @@ namespace HDD2ndLife.Controls
                 }
                 for (; CurrentCluster < clusterCount && !cancelTokenSrc.IsCancellationRequested; CurrentCluster += multiplier)
                 {
-                    var currentCluster = CurrentCluster / multiplier;
-                    SetScaledClusterStatus(currentCluster, BlockStatus.Reading);
-                    SetCurrentProgress(phaseRead, clusterCount); 
+                    var currentScaledCluster = CurrentCluster / multiplier;
+                    SetScaledClusterStatus(currentScaledCluster, BlockStatus.Reading);
+                    SetCurrentProgress(phaseRead, clusterCount);
                     if (!ReadGroup(disk, sw, buffer, multiplier, clusterCount, bufferLength))
                     {
-                        SetScaledClusterStatus(currentCluster, BlockStatus.Failed);
+                        SetScaledClusterStatus(currentScaledCluster, BlockStatus.Failed);
                         if (failFirst)
                             return false;
                     }
                     else if (checkPattern != null)
                     {
-                        SetScaledClusterStatus(currentCluster, BlockStatus.Validating);
+                        SetScaledClusterStatus(currentScaledCluster, BlockStatus.Validating);
                         if (!checkPattern.SequenceEqual(buffer))
                         {
-                            SetScaledClusterStatus(currentCluster, BlockStatus.Failed);
+                            SetScaledClusterStatus(currentScaledCluster, BlockStatus.Failed);
                             if (failFirst)
                                 return false;
                         }
                         else
                         {
-                            SetScaledClusterStatus(currentCluster, BlockStatus.Passed);
+                            SetScaledClusterStatus(currentScaledCluster, BlockStatus.Passed);
                         }
                     }
                     else
                     {
-                        SetScaledClusterStatus(currentCluster, BlockStatus.Passed);
+                        SetScaledClusterStatus(currentScaledCluster, BlockStatus.Passed);
                     }
                 }
 
@@ -351,7 +361,8 @@ namespace HDD2ndLife.Controls
             }
             catch (Exception e)
             {
-                Log.Error(e);
+                Log.Error(e, @"[{2}]: CurrentCluster [{0}] attempting to read to scaled [{1}]",
+                    CurrentCluster, CurrentCluster / multiplier, phaseRead);
                 // TODO: Add to the list of failed sectors
             }
 

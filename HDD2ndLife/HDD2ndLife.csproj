@@ -157,7 +157,7 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>rem md Y:\HDD2ndLife\HDD2ndLife\bin\Debug
-rem xcopy Z:\HDD2ndLife\HDD2ndLife\bin\Debug\*.* Y:\HDD2ndLife\HDD2ndLife\bin\Debug /I /C /Y /D</PostBuildEvent>
+    <PostBuildEvent>md V:\Repos\HDD2ndLife\HDD2ndLife\bin\Debug
+xcopy Z:\Repos\HDD2ndLife\HDD2ndLife\bin\Debug\*.* V:\Repos\HDD2ndLife\HDD2ndLife\bin\Debug /I /C /Y /D</PostBuildEvent>
   </PropertyGroup>
 </Project>

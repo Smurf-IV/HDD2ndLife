@@ -32,13 +32,17 @@ using System.Windows.Forms;
 
 using HDD2ndLife.Thirdparty;
 
+using NLog;
+
 namespace HDD2ndLife.Controls
 {
     public class DiskSectors : Control  // Try and use the "Lowest" fastest UI access
     {
-        private const int BLOCK_SIZE = 5; // 1 line | 4 spaces for colour  -> etc.
+        private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+        private const int BLOCK_SIZE = 6; // 1 line | 4 spaces for colour  -> etc.
         private const int CLUSTERS_PER_VECTOR = 64 / 3; // 64 bits / (5 represented in binary bits)
         private readonly BitVector64.Section[] sections = new BitVector64.Section[CLUSTERS_PER_VECTOR];
+        private BitVector64[] clusterStatus;
 
         public DiskSectors()
         {
@@ -66,13 +70,14 @@ namespace HDD2ndLife.Controls
         {
             set
             {
-                var length = Math.Max(1, value / CLUSTERS_PER_VECTOR);
-                ClusterStatus = new BitVector64[length];
-                for (long index = 0; index < ClusterStatus.Length; index++)
+                var length = (int)Math.Max(1, Math.Ceiling(value * 1.0 / CLUSTERS_PER_VECTOR));
+                Log.Debug(@"ScaledClusterCount with [{0}], resulted in length of [{1}]", value, length);
+                clusterStatus = new BitVector64[length];
+                for (long index = 0; index < clusterStatus.Length; index++)
                 {
                     foreach (var section in sections)
                     {
-                        ClusterStatus[index][section] = (long)BlockStatus.NoWork;
+                        clusterStatus[index][section] = (long)BlockStatus.NoWork;
                     }
                 }
 
@@ -80,12 +85,11 @@ namespace HDD2ndLife.Controls
             }
         }
 
-        private BitVector64[] ClusterStatus { get; set; }
 
         public void SetScaledClusterStatus(long readOffset, BlockStatus status)
         {
             long row = Math.DivRem(readOffset, CLUSTERS_PER_VECTOR, out var offset);
-            ClusterStatus[row][sections[offset]] = (long)status;
+            clusterStatus[row][sections[offset]] = (long)status;
         }
 
         private int columnCount;
@@ -98,15 +102,22 @@ namespace HDD2ndLife.Controls
         private void DiskSectors_Resize(object sender, EventArgs e)
         {
             columnCount = (Width / BLOCK_SIZE) - 1;
-            rowCount = (Height / BLOCK_SIZE) - 1;
+            rowCount = (Height / BLOCK_SIZE) - 2;
+            #region Make sure that if the drive blocks out numbers the clusters it does not fil the scren with rubbish
+            while (0 >= clusterStatus.LongLength / (columnCount * rowCount)
+                && rowCount > 1)
+            {
+                rowCount--;
+            }
+            rowCount++;
+            #endregion
             blocks = new BlockStatus[columnCount, rowCount];
             RecalcStatus();
         }
 
         public void RecalcStatus()
         {
-            long scale = ClusterStatus.LongLength / (columnCount * rowCount);
-            if (scale == 0) return;
+            long scale = Math.Max(1, clusterStatus.LongLength / (columnCount * rowCount));
 
             for (int row = 0; row < rowCount; row++)
             {
@@ -114,16 +125,16 @@ namespace HDD2ndLife.Controls
                 for (int column = 0; column < columnCount; column++)
                 {
                     long statusOffset = (yOffset + column) * scale;
-                    if (statusOffset > ClusterStatus.LongLength)
+                    if (statusOffset > clusterStatus.LongLength)
                         break;
                     long current = 0;
                     for (int count = 0;
-                        statusOffset < ClusterStatus.LongLength && count < scale;
+                        statusOffset < clusterStatus.LongLength && count < scale;
                         statusOffset++, count++)
                     {
                         for (int index = 0; index < CLUSTERS_PER_VECTOR; index++)
                         {
-                            var status = ClusterStatus[statusOffset][sections[index]];
+                            var status = clusterStatus[statusOffset][sections[index]];
                             current = Math.Max(current, status);
                         }
                     }
@@ -155,25 +166,33 @@ namespace HDD2ndLife.Controls
 
             #region Populate Grid
 
+            var backPen = SystemPens.Control;
             for (var x = 0; x < columnCount; x++)
                 for (var y = 0; y < rowCount; y++)
                 {
                     (Pen outer, Brush inner) target = blocks[x, y] switch
                     {
-                        BlockStatus.NoWork => (Pens.Linen, Brushes.LavenderBlush),
-                        BlockStatus.Reading => (Pens.LightYellow, Brushes.Yellow),
+                        BlockStatus.NoWork => (Pens.WhiteSmoke, Brushes.LightGray),
+                        BlockStatus.Reading => (Pens.Yellow, Brushes.LightGoldenrodYellow),
                         BlockStatus.Writing => (Pens.DeepSkyBlue, Brushes.DodgerBlue),
                         BlockStatus.WriteDone => (Pens.LightBlue, Brushes.SkyBlue),
                         BlockStatus.Validating => (Pens.Orange, Brushes.DarkOrange),
                         BlockStatus.Failed => (Pens.MistyRose, Brushes.Red),
                         BlockStatus.Passed => (Pens.LightGreen, Brushes.LimeGreen),
-                        _ => (Pens.Linen, Brushes.Linen)
+                        _ => (Pens.Transparent, Brushes.Transparent)
                     };
 
                     var xLoc = x * BLOCK_SIZE + 1;
                     var yLoc = y * BLOCK_SIZE + 1;
-                    g.DrawRectangle(target.outer, xLoc, yLoc, BLOCK_SIZE - 2, BLOCK_SIZE - 2);
-                    g.FillRectangle(target.inner, xLoc + 1, yLoc + 1, BLOCK_SIZE - 2, BLOCK_SIZE - 2);
+                    if (blocks[x, y] == BlockStatus.Unused)
+                    {
+                        g.DrawRectangle(backPen, xLoc, yLoc, BLOCK_SIZE-1, BLOCK_SIZE-1);
+                    }
+                    else
+                    {
+                        g.DrawRectangle(target.outer, xLoc, yLoc, BLOCK_SIZE - 2, BLOCK_SIZE - 2);
+                        g.FillRectangle(target.inner, xLoc + 1, yLoc + 1, BLOCK_SIZE - 3, BLOCK_SIZE - 3);
+                    }
                 }
 
             #endregion
@@ -213,8 +232,8 @@ namespace HDD2ndLife.Controls
             if (closestCell.Y < startCell.Y)
                 return false;
 
-            if ((closestCell.Y < lastCell.Y) 
-                || ((closestCell.Y == lastCell.Y) 
+            if ((closestCell.Y < lastCell.Y)
+                || ((closestCell.Y == lastCell.Y)
                     && (closestCell.X < lastCell.X))
             )
             {
@@ -311,6 +330,7 @@ namespace HDD2ndLife.Controls
         {
             mouseSelecting = false;
             base.OnMouseUp(e);
+            Log.Debug(@"Selected from [{0}] to [{1}]", startCell, lastCell);
         }
     }
 
