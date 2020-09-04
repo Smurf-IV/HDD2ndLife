@@ -135,9 +135,6 @@
     <PackageReference Include="DeviceIOControlLib">
       <Version>0.1.6</Version>
     </PackageReference>
-    <PackageReference Include="Enums.NET">
-      <Version>3.0.3</Version>
-    </PackageReference>
     <PackageReference Include="Exceptionless.NLog">
       <Version>4.4.1</Version>
     </PackageReference>

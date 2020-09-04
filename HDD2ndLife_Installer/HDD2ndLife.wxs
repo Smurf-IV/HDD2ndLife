@@ -76,13 +76,33 @@
                 </File>
             </Component>
             <Component>
-              <File Source="$(var.MgtSource)\RawDiskLib.dll" KeyPath="yes" >
-                <netfx:NativeImage Id="ngen.RawDiskLib" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
-              </File>
+                <File Source="$(var.MgtSource)\RawDiskLib.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.RawDiskLib" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
+                </File>
             </Component>
 
+            <Component>
+                <File Source="$(var.MgtSource)\System.Buffers.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.System.Buffers" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
+                </File>
+            </Component>
+            <Component>
+                <File Source="$(var.MgtSource)\System.Memory.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.System.Memory" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
+                </File>
+            </Component>
+            <Component>
+                <File Source="$(var.MgtSource)\System.Numerics.Vectors.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.System.Numerics.Vectors" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
+                </File>
+            </Component>
+            <Component>
+                <File Source="$(var.MgtSource)\System.Runtime.CompilerServices.Unsafe.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.System.Runtime.CompilerServices.Unsafe" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
+                </File>
+            </Component>
 
-          <!-- Text and help files-->
+            <!-- Text and help files-->
             <!--<Component>
                 <File Source="$(sys.SOURCEFILEDIR)GPLv2.rtf" KeyPath="yes" />
             </Component>

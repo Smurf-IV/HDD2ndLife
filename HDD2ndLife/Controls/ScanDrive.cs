@@ -36,6 +36,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using Clifton.Collections.Generic;
+
 using HDD2ndLife.Annotations;
 using HDD2ndLife.WMI;
 
@@ -52,7 +53,7 @@ namespace HDD2ndLife.Controls
         Write,
         Verify,
         Pass2
-    };
+    }
 
     internal class ScanDrive : INotifyPropertyChanged
     {
@@ -170,10 +171,16 @@ namespace HDD2ndLife.Controls
             }
         }
 
+        private void SetCurrentProgress(string curPhase, long diskClusterSize)
+        {
+            var percent = CurrentCluster * 1.0 / diskClusterSize;
+            Phase = $@"{curPhase} [{percent:P}]";
+        }
+
         // 0xAA = 1010 1010 pattern
         private bool PerformWrite(RawDisk disk, byte pattern = 0xAA)
         {
-            Phase = $@"Writing 0x{pattern:X}";
+            string phaseWrite = $@"Writing 0x{pattern:X}";
             var multiplier = DISK_BUFFER_SIZE / disk.ClusterSize;
             var buffer = InitByteArray(pattern, disk.ClusterSize * multiplier);
             var sw = new Stopwatch();
@@ -182,6 +189,7 @@ namespace HDD2ndLife.Controls
             for (; CurrentCluster < clusterCount && !cancelTokenSrc.IsCancellationRequested; CurrentCluster += multiplier)
             {
                 SetScaledClusterStatus(CurrentCluster / multiplier, BlockStatus.Writing);
+                SetCurrentProgress(phaseWrite, clusterCount);
                 if (!WriteGroup(disk, sw, buffer, multiplier, CurrentCluster, clusterCount))
                 {
                     SetScaledClusterStatus(CurrentCluster / multiplier, BlockStatus.Failed);
@@ -191,6 +199,10 @@ namespace HDD2ndLife.Controls
                         return false;
                     }
                 }
+                else
+                {
+                    SetScaledClusterStatus(CurrentCluster / multiplier, BlockStatus.WriteDone);
+                }
             }
             // Do the last few sectors of the drive
             multiplier = 1;
@@ -198,6 +210,7 @@ namespace HDD2ndLife.Controls
             for (; CurrentCluster < clusterCount && !cancelTokenSrc.IsCancellationRequested; CurrentCluster += multiplier)
             {
                 SetScaledClusterStatus(CurrentCluster / multiplier, BlockStatus.Writing);
+                SetCurrentProgress(phaseWrite, clusterCount);
                 if (!WriteGroup(disk, sw, buffer, multiplier, CurrentCluster, clusterCount))
                 {
                     SetScaledClusterStatus(CurrentCluster / multiplier, BlockStatus.Failed);
@@ -206,6 +219,10 @@ namespace HDD2ndLife.Controls
                         // TODO: Add to the list of failed sectors
                         return false;
                     }
+                }
+                else
+                {
+                    SetScaledClusterStatus(CurrentCluster / multiplier, BlockStatus.WriteDone);
                 }
             }
 
@@ -243,7 +260,7 @@ namespace HDD2ndLife.Controls
 
         private bool PerformRead(RawDisk disk, byte? pattern = null)
         {
-            Phase = @"Reading";
+            var phaseRead = @"Reading";
             try
             {
                 var multiplier = DISK_BUFFER_SIZE / disk.ClusterSize;
@@ -252,7 +269,7 @@ namespace HDD2ndLife.Controls
                 ReadOnlySpan<byte> checkPattern = null;
                 if (pattern.HasValue)
                 {
-                    Phase = $@"Reading [0x{pattern:X}]";
+                    phaseRead = $@"Reading [0x{pattern:X}]";
                     checkPattern = InitByteArray(pattern.Value, bufferLength);
                 }
 
@@ -263,6 +280,7 @@ namespace HDD2ndLife.Controls
                 {
                     var currentCluster = CurrentCluster / multiplier;
                     SetScaledClusterStatus(currentCluster, BlockStatus.Reading);
+                    SetCurrentProgress(phaseRead, clusterCount);
                     if (!ReadGroup(disk, sw, buffer, multiplier, clusterCount, bufferLength))
                     {
                         SetScaledClusterStatus(currentCluster, BlockStatus.Failed);
@@ -302,6 +320,7 @@ namespace HDD2ndLife.Controls
                 {
                     var currentCluster = CurrentCluster / multiplier;
                     SetScaledClusterStatus(currentCluster, BlockStatus.Reading);
+                    SetCurrentProgress(phaseRead, clusterCount); 
                     if (!ReadGroup(disk, sw, buffer, multiplier, clusterCount, bufferLength))
                     {
                         SetScaledClusterStatus(currentCluster, BlockStatus.Failed);
@@ -384,7 +403,7 @@ namespace HDD2ndLife.Controls
             return (int)hResult.GetValue(ex, null);
         }
 
-        [DllImport(@"msvcrt.dll",EntryPoint = @"memset", CallingConvention = CallingConvention.Cdecl, SetLastError = false)]
+        [DllImport(@"msvcrt.dll", EntryPoint = @"memset", CallingConvention = CallingConvention.Cdecl, SetLastError = false)]
         private static extern IntPtr MemSet(IntPtr dest, int c, int count);
 
         //If you need super speed, calling out to M$ memset optimized method using P/invoke

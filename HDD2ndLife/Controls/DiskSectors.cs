@@ -28,10 +28,7 @@
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
-
-using EnumsNET;
 
 using HDD2ndLife.Thirdparty;
 
@@ -88,12 +85,15 @@ namespace HDD2ndLife.Controls
         public void SetScaledClusterStatus(long readOffset, BlockStatus status)
         {
             long row = Math.DivRem(readOffset, CLUSTERS_PER_VECTOR, out var offset);
-            ClusterStatus[row][sections[offset]] = Math.Max(ClusterStatus[row][sections[offset]], (long)status);
+            ClusterStatus[row][sections[offset]] = (long)status;
         }
 
         private int columnCount;
         private int rowCount;
         private BlockStatus[,] blocks;
+        private bool mouseSelecting;
+        private Point startCell;
+        private Point lastCell;
 
         private void DiskSectors_Resize(object sender, EventArgs e)
         {
@@ -116,7 +116,6 @@ namespace HDD2ndLife.Controls
                     long statusOffset = (yOffset + column) * scale;
                     if (statusOffset > ClusterStatus.LongLength)
                         break;
-                    int countPasses = 0;
                     long current = 0;
                     for (int count = 0;
                         statusOffset < ClusterStatus.LongLength && count < scale;
@@ -125,18 +124,8 @@ namespace HDD2ndLife.Controls
                         for (int index = 0; index < CLUSTERS_PER_VECTOR; index++)
                         {
                             var status = ClusterStatus[statusOffset][sections[index]];
-                            if (status == (long) BlockStatus.Passed)
-                            {
-                                countPasses++;
-                            }
-                            else
-                                current = Math.Max(current, status);
+                            current = Math.Max(current, status);
                         }
-                    }
-
-                    if (countPasses == scale * CLUSTERS_PER_VECTOR)
-                    {
-                        current = (long) BlockStatus.Passed;
                     }
 
                     blocks[column, row] = (BlockStatus)current;
@@ -171,13 +160,14 @@ namespace HDD2ndLife.Controls
                 {
                     (Pen outer, Brush inner) target = blocks[x, y] switch
                     {
-                        BlockStatus.NoWork => (Pens.LightGray, Brushes.Gray),
+                        BlockStatus.NoWork => (Pens.Linen, Brushes.LavenderBlush),
                         BlockStatus.Reading => (Pens.LightYellow, Brushes.Yellow),
-                        BlockStatus.Writing => (Pens.CornflowerBlue, Brushes.DodgerBlue),
+                        BlockStatus.Writing => (Pens.DeepSkyBlue, Brushes.DodgerBlue),
+                        BlockStatus.WriteDone => (Pens.LightBlue, Brushes.SkyBlue),
                         BlockStatus.Validating => (Pens.Orange, Brushes.DarkOrange),
                         BlockStatus.Failed => (Pens.MistyRose, Brushes.Red),
                         BlockStatus.Passed => (Pens.LightGreen, Brushes.LimeGreen),
-                        _ => (Pens.LightGray, Brushes.LightGray)
+                        _ => (Pens.Linen, Brushes.Linen)
                     };
 
                     var xLoc = x * BLOCK_SIZE + 1;
@@ -189,16 +179,155 @@ namespace HDD2ndLife.Controls
             #endregion
         }
 
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            base.OnMouseDown(e);
+            if (e.Button != MouseButtons.Left)
+                return;
+            startCell = FindClosestCell(e.Location);
+            lastCell = startCell;
+            mouseSelecting = true;
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            base.OnMouseMove(e);
+            if (!mouseSelecting)
+                return;
+            // Find the cell closest
+            Point closestCell = FindClosestCell(e.Location);
+            if (SetStatesFromLastToThis(closestCell))
+                lastCell = closestCell;
+        }
+
+        private Point FindClosestCell(Point eLocation)
+        {
+            var column = eLocation.X / BLOCK_SIZE;
+            var row = eLocation.Y / BLOCK_SIZE;
+            return new Point(column, row);
+        }
+
+        private bool SetStatesFromLastToThis(Point closestCell)
+        {
+            // TODO: Deal with the closestCell being smaller than the Start !
+            if (closestCell.Y < startCell.Y)
+                return false;
+
+            if ((closestCell.Y < lastCell.Y) 
+                || ((closestCell.Y == lastCell.Y) 
+                    && (closestCell.X < lastCell.X))
+            )
+            {
+                // Do the magic of "Unsetting the selection"
+                var rows = Math.Max(0, lastCell.Y - closestCell.Y);
+
+                if (rows > 0)
+                {
+                    // Remove from end to last last to the end
+                    for (var xSteps = lastCell.X; xSteps >= 0; xSteps--)
+                        if (blocks[xSteps, lastCell.Y] != BlockStatus.Failed)
+                            blocks[xSteps, lastCell.Y] = BlockStatus.Passed;
+                    for (var xSteps = columnCount - 1; xSteps > lastCell.X; xSteps--)
+                        if (blocks[xSteps, lastCell.Y] != BlockStatus.Failed)
+                            blocks[xSteps, lastCell.Y] = BlockStatus.Passed;
+                }
+                else
+                {
+                    // Remove from last to here
+                    for (var xSteps = lastCell.X; xSteps >= closestCell.X; xSteps--)
+                        if (blocks[xSteps, lastCell.Y] != BlockStatus.Failed)
+                            blocks[xSteps, lastCell.Y] = BlockStatus.Passed;
+                }
+
+                if (rows > 1)
+                {
+                    // Remove complete rows
+                    for (var ySteps = lastCell.Y - 1; ySteps > closestCell.Y; ySteps--)
+                    {
+                        for (var xSteps = 0; xSteps < columnCount; xSteps++)
+                            if (blocks[xSteps, ySteps] != BlockStatus.Failed)
+                                blocks[xSteps, ySteps] = BlockStatus.Passed;
+                    }
+                }
+
+                if (rows > 0)
+                {
+                    // Remove last row to the current X
+                    for (var xSteps = columnCount - 1; xSteps > closestCell.X; xSteps--)
+                        if (blocks[xSteps, closestCell.Y] != BlockStatus.Failed)
+                            blocks[xSteps, closestCell.Y] = BlockStatus.Passed;
+
+                }
+            }
+
+            if ((closestCell.Y > lastCell.Y)
+                || ((closestCell.Y == lastCell.Y)
+                    && (closestCell.X > lastCell.X)
+                    )
+                )
+            {
+                // Do the magic of "Setting the selection"
+                // Use startCell because of the negative diagonal X above will sometimes unselect.
+                var rows = Math.Max(0, closestCell.Y - startCell.Y);
+                if (rows > 0)
+                {
+                    // Fill in from last to the end
+                    for (var xSteps = startCell.X; xSteps < columnCount; xSteps++)
+                        if (blocks[xSteps, lastCell.Y] != BlockStatus.Failed)
+                            blocks[xSteps, lastCell.Y] = BlockStatus.Selected;
+                }
+
+                if (rows > 1)
+                {
+                    // Fill in all complete rows
+                    for (var ySteps = startCell.Y + 1; ySteps < startCell.Y + rows; ySteps++)
+                    {
+                        for (var xSteps = 0; xSteps < columnCount; xSteps++)
+                            if (blocks[xSteps, ySteps] != BlockStatus.Failed)
+                                blocks[xSteps, ySteps] = BlockStatus.Selected;
+                    }
+                }
+
+                if (rows > 0)
+                {
+                    // Fill in from last row to the current X
+                    for (var xSteps = 0; xSteps <= closestCell.X; xSteps++)
+                        if (blocks[xSteps, closestCell.Y] != BlockStatus.Failed)
+                            blocks[xSteps, closestCell.Y] = BlockStatus.Selected;
+                }
+                else
+                {
+                    // Fill from last to here
+                    for (var xSteps = startCell.X; xSteps <= closestCell.X; xSteps++)
+                        if (blocks[xSteps, closestCell.Y] != BlockStatus.Failed)
+                            blocks[xSteps, closestCell.Y] = BlockStatus.Selected;
+                }
+            }
+            Invalidate();
+            return true;
+        }
+
+        protected override void OnMouseUp(MouseEventArgs e)
+        {
+            mouseSelecting = false;
+            base.OnMouseUp(e);
+        }
     }
 
     public enum BlockStatus
     {
+        // Try not to use more than 3 bits
+        // because th max amount of storage a single entity can have is 2GB of memory,
+        // Therefore trying to store the status of a 12TB drive with 512 Bytes per sector
+        // Results in a large cluster count size, which far exceeds the "GB Mem limit".
         Unused = 0,
         NoWork,
+        Passed,
+        WriteDone,
         Writing,
         Reading,
         Validating,
-        Passed,
+        Selected = Validating,
         Failed,
         Max = Failed
     }

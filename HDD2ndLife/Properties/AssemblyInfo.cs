@@ -58,8 +58,8 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("20.3.62.15")]
-[assembly: AssemblyFileVersion("20.3.62.15")]   // used by the installer
+[assembly: AssemblyVersion("20.9.98.4")]
+[assembly: AssemblyFileVersion("20.9.98.4")]   // used by the installer
 
 // TODO: Add more relevant hints here
 [assembly: Dependency("System", LoadHint.Always)]
@@ -70,6 +70,12 @@ using System.Runtime.InteropServices;
 
 [assembly: Dependency("ComponentFactory.Krypton.Toolkit", LoadHint.Always)]
 [assembly: Dependency("Exceptionless", LoadHint.Always)]
-[assembly: Dependency("Exceptionless.Nlog", LoadHint.Always)]
+[assembly: Dependency("Exceptionless.NLog", LoadHint.Always)]
 [assembly: Dependency("Exceptionless.Windows", LoadHint.Always)]
 [assembly: Dependency("NLog", LoadHint.Always)]
+[assembly: Dependency("RawDiskLib", LoadHint.Always)]
+
+[assembly: Dependency("System.Buffers", LoadHint.Always)]
+[assembly: Dependency("System.Memory", LoadHint.Always)]
+[assembly: Dependency("System.Numerics.Vectors", LoadHint.Always)]
+[assembly: Dependency("System.Runtime.CompilerServices.Unsafe", LoadHint.Always)]

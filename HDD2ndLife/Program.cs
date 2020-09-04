@@ -107,6 +107,8 @@ namespace HDD2ndLife
             {
                 if (grantedOwnership)
                 {
+                    // As timing will be used for "Slow Read / write detection" then "try" to make this as response and above Windows installer as possible
+                    Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.RealTime;
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
                     Application.Run(new MainForm());
