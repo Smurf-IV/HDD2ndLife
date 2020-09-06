@@ -216,13 +216,16 @@ namespace HDD2ndLife
 
         private void driveTree_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            bool useParent = true;
+            // Partition Scanning etc only available when "drive" is selected
+            diskStatsView1.DeviceId = string.Empty;
+            lblDetails.Select(0, 0);    // Force selection to top
+            lblDetails.ScrollToCaret();
             switch (e.Node.Tag)
             {
                 case Win32DiskDrive device:
                     lblDetails.Text = device.ToString();
                     diskStatsView1.DriveSize = device.Size;
-                    useParent = false;
+                    diskStatsView1.DeviceId = device.DeviceId;
                     break;
                 case Win32LogicalDisk ld:
                     lblDetails.Text = ld.ToString();
@@ -233,25 +236,11 @@ namespace HDD2ndLife
                     diskStatsView1.DriveSize = diskEx.dge.HasValue ? (ulong)diskEx.dge.Value.Geometry.DiskSize : 0UL;
                     break;
             }
-
-            var nameNode = e.Node;
-            if (useParent)
-            {
-                nameNode = nameNode.Parent;
-            }
-
-            if (nameNode?.Tag is Win32DiskDrive wDrv)
-            {
-                diskStatsView1.DeviceId = wDrv.DeviceId;
-            }
-            else
-            {
-                diskStatsView1.DeviceId = string.Empty;
-            }
         }
 
         private void driveTree_BeforeSelect(object sender, TreeViewCancelEventArgs e)
         {
+            // Prevent selection tree change logic (And functions) whilst a scan is in progress
             e.Cancel = diskStatsView1.Scanning;
         }
     }

@@ -49,7 +49,9 @@ namespace HDD2ndLife.Controls
             set
             {
                 deviceId = value;
+                // Make sure that user cannot cause program to crash due to not selecting a drive.
                 btnStartStop.Enabled = !string.IsNullOrWhiteSpace(deviceId);
+                btnPartitioning.Enabled = btnStartStop.Enabled;
             }
         }
 
@@ -103,6 +105,7 @@ namespace HDD2ndLife.Controls
             {
                 grpScanType.Enabled = false;
                 kryptonGroupBox2.Enabled = false;
+                btnPartitioning.Enabled = false;
                 Scanning = true;
                 btnStartStop.Text = @"&Stop";
                 lblPhase.Text = @"Starting";
@@ -146,6 +149,7 @@ namespace HDD2ndLife.Controls
               lblSpeed.Text = string.Empty;
               grpScanType.Enabled = true;
               kryptonGroupBox2.Enabled = true;
+              btnPartitioning.Enabled = true;
               // Make sure on fast systems the redraw is done for the final "Squares"
               diskSectors1.RecalcStatus();
           });
@@ -161,6 +165,11 @@ namespace HDD2ndLife.Controls
             lblSpeed.Text =
                 $@"{speedBytes.LargestWholeNumberDecimalValue:N2} {speedBytes.LargestWholeNumberDecimalSymbol}/s";
             diskSectors1.RecalcStatus();
+        }
+
+        private void btnPartitioning_Click(object sender, System.EventArgs e)
+        {
+            new PartitionScheme(diskSectors1.Blocks, DeviceId).ShowDialog(this);
         }
     }
 }

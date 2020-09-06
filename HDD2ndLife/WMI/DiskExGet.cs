@@ -228,7 +228,7 @@ namespace HDD2ndLife.WMI
                 DRIVE_LAYOUT_INFORMATION_EX dlie1 = dlie.Value;
                 details.Append('\t').AppendLine("DRIVE_LAYOUT_INFORMATION_EX:");
                 details.Append("\t\t").Append("PartitionStyle: ").AppendLine(dlie1.PartitionStyle.ToString());
-                details.Append("\t\t").Append("PartitionCount: ").AppendLine(dlie1.PartitionCount.ToString());
+                details.Append("\t\t").Append("PartitionCount: ").AppendLine((dlie1.PartitionCount-1).ToString()); // Last one is nulls
                 switch (dlie1.PartitionStyle)
                 {
                     case PartitionStyle.PARTITION_STYLE_MBR:
@@ -253,7 +253,7 @@ namespace HDD2ndLife.WMI
                         throw new ArgumentOutOfRangeException();
                 }
 
-                for (int entry = 0; entry < dlie1.PartitionCount; entry++)
+                for (int entry = 0; entry < dlie1.PartitionCount-1; entry++) // Last one is nulls
                 {
                     PARTITION_INFORMATION_EX pie = dlie1.PartitionEntry[entry];
                     details.Append("\t\t").AppendLine("PARTITION_INFORMATION_EX:");

@@ -62,6 +62,9 @@ namespace HDD2ndLife.Controls
             ScaledClusterCount = 1;
         }
 
+        [Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
+        public BlockStatus[,] Blocks { get; private set; }
+
         /// <summary>
         /// How Many Read Cluster blocks does this drive have, after being scaled in to 
         /// </summary>
@@ -94,7 +97,6 @@ namespace HDD2ndLife.Controls
 
         private int columnCount;
         private int rowCount;
-        private BlockStatus[,] blocks;
         private bool mouseSelecting;
         private Point startCell;
         private Point lastCell;
@@ -111,7 +113,7 @@ namespace HDD2ndLife.Controls
             }
             rowCount++;
             #endregion
-            blocks = new BlockStatus[columnCount, rowCount];
+            Blocks = new BlockStatus[columnCount, rowCount];
             RecalcStatus();
         }
 
@@ -139,7 +141,7 @@ namespace HDD2ndLife.Controls
                         }
                     }
 
-                    blocks[column, row] = (BlockStatus)current;
+                    Blocks[column, row] = (BlockStatus)current;
                 }
             }
             Invalidate();
@@ -149,50 +151,29 @@ namespace HDD2ndLife.Controls
         {
             var g = e.Graphics;
 
-            #region Draw Grid
-
-            var p = Pens.Black;
-
-            for (var y = 0; y <= rowCount; ++y)
-            {
-                g.DrawLine(p, 0, y * BLOCK_SIZE, columnCount * BLOCK_SIZE, y * BLOCK_SIZE);
-            }
-
-            for (var x = 0; x <= columnCount; ++x)
-            {
-                g.DrawLine(p, x * BLOCK_SIZE, 0, x * BLOCK_SIZE, rowCount * BLOCK_SIZE);
-            }
-            #endregion Draw Grid
-
             #region Populate Grid
 
-            var backPen = SystemPens.Control;
             for (var x = 0; x < columnCount; x++)
                 for (var y = 0; y < rowCount; y++)
                 {
-                    (Pen outer, Brush inner) target = blocks[x, y] switch
+                    if (Blocks[x, y] == BlockStatus.Unused)
+                        continue;
+                    (Pen outer, Brush inner) = Blocks[x, y] switch
                     {
-                        BlockStatus.NoWork => (Pens.WhiteSmoke, Brushes.LightGray),
-                        BlockStatus.Reading => (Pens.Yellow, Brushes.LightGoldenrodYellow),
-                        BlockStatus.Writing => (Pens.DeepSkyBlue, Brushes.DodgerBlue),
-                        BlockStatus.WriteDone => (Pens.LightBlue, Brushes.SkyBlue),
-                        BlockStatus.Validating => (Pens.Orange, Brushes.DarkOrange),
-                        BlockStatus.Failed => (Pens.MistyRose, Brushes.Red),
-                        BlockStatus.Passed => (Pens.LightGreen, Brushes.LimeGreen),
+                        BlockStatus.NoWork => (Pens.DarkGray, Brushes.Transparent),
+                        BlockStatus.Reading => (Pens.GreenYellow, Brushes.LightGoldenrodYellow),
+                        BlockStatus.Writing => (Pens.DodgerBlue, Brushes.DeepSkyBlue),
+                        BlockStatus.WriteDone => (Pens.DarkBlue, Brushes.SkyBlue),
+                        BlockStatus.Validating => (Pens.DarkGoldenrod, Brushes.Orange),
+                        BlockStatus.Failed => (Pens.DarkRed, Brushes.Red),
+                        BlockStatus.Passed => (Pens.Green, Brushes.LimeGreen),
                         _ => (Pens.Transparent, Brushes.Transparent)
                     };
 
                     var xLoc = x * BLOCK_SIZE + 1;
                     var yLoc = y * BLOCK_SIZE + 1;
-                    if (blocks[x, y] == BlockStatus.Unused)
-                    {
-                        g.DrawRectangle(backPen, xLoc, yLoc, BLOCK_SIZE-1, BLOCK_SIZE-1);
-                    }
-                    else
-                    {
-                        g.DrawRectangle(target.outer, xLoc, yLoc, BLOCK_SIZE - 2, BLOCK_SIZE - 2);
-                        g.FillRectangle(target.inner, xLoc + 1, yLoc + 1, BLOCK_SIZE - 3, BLOCK_SIZE - 3);
-                    }
+                    g.DrawRectangle(outer, xLoc, yLoc, BLOCK_SIZE - 2, BLOCK_SIZE - 2);
+                    g.FillRectangle(inner, xLoc + 1, yLoc + 1, BLOCK_SIZE - 3, BLOCK_SIZE - 3);
                 }
 
             #endregion
@@ -221,8 +202,10 @@ namespace HDD2ndLife.Controls
 
         private Point FindClosestCell(Point eLocation)
         {
-            var column = eLocation.X / BLOCK_SIZE;
-            var row = eLocation.Y / BLOCK_SIZE;
+            // Deal with moving outside bounds of control
+            // And Outside the current "Used" region
+            var column = Math.Max(0, Math.Min(columnCount - 1, eLocation.X / BLOCK_SIZE));
+            var row = Math.Max(0, Math.Min(rowCount - 1, eLocation.Y / BLOCK_SIZE));
             return new Point(column, row);
         }
 
@@ -244,18 +227,18 @@ namespace HDD2ndLife.Controls
                 {
                     // Remove from end to last last to the end
                     for (var xSteps = lastCell.X; xSteps >= 0; xSteps--)
-                        if (blocks[xSteps, lastCell.Y] != BlockStatus.Failed)
-                            blocks[xSteps, lastCell.Y] = BlockStatus.Passed;
+                        if (Blocks[xSteps, lastCell.Y] != BlockStatus.Failed)
+                            Blocks[xSteps, lastCell.Y] = BlockStatus.Passed;
                     for (var xSteps = columnCount - 1; xSteps > lastCell.X; xSteps--)
-                        if (blocks[xSteps, lastCell.Y] != BlockStatus.Failed)
-                            blocks[xSteps, lastCell.Y] = BlockStatus.Passed;
+                        if (Blocks[xSteps, lastCell.Y] != BlockStatus.Failed)
+                            Blocks[xSteps, lastCell.Y] = BlockStatus.Passed;
                 }
                 else
                 {
                     // Remove from last to here
                     for (var xSteps = lastCell.X; xSteps >= closestCell.X; xSteps--)
-                        if (blocks[xSteps, lastCell.Y] != BlockStatus.Failed)
-                            blocks[xSteps, lastCell.Y] = BlockStatus.Passed;
+                        if (Blocks[xSteps, lastCell.Y] != BlockStatus.Failed)
+                            Blocks[xSteps, lastCell.Y] = BlockStatus.Passed;
                 }
 
                 if (rows > 1)
@@ -264,8 +247,8 @@ namespace HDD2ndLife.Controls
                     for (var ySteps = lastCell.Y - 1; ySteps > closestCell.Y; ySteps--)
                     {
                         for (var xSteps = 0; xSteps < columnCount; xSteps++)
-                            if (blocks[xSteps, ySteps] != BlockStatus.Failed)
-                                blocks[xSteps, ySteps] = BlockStatus.Passed;
+                            if (Blocks[xSteps, ySteps] != BlockStatus.Failed)
+                                Blocks[xSteps, ySteps] = BlockStatus.Passed;
                     }
                 }
 
@@ -273,8 +256,8 @@ namespace HDD2ndLife.Controls
                 {
                     // Remove last row to the current X
                     for (var xSteps = columnCount - 1; xSteps > closestCell.X; xSteps--)
-                        if (blocks[xSteps, closestCell.Y] != BlockStatus.Failed)
-                            blocks[xSteps, closestCell.Y] = BlockStatus.Passed;
+                        if (Blocks[xSteps, closestCell.Y] != BlockStatus.Failed)
+                            Blocks[xSteps, closestCell.Y] = BlockStatus.Passed;
 
                 }
             }
@@ -292,8 +275,8 @@ namespace HDD2ndLife.Controls
                 {
                     // Fill in from last to the end
                     for (var xSteps = startCell.X; xSteps < columnCount; xSteps++)
-                        if (blocks[xSteps, lastCell.Y] != BlockStatus.Failed)
-                            blocks[xSteps, lastCell.Y] = BlockStatus.Selected;
+                        if (Blocks[xSteps, lastCell.Y] != BlockStatus.Failed)
+                            Blocks[xSteps, lastCell.Y] = BlockStatus.Selected;
                 }
 
                 if (rows > 1)
@@ -302,8 +285,8 @@ namespace HDD2ndLife.Controls
                     for (var ySteps = startCell.Y + 1; ySteps < startCell.Y + rows; ySteps++)
                     {
                         for (var xSteps = 0; xSteps < columnCount; xSteps++)
-                            if (blocks[xSteps, ySteps] != BlockStatus.Failed)
-                                blocks[xSteps, ySteps] = BlockStatus.Selected;
+                            if (Blocks[xSteps, ySteps] != BlockStatus.Failed)
+                                Blocks[xSteps, ySteps] = BlockStatus.Selected;
                     }
                 }
 
@@ -311,15 +294,15 @@ namespace HDD2ndLife.Controls
                 {
                     // Fill in from last row to the current X
                     for (var xSteps = 0; xSteps <= closestCell.X; xSteps++)
-                        if (blocks[xSteps, closestCell.Y] != BlockStatus.Failed)
-                            blocks[xSteps, closestCell.Y] = BlockStatus.Selected;
+                        if (Blocks[xSteps, closestCell.Y] != BlockStatus.Failed)
+                            Blocks[xSteps, closestCell.Y] = BlockStatus.Selected;
                 }
                 else
                 {
                     // Fill from last to here
                     for (var xSteps = startCell.X; xSteps <= closestCell.X; xSteps++)
-                        if (blocks[xSteps, closestCell.Y] != BlockStatus.Failed)
-                            blocks[xSteps, closestCell.Y] = BlockStatus.Selected;
+                        if (Blocks[xSteps, closestCell.Y] != BlockStatus.Failed)
+                            Blocks[xSteps, closestCell.Y] = BlockStatus.Selected;
                 }
             }
             Invalidate();

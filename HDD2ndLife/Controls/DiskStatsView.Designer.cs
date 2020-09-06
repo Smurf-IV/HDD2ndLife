@@ -122,13 +122,13 @@
             // 
             this.btnPartitioning.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnPartitioning.Enabled = false;
             this.btnPartitioning.Location = new System.Drawing.Point(9, 625);
             this.btnPartitioning.Margin = new System.Windows.Forms.Padding(4);
             this.btnPartitioning.Name = "btnPartitioning";
             this.btnPartitioning.Size = new System.Drawing.Size(204, 31);
             this.btnPartitioning.TabIndex = 9;
-            this.btnPartitioning.Values.Text = "&Partition Scheme";
+            this.btnPartitioning.Values.Text = "Par&tition Scheme";
+            this.btnPartitioning.Click += new System.EventHandler(this.btnPartitioning_Click);
             // 
             // btnStartStop
             // 

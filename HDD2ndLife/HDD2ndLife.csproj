@@ -77,6 +77,12 @@
     <Compile Include="Controls\DiskStatsView.Designer.cs">
       <DependentUpon>DiskStatsView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\PartitionScheme.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\PartitionScheme.Designer.cs">
+      <DependentUpon>PartitionScheme.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ScanDrive.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -98,6 +104,9 @@
     <Compile Include="WMI\Win32LogicalDisk.cs" />
     <EmbeddedResource Include="Controls\DiskStatsView.resx">
       <DependentUpon>DiskStatsView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PartitionScheme.resx">
+      <DependentUpon>PartitionScheme.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -144,6 +153,9 @@
     <PackageReference Include="KryptonToolkitSuite5480">
       <Version>5.480.2098</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.PowerShell.5.1.ReferenceAssemblies">
+      <Version>1.0.0</Version>
+    </PackageReference>
     <PackageReference Include="NLog">
       <Version>4.7.4</Version>
     </PackageReference>
@@ -153,11 +165,14 @@
     <PackageReference Include="System.Memory">
       <Version>4.5.4</Version>
     </PackageReference>
+    <PackageReference Include="TomLabs.PowerClam">
+      <Version>1.0.0</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>md V:\Repos\HDD2ndLife\HDD2ndLife\bin\Debug
-xcopy Z:\Repos\HDD2ndLife\HDD2ndLife\bin\Debug\*.* V:\Repos\HDD2ndLife\HDD2ndLife\bin\Debug /I /C /Y /D</PostBuildEvent>
+    <PostBuildEvent>rem md V:\Repos\HDD2ndLife\HDD2ndLife\bin\Debug
+rem xcopy Z:\Repos\HDD2ndLife\HDD2ndLife\bin\Debug\*.* V:\Repos\HDD2ndLife\HDD2ndLife\bin\Debug /I /C /Y /D</PostBuildEvent>
   </PropertyGroup>
 </Project>

@@ -111,14 +111,12 @@ namespace HDD2ndLife.Controls
                     Log.Warn(@"Unable to take disk offline");
                 }
                 Task.Run(() => ProcessDrive(disk));
-
             }
             catch (Exception e)
             {
                 Log.Error(e);
                 Cancel();
             }
-
         }
 
         private void ProcessDrive(RawDisk disk)
