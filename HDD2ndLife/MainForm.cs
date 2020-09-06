@@ -37,9 +37,12 @@ using System.Windows.Forms;
 using ComponentFactory.Krypton.Toolkit;
 
 using DeviceIOControlLib.Objects.Disk;
+
 using HDD2ndLife.Thirdparty;
 using HDD2ndLife.WMI;
+
 using LoadingIndicator.WinForms;
+
 using NLog;
 
 using RawDiskLib;
@@ -131,19 +134,19 @@ namespace HDD2ndLife
             {
                 // Set a default icon for the Computer.
                 Icon iconForFile = SystemIcons.WinLogo;
-                Invoke((MethodInvoker) delegate { driveImageList.Images.Add(iconForFile); });
+                Invoke((MethodInvoker)delegate { driveImageList.Images.Add(iconForFile); });
 
                 Log.Debug("Create the root node.");
                 TreeNode tvwRoot = new TreeNode { Text = Environment.MachineName, ImageIndex = 0 };
                 tvwRoot.SelectedImageIndex = tvwRoot.ImageIndex;
-                BeginInvoke((MethodInvoker) delegate { driveTree.Nodes.Add(tvwRoot); });
+                BeginInvoke((MethodInvoker)delegate { driveTree.Nodes.Add(tvwRoot); });
 
                 Log.Debug("Now we need to add any children to the root node.");
                 foreach (Win32DiskDrive deviceInfo in Win32DiskDrive.Retrieve())
                 {
                     try
                     {
-                        Invoke((MethodInvoker) delegate { FillInStorageDeviceDirectoryType(tvwRoot, deviceInfo); });
+                        Invoke((MethodInvoker)delegate { FillInStorageDeviceDirectoryType(tvwRoot, deviceInfo); });
                     }
                     catch (Exception ex)
                     {
@@ -151,7 +154,7 @@ namespace HDD2ndLife
                     }
                 }
 
-                BeginInvoke((MethodInvoker) delegate { tvwRoot.Expand(); });
+                BeginInvoke((MethodInvoker)delegate { tvwRoot.Expand(); });
             }
             catch (Exception ex)
             {

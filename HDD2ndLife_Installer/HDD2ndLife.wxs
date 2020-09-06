@@ -61,11 +61,6 @@
                 </File>
             </Component>
             <Component>
-                <File Source="$(var.MgtSource)\Krypton Navigator.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.Navigator" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
-                </File>
-            </Component>
-            <Component>
                 <File Source="$(var.MgtSource)\Krypton Toolkit.dll" KeyPath="yes" >
                     <netfx:NativeImage Id="ngen.Toolkit" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
                 </File>

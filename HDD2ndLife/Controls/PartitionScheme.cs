@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Management.Automation;
 using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 using ComponentFactory.Krypton.Toolkit;
 
@@ -40,7 +43,7 @@ namespace HDD2ndLife.Controls
             longOperation = new LongOperation(blurPanel, settings);
         }
 
-        private void kryptonButton1_Click(object sender, EventArgs e)
+        private async void Apply_Click(object sender, EventArgs e)
         {
             // https://stackoverflow.com/questions/36111876/positional-parameter-cannot-be-found-that-accepts-argument
             try
@@ -50,6 +53,20 @@ namespace HDD2ndLife.Controls
                 // New-Partition -Disknumber 2 -Size 100GB
                 // Remove-Partition -Disknumber 2 -PartitionNumber
 
+                var psObjects = await CallPowerShell(@"Get-Disk", null);
+                if (psObjects == null)
+                    AddLog(LogLevel.Info, @"Sequence aborted");
+            }
+            catch (Exception ex)
+            {
+                AddLog(LogLevel.Error, ex.Message);
+            }
+        }
+
+        private async Task<PSDataCollection<PSObject>> CallPowerShell(string command, Dictionary<string, object> parameters)
+        {
+            try
+            {
                 // How to call powerShell from winform:
                 // https://docs.microsoft.com/en-gb/archive/blogs/kebab/executing-powershell-scripts-from-c
 
@@ -59,13 +76,13 @@ namespace HDD2ndLife.Controls
                 ps.Streams.Error.DataAdded += (sender1, args) =>
                 {
                     ErrorRecord err = ((PSDataCollection<ErrorRecord>)sender1)[args.Index];
-                    Log.Error(err);
+                    AddLog(LogLevel.Error, err.ToString());
                 };
 
                 ps.Streams.Warning.DataAdded += (sender2, args) =>
                 {
                     WarningRecord warning = ((PSDataCollection<WarningRecord>)sender2)[args.Index];
-                    Log.Warn(warning);
+                    AddLog(LogLevel.Warn, warning.ToString());
                 };
 
 
@@ -73,34 +90,33 @@ namespace HDD2ndLife.Controls
                 pipelineObjects.DataAdded += (sender3, args) =>
                 {
                     PSObject output = ((PSDataCollection<PSObject>)sender3)[args.Index];
-                    Log.Info(output);
+                    AddLog(LogLevel.Info, output.ToString());
                 };
 
                 // specify the script code to run.
-                ps.AddScript(@"Get-Disk");
+                ps.AddCommand(command);
 
                 // specify the parameters to pass into the script.
-                //ps.AddParameters(scriptParameters);
+                if (parameters != null)
+                    ps.AddParameters(parameters);
 
-                // execute the script
-
-                ps.Invoke(null, pipelineObjects);
-
-                // print the resulting pipeline objects to the console.
-                StringBuilder stringBuilder = new StringBuilder();
-                foreach (var obj in pipelineObjects)
-                {
-                    stringBuilder.AppendLine(obj.ToString());
-                }
-
-                lbLog.Items.Add(stringBuilder.ToString());
-
-
+                // execute the script via
+                // https://stackoverflow.com/questions/17640575/how-to-create-c-sharp-async-powershell-method
+                var beginInvoke = ps.BeginInvoke<object, PSObject>(null, pipelineObjects);
+                await Task.Factory.FromAsync(beginInvoke, pResult => ps.EndInvoke(pResult));
+                return pipelineObjects;
             }
             catch (Exception ex)
             {
-                lbLog.Items.Add(ex.Message);
+                AddLog(LogLevel.Error, ex.Message);
+                return null;
             }
+        }
+
+        private void AddLog(LogLevel level, string message)
+        {
+            Log.Log(level, message);
+            lbLog.BeginInvoke((MethodInvoker)delegate { lbLog.Items.Add($@"{DateTime.Now:u}: {level} {message}"); });
         }
 
         private void PartitionScheme_Load(object sender, EventArgs e)

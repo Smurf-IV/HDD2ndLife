@@ -45,7 +45,7 @@
             this.btnApply.Size = new System.Drawing.Size(142, 25);
             this.btnApply.TabIndex = 0;
             this.btnApply.Values.Text = "&Apply";
-            this.btnApply.Click += new System.EventHandler(this.kryptonButton1_Click);
+            this.btnApply.Click += new System.EventHandler(this.Apply_Click);
             // 
             // chkFormat
             // 
