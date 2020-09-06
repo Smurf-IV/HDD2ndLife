@@ -38,18 +38,18 @@
             this.changeLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.treeContainer = new ComponentFactory.Krypton.Toolkit.KryptonSplitContainer();
             this.treeGroup = new ComponentFactory.Krypton.Toolkit.KryptonHeaderGroup();
             this.driveTree = new ComponentFactory.Krypton.Toolkit.KryptonTreeView();
             this.driveImageList = new System.Windows.Forms.ImageList(this.components);
             this.driveContainer = new ComponentFactory.Krypton.Toolkit.KryptonSplitContainer();
-            this.diskStatsView1 = new HDD2ndLife.Controls.DiskStatsView();
             this.kryptonBorderEdge1 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.driveHeader = new ComponentFactory.Krypton.Toolkit.KryptonHeader();
             this.kryptonBorderEdge2 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
             this.lblDetails = new ComponentFactory.Krypton.Toolkit.KryptonRichTextBox();
             this.detailsHeader = new ComponentFactory.Krypton.Toolkit.KryptonHeader();
+            this.diskStatsView1 = new HDD2ndLife.Controls.DiskStatsView();
+            this.blurPanel = new ComponentFactory.Krypton.Toolkit.KryptonPanel();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.treeContainer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.treeContainer.Panel1)).BeginInit();
@@ -67,6 +67,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.driveContainer.Panel2)).BeginInit();
             this.driveContainer.Panel2.SuspendLayout();
             this.driveContainer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.blurPanel)).BeginInit();
+            this.blurPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // miniToolStrip
@@ -141,23 +143,11 @@
             this.helpToolStripMenuItem.ToolTipText = "Goto the Help page.";
             this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
             // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.statusStrip1.Location = new System.Drawing.Point(0, 732);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 19, 0);
-            this.statusStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.ManagerRenderMode;
-            this.statusStrip1.Size = new System.Drawing.Size(1312, 22);
-            this.statusStrip1.TabIndex = 1;
-            this.statusStrip1.Text = "statusStrip1";
-            // 
             // treeContainer
             // 
             this.treeContainer.Cursor = System.Windows.Forms.Cursors.Default;
             this.treeContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeContainer.Location = new System.Drawing.Point(0, 32);
+            this.treeContainer.Location = new System.Drawing.Point(0, 0);
             this.treeContainer.Margin = new System.Windows.Forms.Padding(4);
             this.treeContainer.Name = "treeContainer";
             // 
@@ -169,8 +159,8 @@
             // 
             this.treeContainer.Panel2.Controls.Add(this.driveContainer);
             this.treeContainer.SeparatorStyle = ComponentFactory.Krypton.Toolkit.SeparatorStyle.HighInternalProfile;
-            this.treeContainer.Size = new System.Drawing.Size(1312, 700);
-            this.treeContainer.SplitterDistance = 366;
+            this.treeContainer.Size = new System.Drawing.Size(1312, 722);
+            this.treeContainer.SplitterDistance = 330;
             this.treeContainer.TabIndex = 2;
             // 
             // treeGroup
@@ -183,7 +173,7 @@
             // treeGroup.Panel
             // 
             this.treeGroup.Panel.Controls.Add(this.driveTree);
-            this.treeGroup.Size = new System.Drawing.Size(366, 700);
+            this.treeGroup.Size = new System.Drawing.Size(330, 722);
             this.treeGroup.TabIndex = 0;
             this.treeGroup.ValuesPrimary.Heading = "Drives";
             this.treeGroup.ValuesPrimary.Image = null;
@@ -200,7 +190,7 @@
             this.driveTree.Margin = new System.Windows.Forms.Padding(4);
             this.driveTree.Name = "driveTree";
             this.driveTree.SelectedImageIndex = 0;
-            this.driveTree.Size = new System.Drawing.Size(364, 637);
+            this.driveTree.Size = new System.Drawing.Size(328, 659);
             this.driveTree.TabIndex = 0;
             this.driveTree.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.driveTree_AfterSelect);
             this.driveTree.BeforeSelect += new System.Windows.Forms.TreeViewCancelEventHandler(this.driveTree_BeforeSelect);
@@ -232,27 +222,18 @@
             this.driveContainer.Panel2.Controls.Add(this.lblDetails);
             this.driveContainer.Panel2.Controls.Add(this.detailsHeader);
             this.driveContainer.SeparatorStyle = ComponentFactory.Krypton.Toolkit.SeparatorStyle.HighProfile;
-            this.driveContainer.Size = new System.Drawing.Size(941, 700);
-            this.driveContainer.SplitterDistance = 405;
+            this.driveContainer.Size = new System.Drawing.Size(977, 722);
+            this.driveContainer.SplitterDistance = 417;
             this.driveContainer.TabIndex = 0;
-            // 
-            // diskStatsView1
-            // 
-            this.diskStatsView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.diskStatsView1.Location = new System.Drawing.Point(0, 37);
-            this.diskStatsView1.Margin = new System.Windows.Forms.Padding(5);
-            this.diskStatsView1.Name = "diskStatsView1";
-            this.diskStatsView1.Size = new System.Drawing.Size(940, 368);
-            this.diskStatsView1.TabIndex = 1;
             // 
             // kryptonBorderEdge1
             // 
             this.kryptonBorderEdge1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.kryptonBorderEdge1.Location = new System.Drawing.Point(940, 37);
+            this.kryptonBorderEdge1.Location = new System.Drawing.Point(976, 37);
             this.kryptonBorderEdge1.Margin = new System.Windows.Forms.Padding(4);
             this.kryptonBorderEdge1.Name = "kryptonBorderEdge1";
             this.kryptonBorderEdge1.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge1.Size = new System.Drawing.Size(1, 368);
+            this.kryptonBorderEdge1.Size = new System.Drawing.Size(1, 380);
             this.kryptonBorderEdge1.Text = "kryptonBorderEdge1";
             // 
             // driveHeader
@@ -261,7 +242,7 @@
             this.driveHeader.Location = new System.Drawing.Point(0, 0);
             this.driveHeader.Margin = new System.Windows.Forms.Padding(4);
             this.driveHeader.Name = "driveHeader";
-            this.driveHeader.Size = new System.Drawing.Size(941, 37);
+            this.driveHeader.Size = new System.Drawing.Size(977, 37);
             this.driveHeader.TabIndex = 0;
             this.driveHeader.Values.Description = "";
             this.driveHeader.Values.Heading = "Drive:";
@@ -270,11 +251,11 @@
             // kryptonBorderEdge2
             // 
             this.kryptonBorderEdge2.Dock = System.Windows.Forms.DockStyle.Right;
-            this.kryptonBorderEdge2.Location = new System.Drawing.Point(940, 37);
+            this.kryptonBorderEdge2.Location = new System.Drawing.Point(976, 37);
             this.kryptonBorderEdge2.Margin = new System.Windows.Forms.Padding(4);
             this.kryptonBorderEdge2.Name = "kryptonBorderEdge2";
             this.kryptonBorderEdge2.Orientation = System.Windows.Forms.Orientation.Vertical;
-            this.kryptonBorderEdge2.Size = new System.Drawing.Size(1, 253);
+            this.kryptonBorderEdge2.Size = new System.Drawing.Size(1, 263);
             this.kryptonBorderEdge2.Text = "kryptonBorderEdge2";
             // 
             // lblDetails
@@ -286,7 +267,7 @@
             this.lblDetails.Margin = new System.Windows.Forms.Padding(4);
             this.lblDetails.Name = "lblDetails";
             this.lblDetails.ReadOnly = true;
-            this.lblDetails.Size = new System.Drawing.Size(941, 253);
+            this.lblDetails.Size = new System.Drawing.Size(977, 263);
             this.lblDetails.TabIndex = 1;
             this.lblDetails.Text = "kryptonWrapLabel1";
             // 
@@ -296,19 +277,36 @@
             this.detailsHeader.Location = new System.Drawing.Point(0, 0);
             this.detailsHeader.Margin = new System.Windows.Forms.Padding(4);
             this.detailsHeader.Name = "detailsHeader";
-            this.detailsHeader.Size = new System.Drawing.Size(941, 37);
+            this.detailsHeader.Size = new System.Drawing.Size(977, 37);
             this.detailsHeader.TabIndex = 0;
             this.detailsHeader.Values.Description = "";
             this.detailsHeader.Values.Heading = "Details:";
             this.detailsHeader.Values.Image = null;
+            // 
+            // diskStatsView1
+            // 
+            this.diskStatsView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.diskStatsView1.Location = new System.Drawing.Point(0, 37);
+            this.diskStatsView1.Margin = new System.Windows.Forms.Padding(5);
+            this.diskStatsView1.Name = "diskStatsView1";
+            this.diskStatsView1.Size = new System.Drawing.Size(976, 380);
+            this.diskStatsView1.TabIndex = 1;
+            // 
+            // blurPanel
+            // 
+            this.blurPanel.Controls.Add(this.treeContainer);
+            this.blurPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.blurPanel.Location = new System.Drawing.Point(0, 32);
+            this.blurPanel.Name = "blurPanel";
+            this.blurPanel.Size = new System.Drawing.Size(1312, 722);
+            this.blurPanel.TabIndex = 3;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1312, 754);
-            this.Controls.Add(this.treeContainer);
-            this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.blurPanel);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.miniToolStrip;
@@ -338,6 +336,8 @@
             this.driveContainer.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.driveContainer)).EndInit();
             this.driveContainer.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.blurPanel)).EndInit();
+            this.blurPanel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -351,7 +351,6 @@
         private System.Windows.Forms.ToolStripComboBox themeComboBox;
         private System.Windows.Forms.ToolStripMenuItem changeLogToolStripMenuItem;
         private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.StatusStrip statusStrip1;
         private ComponentFactory.Krypton.Toolkit.KryptonSplitContainer treeContainer;
         private ComponentFactory.Krypton.Toolkit.KryptonHeaderGroup treeGroup;
         private ComponentFactory.Krypton.Toolkit.KryptonTreeView driveTree;
@@ -364,6 +363,7 @@
         private System.Windows.Forms.ImageList driveImageList;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private Controls.DiskStatsView diskStatsView1;
+        private ComponentFactory.Krypton.Toolkit.KryptonPanel blurPanel;
     }
 }
 

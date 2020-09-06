@@ -71,6 +71,11 @@
                 </File>
             </Component>
             <Component>
+                <File Source="$(var.MgtSource)\LoadingIndicator.WinForms.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.LoadingIndicator.WinForms" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
+                </File>
+            </Component>
+            <Component>
                 <File Source="$(var.MgtSource)\NLog.dll" KeyPath="yes" >
                     <netfx:NativeImage Id="ngen.NLog" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
                 </File>

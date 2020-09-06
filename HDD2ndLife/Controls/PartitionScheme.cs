@@ -3,13 +3,18 @@ using System.Collections.Generic;
 using System.IO;
 using System.Management.Automation;
 using System.Text;
-using System.Windows;
 
 using ComponentFactory.Krypton.Toolkit;
+
+using HDD2ndLife.Thirdparty;
+
+using LoadingIndicator.WinForms;
 
 using NLog;
 
 using RawDiskLib;
+
+using Size = System.Windows.Size;
 
 namespace HDD2ndLife.Controls
 {
@@ -19,12 +24,20 @@ namespace HDD2ndLife.Controls
 
         private readonly BlockStatus[,] Blocks;
         private readonly string deviceId;
+        private readonly LongOperation longOperation;
+        private List<Size> goodPartitions;
 
         public PartitionScheme(BlockStatus[,] blocks, string deviceId)
         {
             Blocks = blocks;
             this.deviceId = deviceId;
             InitializeComponent();
+            var settings = LongOperationSettings.Default
+                .AllowStopBeforeStartMethods()
+                .HideIndicatorImmediatleyOnComplete()
+                ;
+
+            longOperation = new LongOperation(blurPanel, settings);
         }
 
         private void kryptonButton1_Click(object sender, EventArgs e)
@@ -32,6 +45,8 @@ namespace HDD2ndLife.Controls
             // https://stackoverflow.com/questions/36111876/positional-parameter-cannot-be-found-that-accepts-argument
             try
             {
+                using var wait = longOperation.Start(true);
+                using var cur = new WaitCursor(this);
                 // New-Partition -Disknumber 2 -Size 100GB
                 // Remove-Partition -Disknumber 2 -PartitionNumber
 
@@ -76,7 +91,6 @@ namespace HDD2ndLife.Controls
                 foreach (var obj in pipelineObjects)
                 {
                     stringBuilder.AppendLine(obj.ToString());
-                    stringBuilder.AppendLine(obj.BaseObject.ToString());
                 }
 
                 lbLog.Items.Add(stringBuilder.ToString());
@@ -93,7 +107,7 @@ namespace HDD2ndLife.Controls
         {
             var disk = new RawDisk(deviceId, FileAccess.Read);
 
-            var good = new List<Size>();
+            goodPartitions = new List<Size>();
             var lastGood = 0;
             int offset = 0;
             // Calculate the display characteristics
@@ -109,7 +123,7 @@ namespace HDD2ndLife.Controls
                         case BlockStatus.Failed:
                             if (lastGood != -1)
                             {
-                                good.Add(new Size(lastGood, offset));
+                                goodPartitions.Add(new Size(lastGood, offset));
                                 lastGood = -1;
                             }
 
@@ -125,11 +139,11 @@ namespace HDD2ndLife.Controls
                 }
 
             // Add in the last one
-            good.Add(new Size(lastGood, offset));
+            goodPartitions.Add(new Size(lastGood, offset));
 
             var builder = new StringBuilder(@"Expected Partitions:");
             builder.AppendLine();
-            foreach (var part in good)
+            foreach (var part in goodPartitions)
             {
                 builder.Append("\t").AppendLine(part.ToString());
             }

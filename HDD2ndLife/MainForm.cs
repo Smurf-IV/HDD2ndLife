@@ -30,15 +30,16 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Management;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 
 using ComponentFactory.Krypton.Toolkit;
 
 using DeviceIOControlLib.Objects.Disk;
-
+using HDD2ndLife.Thirdparty;
 using HDD2ndLife.WMI;
-
+using LoadingIndicator.WinForms;
 using NLog;
 
 using RawDiskLib;
@@ -48,10 +49,18 @@ namespace HDD2ndLife
     public partial class MainForm : KryptonForm
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+        private readonly LongOperation longOperation;
 
         public MainForm()
         {
             InitializeComponent();
+
+            var settings = LongOperationSettings.Default
+                .AllowStopBeforeStartMethods()
+                .HideIndicatorImmediatleyOnComplete()
+                ;
+
+            longOperation = new LongOperation(blurPanel, settings);
 
             if (Properties.Settings.Default.UpdateRequired)
             {
@@ -78,18 +87,17 @@ namespace HDD2ndLife
             TextExtra = Assembly.GetExecutingAssembly().GetName().Version.ToString();
         }
 
-        private void Form1_Shown(object sender, EventArgs e)
+        private async void Form1_Shown(object sender, EventArgs e)
         {
             try
             {
-                Enabled = false;
-                UseWaitCursor = true;
-                StartTree();
+                using var wait = longOperation.Start(true);
+                using var cur = new WaitCursor(this);
+                await Task.Run(StartTree);
             }
             finally
             {
                 Enabled = true;
-                UseWaitCursor = false;
             }
         }
 
@@ -121,26 +129,21 @@ namespace HDD2ndLife
         {
             try
             {
-                driveTree.BeginUpdate();
-                driveTree.Nodes.Clear();
-
-                driveImageList.Images.Clear();
-
-                // Set a default icon for the file.
+                // Set a default icon for the Computer.
                 Icon iconForFile = SystemIcons.WinLogo;
-                driveImageList.Images.Add(iconForFile);
+                Invoke((MethodInvoker) delegate { driveImageList.Images.Add(iconForFile); });
 
                 Log.Debug("Create the root node.");
                 TreeNode tvwRoot = new TreeNode { Text = Environment.MachineName, ImageIndex = 0 };
                 tvwRoot.SelectedImageIndex = tvwRoot.ImageIndex;
-                driveTree.Nodes.Add(tvwRoot);
+                BeginInvoke((MethodInvoker) delegate { driveTree.Nodes.Add(tvwRoot); });
 
                 Log.Debug("Now we need to add any children to the root node.");
                 foreach (Win32DiskDrive deviceInfo in Win32DiskDrive.Retrieve())
                 {
                     try
                     {
-                        FillInStorageDeviceDirectoryType(tvwRoot, deviceInfo);
+                        Invoke((MethodInvoker) delegate { FillInStorageDeviceDirectoryType(tvwRoot, deviceInfo); });
                     }
                     catch (Exception ex)
                     {
@@ -148,17 +151,11 @@ namespace HDD2ndLife
                     }
                 }
 
-                tvwRoot.Expand();
+                BeginInvoke((MethodInvoker) delegate { tvwRoot.Expand(); });
             }
             catch (Exception ex)
             {
                 Log.Fatal(ex, @"StartTree Threw:");
-            }
-            finally
-            {
-                Enabled = true;
-                UseWaitCursor = false;
-                driveTree.EndUpdate();
             }
         }
 
