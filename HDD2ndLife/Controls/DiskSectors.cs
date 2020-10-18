@@ -103,11 +103,11 @@ namespace HDD2ndLife.Controls
 
         private void DiskSectors_Resize(object sender, EventArgs e)
         {
-            columnCount = (Width / BLOCK_SIZE) - 1;
-            rowCount = (Height / BLOCK_SIZE) - 2;
-            #region Make sure that if the drive blocks out numbers the clusters it does not fil the scren with rubbish
+            columnCount = Math.Max((Width / BLOCK_SIZE) - 1, 1);
+            rowCount = Math.Max((Height / BLOCK_SIZE) - 2, 1);
+            #region Make sure that if the drive blocks out numbers the clusters it does not fill the scren with rubbish
             while (0 >= clusterStatus.LongLength / (columnCount * rowCount)
-                && rowCount > 1)
+                && rowCount > 2)
             {
                 rowCount--;
             }

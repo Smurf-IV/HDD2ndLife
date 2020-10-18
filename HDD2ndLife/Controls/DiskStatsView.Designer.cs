@@ -30,7 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             this.kryptonPanel1 = new ComponentFactory.Krypton.Toolkit.KryptonPanel();
-            this.lblPhase = new Elucidate.Shared.TextOverProgressBar();
             this.kryptonLabel7 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
             this.btnPartitioning = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.btnStartStop = new ComponentFactory.Krypton.Toolkit.KryptonButton();
@@ -58,7 +57,10 @@
             this.lblDriveSize = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
             this.kryptonLabel1 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
             this.tmrUpdate = new System.Windows.Forms.Timer(this.components);
+            this.kryptonLabel2 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
             this.diskSectors1 = new HDD2ndLife.Controls.DiskSectors();
+            this.diskSectors2 = new HDD2ndLife.Controls.DiskSectors();
+            this.lblPhase = new Elucidate.Shared.TextOverProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonPanel1)).BeginInit();
             this.kryptonPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonGroupBox2)).BeginInit();
@@ -77,6 +79,8 @@
             // 
             this.kryptonPanel1.AutoScroll = true;
             this.kryptonPanel1.AutoScrollMinSize = new System.Drawing.Size(150, 550);
+            this.kryptonPanel1.Controls.Add(this.kryptonLabel2);
+            this.kryptonPanel1.Controls.Add(this.diskSectors2);
             this.kryptonPanel1.Controls.Add(this.lblPhase);
             this.kryptonPanel1.Controls.Add(this.kryptonLabel7);
             this.kryptonPanel1.Controls.Add(this.btnPartitioning);
@@ -93,27 +97,8 @@
             this.kryptonPanel1.Location = new System.Drawing.Point(844, 0);
             this.kryptonPanel1.Margin = new System.Windows.Forms.Padding(4);
             this.kryptonPanel1.Name = "kryptonPanel1";
-            this.kryptonPanel1.Size = new System.Drawing.Size(221, 706);
+            this.kryptonPanel1.Size = new System.Drawing.Size(221, 791);
             this.kryptonPanel1.TabIndex = 0;
-            // 
-            // lblPhase
-            // 
-            this.lblPhase.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblPhase.BackColor = System.Drawing.Color.Transparent;
-            this.lblPhase.ContainerControl = this;
-            this.lblPhase.DisplayText = "Test";
-            this.lblPhase.Location = new System.Drawing.Point(17, 590);
-            this.lblPhase.Margin = new System.Windows.Forms.Padding(4);
-            this.lblPhase.Name = "lblPhase";
-            this.lblPhase.ShowInTaskbar = true;
-            this.lblPhase.Size = new System.Drawing.Size(201, 26);
-            this.lblPhase.Step = 1;
-            this.lblPhase.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
-            this.lblPhase.TabIndex = 11;
-            this.lblPhase.TabStop = false;
-            this.lblPhase.Text = "Test";
-            this.lblPhase.TextAlignment = System.Drawing.StringAlignment.Center;
-            this.lblPhase.TextColor = System.Drawing.SystemColors.ControlText;
             // 
             // kryptonLabel7
             // 
@@ -438,14 +423,53 @@
             this.tmrUpdate.Interval = 250;
             this.tmrUpdate.Tick += new System.EventHandler(this.tmrUpdate_Tick);
             // 
+            // kryptonLabel2
+            // 
+            this.kryptonLabel2.Location = new System.Drawing.Point(23, 660);
+            this.kryptonLabel2.Margin = new System.Windows.Forms.Padding(0, 4, 4, 4);
+            this.kryptonLabel2.Name = "kryptonLabel2";
+            this.kryptonLabel2.Size = new System.Drawing.Size(96, 107);
+            this.kryptonLabel2.StateCommon.ShortText.Font = new System.Drawing.Font("Consolas", 7.5F);
+            this.kryptonLabel2.StateCommon.ShortText.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
+            this.kryptonLabel2.TabIndex = 12;
+            this.kryptonLabel2.TabStop = false;
+            this.kryptonLabel2.Values.Text = "- NoWork\r\n- Reading\r\n- Writing\r\n- WriteDone\r\n- Validating\r\n- Failed\r\n- Passed";
+            // 
             // diskSectors1
             // 
             this.diskSectors1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.diskSectors1.Location = new System.Drawing.Point(0, 0);
             this.diskSectors1.Margin = new System.Windows.Forms.Padding(4);
             this.diskSectors1.Name = "diskSectors1";
-            this.diskSectors1.Size = new System.Drawing.Size(844, 706);
+            this.diskSectors1.Size = new System.Drawing.Size(844, 791);
             this.diskSectors1.TabIndex = 0;
+            // 
+            // diskSectors2
+            // 
+            this.diskSectors2.Location = new System.Drawing.Point(7, 664);
+            this.diskSectors2.Margin = new System.Windows.Forms.Padding(4);
+            this.diskSectors2.Name = "diskSectors2";
+            this.diskSectors2.Size = new System.Drawing.Size(13, 112);
+            this.diskSectors2.TabIndex = 1;
+            // 
+            // lblPhase
+            // 
+            this.lblPhase.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblPhase.BackColor = System.Drawing.Color.Transparent;
+            this.lblPhase.ContainerControl = this;
+            this.lblPhase.DisplayText = "Test";
+            this.lblPhase.Location = new System.Drawing.Point(17, 590);
+            this.lblPhase.Margin = new System.Windows.Forms.Padding(4);
+            this.lblPhase.Name = "lblPhase";
+            this.lblPhase.ShowInTaskbar = true;
+            this.lblPhase.Size = new System.Drawing.Size(201, 26);
+            this.lblPhase.Step = 1;
+            this.lblPhase.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.lblPhase.TabIndex = 11;
+            this.lblPhase.TabStop = false;
+            this.lblPhase.Text = "Test";
+            this.lblPhase.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.lblPhase.TextColor = System.Drawing.SystemColors.ControlText;
             // 
             // DiskStatsView
             // 
@@ -455,7 +479,7 @@
             this.Controls.Add(this.kryptonPanel1);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "DiskStatsView";
-            this.Size = new System.Drawing.Size(1065, 706);
+            this.Size = new System.Drawing.Size(1065, 791);
             ((System.ComponentModel.ISupportInitialize)(this.kryptonPanel1)).EndInit();
             this.kryptonPanel1.ResumeLayout(false);
             this.kryptonPanel1.PerformLayout();
@@ -508,5 +532,7 @@
         private Elucidate.Shared.TextOverProgressBar lblPhase;
         private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel7;
         private System.Windows.Forms.Timer tmrUpdate;
+        private DiskSectors diskSectors2;
+        private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel2;
     }
 }

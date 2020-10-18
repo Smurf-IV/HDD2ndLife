@@ -80,6 +80,25 @@ namespace HDD2ndLife.Controls
             };
             lblPhase.DisplayText = @"Waiting for Start";
             lblPhase.Value = 2;
+
+            const int CLUSTERS_PER_VECTOR = 64 / 3; // 64 bits / (5 represented in binary bits)
+
+            diskSectors2.ScaledClusterCount = 14 * CLUSTERS_PER_VECTOR;
+            diskSectors2.SetScaledClusterStatus(0, BlockStatus.NoWork);
+            diskSectors2.SetScaledClusterStatus(CLUSTERS_PER_VECTOR, BlockStatus.NoWork);
+            diskSectors2.SetScaledClusterStatus(2 * CLUSTERS_PER_VECTOR, BlockStatus.Reading);
+            diskSectors2.SetScaledClusterStatus(3 * CLUSTERS_PER_VECTOR, BlockStatus.Reading);
+            diskSectors2.SetScaledClusterStatus(4 * CLUSTERS_PER_VECTOR, BlockStatus.Writing);
+            diskSectors2.SetScaledClusterStatus(5 * CLUSTERS_PER_VECTOR, BlockStatus.Writing);
+            diskSectors2.SetScaledClusterStatus(6 * CLUSTERS_PER_VECTOR, BlockStatus.WriteDone);
+            diskSectors2.SetScaledClusterStatus(7 * CLUSTERS_PER_VECTOR, BlockStatus.WriteDone);
+            diskSectors2.SetScaledClusterStatus(8 * CLUSTERS_PER_VECTOR, BlockStatus.Validating);
+            diskSectors2.SetScaledClusterStatus(9 * CLUSTERS_PER_VECTOR, BlockStatus.Validating);
+            diskSectors2.SetScaledClusterStatus(10 * CLUSTERS_PER_VECTOR, BlockStatus.Failed);
+            diskSectors2.SetScaledClusterStatus(11 * CLUSTERS_PER_VECTOR, BlockStatus.Failed);
+            diskSectors2.SetScaledClusterStatus(12 * CLUSTERS_PER_VECTOR, BlockStatus.Passed);
+            diskSectors2.SetScaledClusterStatus(13 * CLUSTERS_PER_VECTOR, BlockStatus.Passed);
+            diskSectors2.RecalcStatus();
         }
 
         public ulong DriveSize
