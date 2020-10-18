@@ -24,6 +24,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
@@ -31,6 +32,8 @@ using System.Windows.Forms;
 using ByteSizeLib;
 
 using ComponentFactory.Krypton.Toolkit;
+
+using Elucidate.wyDay.Controls;
 
 namespace HDD2ndLife.Controls
 {
@@ -52,6 +55,8 @@ namespace HDD2ndLife.Controls
                 // Make sure that user cannot cause program to crash due to not selecting a drive.
                 btnStartStop.Enabled = !string.IsNullOrWhiteSpace(deviceId);
                 btnPartitioning.Enabled = btnStartStop.Enabled;
+                // Had to put this somewhere after the control had been created and hosted
+                lblPhase.ContainerControl = ParentForm;
             }
         }
 
@@ -73,6 +78,8 @@ namespace HDD2ndLife.Controls
                 {rb50, 50},
                 {rb75, 75}
             };
+            lblPhase.DisplayText = @"Waiting for Start";
+            lblPhase.Value = 2;
         }
 
         public ulong DriveSize
@@ -98,7 +105,10 @@ namespace HDD2ndLife.Controls
             if (Scanning)
             {
                 btnStartStop.Text = @"&Stopping";
-                lblPhase.Text = @"Stopping";
+                lblPhase.DisplayText = @"Stopping";
+                lblPhase.State = ProgressBarState.Pause;
+                lblPhase.Style = ProgressBarStyle.Marquee;
+
                 scanDrive?.Cancel();
             }
             else
@@ -108,7 +118,10 @@ namespace HDD2ndLife.Controls
                 btnPartitioning.Enabled = false;
                 Scanning = true;
                 btnStartStop.Text = @"&Stop";
-                lblPhase.Text = @"Starting";
+                lblPhase.DisplayText = @"Starting";
+                lblPhase.Value = 0;
+                lblPhase.State = ProgressBarState.Normal;
+                lblPhase.Style = ProgressBarStyle.Continuous;
                 ScanType st = mapOptions[mapOptions.Keys.First(r => r.Checked)];
                 int speedOption = 99;
                 if (chkUseSpeed.Checked)
@@ -122,18 +135,18 @@ namespace HDD2ndLife.Controls
                 };
                 scanDrive.PropertyChanged += ScanDrive_PropertyChanged;
                 scanDrive.Start();
-                lblPhase.Text = @"Scanning";
                 tmrUpdate.Enabled = true;
             }
         }
 
         private void ScanDrive_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            lblPhase.Text = e.PropertyName switch
+            lblPhase.DisplayText = e.PropertyName switch
             {
                 @"Phase" => scanDrive?.Phase,
-                _ => lblPhase.Text
+                _ => lblPhase.DisplayText
             };
+            lblPhase.Value = (int)Math.Ceiling(scanDrive?.Percent ?? 1);
         }
 
         private void Cancellation()
@@ -144,7 +157,7 @@ namespace HDD2ndLife.Controls
             BeginInvoke((MethodInvoker)delegate
           {
               btnStartStop.Text = @"&Start";
-              lblPhase.Text = @"Stopped";
+              lblPhase.DisplayText = @"Stopped";
               lblTimeRemaining.Text = string.Empty;
               lblSpeed.Text = string.Empty;
               grpScanType.Enabled = true;
@@ -171,5 +184,6 @@ namespace HDD2ndLife.Controls
         {
             new PartitionScheme(diskSectors1.Blocks, DeviceId).ShowDialog(this);
         }
+
     }
 }

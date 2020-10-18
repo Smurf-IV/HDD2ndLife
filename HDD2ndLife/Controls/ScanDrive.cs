@@ -170,11 +170,12 @@ namespace HDD2ndLife.Controls
                 }
             }
         }
+        public double Percent { get; private set; }
 
         private void SetCurrentProgress(string curPhase, long diskClusterSize)
         {
-            var percent = CurrentCluster * 1.0 / diskClusterSize;
-            Phase = $@"{curPhase} [{percent:P}]";
+            Percent = CurrentCluster * 1.0 / diskClusterSize;
+            Phase = $@"{curPhase} [{Percent:P}]";
         }
 
         // 0xAA = 1010 1010 pattern
@@ -243,9 +244,11 @@ namespace HDD2ndLife.Controls
         {
             try
             {
+                GC.TryStartNoGCRegion(buffer.Length);
                 sw.Restart();
                 disk.WriteClusters(buffer, currentCluster);
                 sw.Stop();
+                GC.EndNoGCRegion();
                 var elapsedTicks = sw.Elapsed.Ticks;
                 lastSpeedInMBytesPerSec.Value = (buffer.Length / elapsedTicks) * 10; // Sw.Elapsed.Ticks are always the same distance
                 lastSpeedInMBytesPerSec.Next();
@@ -371,9 +374,11 @@ namespace HDD2ndLife.Controls
         {
             try
             {
+                GC.TryStartNoGCRegion(bufferLength);
                 sw.Restart();
                 double read = disk.ReadClusters(buffer, 0, CurrentCluster, multiplier);
                 sw.Stop();
+                GC.EndNoGCRegion();
                 var elapsedTicks = sw.Elapsed.Ticks;
                 lastSpeedInMBytesPerSec.Value = (read / elapsedTicks) * 10; // Sw.Elapsed.Ticks are always the same distance
                 lastSpeedInMBytesPerSec.Next();

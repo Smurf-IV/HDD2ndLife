@@ -87,6 +87,11 @@
                 </File>
             </Component>
             <Component>
+                <File Source="$(var.MgtSource)\System.Management.Automation.dll" KeyPath="yes" >
+                    <netfx:NativeImage Id="ngen.System.Management.Automation" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
+                </File>
+            </Component>
+            <Component>
                 <File Source="$(var.MgtSource)\System.Memory.dll" KeyPath="yes" >
                     <netfx:NativeImage Id="ngen.System.Memory" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
                 </File>

@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.kryptonPanel1 = new ComponentFactory.Krypton.Toolkit.KryptonPanel();
-            this.lblPhase = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+            this.lblPhase = new Elucidate.Shared.TextOverProgressBar();
             this.kryptonLabel7 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
             this.btnPartitioning = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.btnStartStop = new ComponentFactory.Krypton.Toolkit.KryptonButton();
@@ -99,14 +99,21 @@
             // lblPhase
             // 
             this.lblPhase.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblPhase.AutoSize = false;
-            this.lblPhase.Location = new System.Drawing.Point(55, 594);
+            this.lblPhase.BackColor = System.Drawing.Color.Transparent;
+            this.lblPhase.ContainerControl = this;
+            this.lblPhase.DisplayText = "Test";
+            this.lblPhase.Location = new System.Drawing.Point(17, 590);
             this.lblPhase.Margin = new System.Windows.Forms.Padding(4);
             this.lblPhase.Name = "lblPhase";
-            this.lblPhase.Size = new System.Drawing.Size(163, 23);
+            this.lblPhase.ShowInTaskbar = true;
+            this.lblPhase.Size = new System.Drawing.Size(201, 26);
+            this.lblPhase.Step = 1;
+            this.lblPhase.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.lblPhase.TabIndex = 11;
             this.lblPhase.TabStop = false;
-            this.lblPhase.Values.Text = "Stopped";
+            this.lblPhase.Text = "Test";
+            this.lblPhase.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.lblPhase.TextColor = System.Drawing.SystemColors.ControlText;
             // 
             // kryptonLabel7
             // 
@@ -498,7 +505,7 @@
         private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge1;
         private ComponentFactory.Krypton.Toolkit.KryptonButton btnStartStop;
         private ComponentFactory.Krypton.Toolkit.KryptonButton btnPartitioning;
-        private ComponentFactory.Krypton.Toolkit.KryptonLabel lblPhase;
+        private Elucidate.Shared.TextOverProgressBar lblPhase;
         private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel7;
         private System.Windows.Forms.Timer tmrUpdate;
     }
