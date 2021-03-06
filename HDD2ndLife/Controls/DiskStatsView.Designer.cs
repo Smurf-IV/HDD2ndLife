@@ -29,35 +29,35 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.kryptonPanel1 = new ComponentFactory.Krypton.Toolkit.KryptonPanel();
-            this.kryptonLabel7 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
-            this.btnPartitioning = new ComponentFactory.Krypton.Toolkit.KryptonButton();
-            this.btnStartStop = new ComponentFactory.Krypton.Toolkit.KryptonButton();
-            this.kryptonGroupBox2 = new ComponentFactory.Krypton.Toolkit.KryptonGroupBox();
-            this.chkUseSpeed = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
-            this.chkFailFirst = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
-            this.pnlSpeed = new ComponentFactory.Krypton.Toolkit.KryptonPanel();
-            this.kryptonBorderEdge4 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge3 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge2 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.kryptonBorderEdge1 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.rb75 = new ComponentFactory.Krypton.Toolkit.KryptonRadioButton();
-            this.rb30 = new ComponentFactory.Krypton.Toolkit.KryptonRadioButton();
-            this.rb50 = new ComponentFactory.Krypton.Toolkit.KryptonRadioButton();
-            this.rb20 = new ComponentFactory.Krypton.Toolkit.KryptonRadioButton();
-            this.grpScanType = new ComponentFactory.Krypton.Toolkit.KryptonGroupBox();
-            this.rb2Pass = new ComponentFactory.Krypton.Toolkit.KryptonRadioButton();
-            this.rbVerify = new ComponentFactory.Krypton.Toolkit.KryptonRadioButton();
-            this.rbWrite = new ComponentFactory.Krypton.Toolkit.KryptonRadioButton();
-            this.rbRead = new ComponentFactory.Krypton.Toolkit.KryptonRadioButton();
-            this.lblTimeRemaining = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
-            this.kryptonLabel6 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
-            this.lblSpeed = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
-            this.kryptonLabel4 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
-            this.lblDriveSize = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
-            this.kryptonLabel1 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+            this.kryptonPanel1 = new Krypton.Toolkit.KryptonPanel();
+            this.kryptonLabel7 = new Krypton.Toolkit.KryptonLabel();
+            this.btnPartitioning = new Krypton.Toolkit.KryptonButton();
+            this.btnStartStop = new Krypton.Toolkit.KryptonButton();
+            this.kryptonGroupBox2 = new Krypton.Toolkit.KryptonGroupBox();
+            this.chkUseSpeed = new Krypton.Toolkit.KryptonCheckBox();
+            this.chkFailFirst = new Krypton.Toolkit.KryptonCheckBox();
+            this.pnlSpeed = new Krypton.Toolkit.KryptonPanel();
+            this.kryptonBorderEdge4 = new Krypton.Toolkit.KryptonBorderEdge();
+            this.kryptonBorderEdge3 = new Krypton.Toolkit.KryptonBorderEdge();
+            this.kryptonBorderEdge2 = new Krypton.Toolkit.KryptonBorderEdge();
+            this.kryptonBorderEdge1 = new Krypton.Toolkit.KryptonBorderEdge();
+            this.rb75 = new Krypton.Toolkit.KryptonRadioButton();
+            this.rb30 = new Krypton.Toolkit.KryptonRadioButton();
+            this.rb50 = new Krypton.Toolkit.KryptonRadioButton();
+            this.rb20 = new Krypton.Toolkit.KryptonRadioButton();
+            this.grpScanType = new Krypton.Toolkit.KryptonGroupBox();
+            this.rb2Pass = new Krypton.Toolkit.KryptonRadioButton();
+            this.rbVerify = new Krypton.Toolkit.KryptonRadioButton();
+            this.rbWrite = new Krypton.Toolkit.KryptonRadioButton();
+            this.rbRead = new Krypton.Toolkit.KryptonRadioButton();
+            this.lblTimeRemaining = new Krypton.Toolkit.KryptonLabel();
+            this.kryptonLabel6 = new Krypton.Toolkit.KryptonLabel();
+            this.lblSpeed = new Krypton.Toolkit.KryptonLabel();
+            this.kryptonLabel4 = new Krypton.Toolkit.KryptonLabel();
+            this.lblDriveSize = new Krypton.Toolkit.KryptonLabel();
+            this.kryptonLabel1 = new Krypton.Toolkit.KryptonLabel();
             this.tmrUpdate = new System.Windows.Forms.Timer(this.components);
-            this.kryptonLabel2 = new ComponentFactory.Krypton.Toolkit.KryptonLabel();
+            this.kryptonLabel2 = new Krypton.Toolkit.KryptonLabel();
             this.diskSectors1 = new HDD2ndLife.Controls.DiskSectors();
             this.diskSectors2 = new HDD2ndLife.Controls.DiskSectors();
             this.lblPhase = new Elucidate.Shared.TextOverProgressBar();
@@ -163,7 +163,7 @@
             this.chkUseSpeed.ToolTipValues.EnableToolTips = true;
             this.chkUseSpeed.ToolTipValues.Heading = "Use Speed";
             this.chkUseSpeed.ToolTipValues.Image = null;
-            this.chkUseSpeed.ToolTipValues.ToolTipStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.ToolTip;
+            this.chkUseSpeed.ToolTipValues.ToolTipStyle = Krypton.Toolkit.LabelStyle.ToolTip;
             this.chkUseSpeed.Values.Text = "&Use Speed";
             this.chkUseSpeed.CheckedChanged += new System.EventHandler(this.chkUseSpeed_CheckedChanged);
             // 
@@ -178,7 +178,7 @@
             this.chkFailFirst.ToolTipValues.EnableToolTips = true;
             this.chkFailFirst.ToolTipValues.Heading = "Fail First";
             this.chkFailFirst.ToolTipValues.Image = null;
-            this.chkFailFirst.ToolTipValues.ToolTipStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.ToolTip;
+            this.chkFailFirst.ToolTipValues.ToolTipStyle = Krypton.Toolkit.LabelStyle.ToolTip;
             this.chkFailFirst.Values.Text = "&Fail First";
             // 
             // pnlSpeed
@@ -305,7 +305,7 @@
             this.rb2Pass.ToolTipValues.EnableToolTips = true;
             this.rb2Pass.ToolTipValues.Heading = "2 Pass Verify";
             this.rb2Pass.ToolTipValues.Image = null;
-            this.rb2Pass.ToolTipValues.ToolTipStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.ToolTip;
+            this.rb2Pass.ToolTipValues.ToolTipStyle = Krypton.Toolkit.LabelStyle.ToolTip;
             this.rb2Pass.Values.Text = "2 &Pass Verify";
             // 
             // rbVerify
@@ -320,7 +320,7 @@
             this.rbVerify.ToolTipValues.EnableToolTips = true;
             this.rbVerify.ToolTipValues.Heading = "Verify (W+R)";
             this.rbVerify.ToolTipValues.Image = null;
-            this.rbVerify.ToolTipValues.ToolTipStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.ToolTip;
+            this.rbVerify.ToolTipValues.ToolTipStyle = Krypton.Toolkit.LabelStyle.ToolTip;
             this.rbVerify.Values.Text = "&Verify (W+R)";
             // 
             // rbWrite
@@ -334,7 +334,7 @@
             this.rbWrite.ToolTipValues.EnableToolTips = true;
             this.rbWrite.ToolTipValues.Heading = "Write (+ Read)";
             this.rbWrite.ToolTipValues.Image = null;
-            this.rbWrite.ToolTipValues.ToolTipStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.ToolTip;
+            this.rbWrite.ToolTipValues.ToolTipStyle = Krypton.Toolkit.LabelStyle.ToolTip;
             this.rbWrite.Values.Text = "&Write (+ Read)";
             // 
             // rbRead
@@ -349,7 +349,7 @@
             this.rbRead.ToolTipValues.EnableToolTips = true;
             this.rbRead.ToolTipValues.Heading = "Read Only";
             this.rbRead.ToolTipValues.Image = null;
-            this.rbRead.ToolTipValues.ToolTipStyle = ComponentFactory.Krypton.Toolkit.LabelStyle.ToolTip;
+            this.rbRead.ToolTipValues.ToolTipStyle = Krypton.Toolkit.LabelStyle.ToolTip;
             this.rbRead.Values.Text = "&Read Only";
             // 
             // lblTimeRemaining
@@ -430,7 +430,7 @@
             this.kryptonLabel2.Name = "kryptonLabel2";
             this.kryptonLabel2.Size = new System.Drawing.Size(96, 107);
             this.kryptonLabel2.StateCommon.ShortText.Font = new System.Drawing.Font("Consolas", 7.5F);
-            this.kryptonLabel2.StateCommon.ShortText.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
+            this.kryptonLabel2.StateCommon.ShortText.MultiLine = Krypton.Toolkit.InheritBool.True;
             this.kryptonLabel2.TabIndex = 12;
             this.kryptonLabel2.TabStop = false;
             this.kryptonLabel2.Values.Text = "- NoWork\r\n- Reading\r\n- Writing\r\n- WriteDone\r\n- Validating\r\n- Failed\r\n- Passed";
@@ -502,37 +502,37 @@
 
         #endregion
 
-        private ComponentFactory.Krypton.Toolkit.KryptonPanel kryptonPanel1;
-        private ComponentFactory.Krypton.Toolkit.KryptonLabel lblTimeRemaining;
-        private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel6;
-        private ComponentFactory.Krypton.Toolkit.KryptonLabel lblSpeed;
-        private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel4;
-        private ComponentFactory.Krypton.Toolkit.KryptonLabel lblDriveSize;
-        private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel1;
+        private Krypton.Toolkit.KryptonPanel kryptonPanel1;
+        private Krypton.Toolkit.KryptonLabel lblTimeRemaining;
+        private Krypton.Toolkit.KryptonLabel kryptonLabel6;
+        private Krypton.Toolkit.KryptonLabel lblSpeed;
+        private Krypton.Toolkit.KryptonLabel kryptonLabel4;
+        private Krypton.Toolkit.KryptonLabel lblDriveSize;
+        private Krypton.Toolkit.KryptonLabel kryptonLabel1;
         private DiskSectors diskSectors1;
-        private ComponentFactory.Krypton.Toolkit.KryptonGroupBox grpScanType;
-        private ComponentFactory.Krypton.Toolkit.KryptonRadioButton rb2Pass;
-        private ComponentFactory.Krypton.Toolkit.KryptonRadioButton rbVerify;
-        private ComponentFactory.Krypton.Toolkit.KryptonRadioButton rbWrite;
-        private ComponentFactory.Krypton.Toolkit.KryptonRadioButton rbRead;
-        private ComponentFactory.Krypton.Toolkit.KryptonGroupBox kryptonGroupBox2;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chkUseSpeed;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chkFailFirst;
-        private ComponentFactory.Krypton.Toolkit.KryptonPanel pnlSpeed;
-        private ComponentFactory.Krypton.Toolkit.KryptonRadioButton rb75;
-        private ComponentFactory.Krypton.Toolkit.KryptonRadioButton rb30;
-        private ComponentFactory.Krypton.Toolkit.KryptonRadioButton rb50;
-        private ComponentFactory.Krypton.Toolkit.KryptonRadioButton rb20;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge4;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge3;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge2;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge1;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton btnStartStop;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton btnPartitioning;
+        private Krypton.Toolkit.KryptonGroupBox grpScanType;
+        private Krypton.Toolkit.KryptonRadioButton rb2Pass;
+        private Krypton.Toolkit.KryptonRadioButton rbVerify;
+        private Krypton.Toolkit.KryptonRadioButton rbWrite;
+        private Krypton.Toolkit.KryptonRadioButton rbRead;
+        private Krypton.Toolkit.KryptonGroupBox kryptonGroupBox2;
+        private Krypton.Toolkit.KryptonCheckBox chkUseSpeed;
+        private Krypton.Toolkit.KryptonCheckBox chkFailFirst;
+        private Krypton.Toolkit.KryptonPanel pnlSpeed;
+        private Krypton.Toolkit.KryptonRadioButton rb75;
+        private Krypton.Toolkit.KryptonRadioButton rb30;
+        private Krypton.Toolkit.KryptonRadioButton rb50;
+        private Krypton.Toolkit.KryptonRadioButton rb20;
+        private Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge4;
+        private Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge3;
+        private Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge2;
+        private Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge1;
+        private Krypton.Toolkit.KryptonButton btnStartStop;
+        private Krypton.Toolkit.KryptonButton btnPartitioning;
         private Elucidate.Shared.TextOverProgressBar lblPhase;
-        private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel7;
+        private Krypton.Toolkit.KryptonLabel kryptonLabel7;
         private System.Windows.Forms.Timer tmrUpdate;
         private DiskSectors diskSectors2;
-        private ComponentFactory.Krypton.Toolkit.KryptonLabel kryptonLabel2;
+        private Krypton.Toolkit.KryptonLabel kryptonLabel2;
     }
 }

@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.kryptonManager1 = new ComponentFactory.Krypton.Toolkit.KryptonManager(this.components);
+            this.kryptonManager1 = new Krypton.Toolkit.KryptonManager(this.components);
             this.miniToolStrip = new System.Windows.Forms.MenuStrip();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.themeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -38,18 +38,18 @@
             this.changeLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.treeContainer = new ComponentFactory.Krypton.Toolkit.KryptonSplitContainer();
-            this.treeGroup = new ComponentFactory.Krypton.Toolkit.KryptonHeaderGroup();
-            this.driveTree = new ComponentFactory.Krypton.Toolkit.KryptonTreeView();
+            this.treeContainer = new Krypton.Toolkit.KryptonSplitContainer();
+            this.treeGroup = new Krypton.Toolkit.KryptonHeaderGroup();
+            this.driveTree = new Krypton.Toolkit.KryptonTreeView();
             this.driveImageList = new System.Windows.Forms.ImageList(this.components);
-            this.driveContainer = new ComponentFactory.Krypton.Toolkit.KryptonSplitContainer();
-            this.kryptonBorderEdge1 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.driveHeader = new ComponentFactory.Krypton.Toolkit.KryptonHeader();
-            this.kryptonBorderEdge2 = new ComponentFactory.Krypton.Toolkit.KryptonBorderEdge();
-            this.lblDetails = new ComponentFactory.Krypton.Toolkit.KryptonRichTextBox();
-            this.detailsHeader = new ComponentFactory.Krypton.Toolkit.KryptonHeader();
+            this.driveContainer = new Krypton.Toolkit.KryptonSplitContainer();
+            this.kryptonBorderEdge1 = new Krypton.Toolkit.KryptonBorderEdge();
+            this.driveHeader = new Krypton.Toolkit.KryptonHeader();
+            this.kryptonBorderEdge2 = new Krypton.Toolkit.KryptonBorderEdge();
+            this.lblDetails = new Krypton.Toolkit.KryptonRichTextBox();
+            this.detailsHeader = new Krypton.Toolkit.KryptonHeader();
             this.diskStatsView1 = new HDD2ndLife.Controls.DiskStatsView();
-            this.blurPanel = new ComponentFactory.Krypton.Toolkit.KryptonPanel();
+            this.blurPanel = new Krypton.Toolkit.KryptonPanel();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.treeContainer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.treeContainer.Panel1)).BeginInit();
@@ -158,7 +158,7 @@
             // treeContainer.Panel2
             // 
             this.treeContainer.Panel2.Controls.Add(this.driveContainer);
-            this.treeContainer.SeparatorStyle = ComponentFactory.Krypton.Toolkit.SeparatorStyle.HighInternalProfile;
+            this.treeContainer.SeparatorStyle = Krypton.Toolkit.SeparatorStyle.HighInternalProfile;
             this.treeContainer.Size = new System.Drawing.Size(1312, 722);
             this.treeContainer.SplitterDistance = 330;
             this.treeContainer.TabIndex = 2;
@@ -221,7 +221,7 @@
             this.driveContainer.Panel2.Controls.Add(this.kryptonBorderEdge2);
             this.driveContainer.Panel2.Controls.Add(this.lblDetails);
             this.driveContainer.Panel2.Controls.Add(this.detailsHeader);
-            this.driveContainer.SeparatorStyle = ComponentFactory.Krypton.Toolkit.SeparatorStyle.HighProfile;
+            this.driveContainer.SeparatorStyle = Krypton.Toolkit.SeparatorStyle.HighProfile;
             this.driveContainer.Size = new System.Drawing.Size(977, 722);
             this.driveContainer.SplitterDistance = 417;
             this.driveContainer.TabIndex = 0;
@@ -344,26 +344,26 @@
         }
 
         #endregion
-        private ComponentFactory.Krypton.Toolkit.KryptonManager kryptonManager1;
+        private Krypton.Toolkit.KryptonManager kryptonManager1;
         private System.Windows.Forms.MenuStrip miniToolStrip;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem themeToolStripMenuItem;
         private System.Windows.Forms.ToolStripComboBox themeComboBox;
         private System.Windows.Forms.ToolStripMenuItem changeLogToolStripMenuItem;
         private System.Windows.Forms.MenuStrip menuStrip1;
-        private ComponentFactory.Krypton.Toolkit.KryptonSplitContainer treeContainer;
-        private ComponentFactory.Krypton.Toolkit.KryptonHeaderGroup treeGroup;
-        private ComponentFactory.Krypton.Toolkit.KryptonTreeView driveTree;
-        private ComponentFactory.Krypton.Toolkit.KryptonSplitContainer driveContainer;
-        private ComponentFactory.Krypton.Toolkit.KryptonHeader driveHeader;
-        private ComponentFactory.Krypton.Toolkit.KryptonRichTextBox lblDetails;
-        private ComponentFactory.Krypton.Toolkit.KryptonHeader detailsHeader;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge1;
-        private ComponentFactory.Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge2;
+        private Krypton.Toolkit.KryptonSplitContainer treeContainer;
+        private Krypton.Toolkit.KryptonHeaderGroup treeGroup;
+        private Krypton.Toolkit.KryptonTreeView driveTree;
+        private Krypton.Toolkit.KryptonSplitContainer driveContainer;
+        private Krypton.Toolkit.KryptonHeader driveHeader;
+        private Krypton.Toolkit.KryptonRichTextBox lblDetails;
+        private Krypton.Toolkit.KryptonHeader detailsHeader;
+        private Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge1;
+        private Krypton.Toolkit.KryptonBorderEdge kryptonBorderEdge2;
         private System.Windows.Forms.ImageList driveImageList;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private Controls.DiskStatsView diskStatsView1;
-        private ComponentFactory.Krypton.Toolkit.KryptonPanel blurPanel;
+        private Krypton.Toolkit.KryptonPanel blurPanel;
     }
 }
 

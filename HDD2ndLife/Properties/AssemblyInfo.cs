@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="AssemblyInfo.cs" company="Smurf-IV">
 // 
-//  Copyright (C) 2019-2019 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2019-2021 Simon Coghlan (Aka Smurf-IV)
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Smurf-IV")]
 [assembly: AssemblyProduct("HDD2ndLife")]
-[assembly: AssemblyCopyright("Copyright © Simon Coghlan (Aka Smurf-IV) 2019-2019")]
+[assembly: AssemblyCopyright("Copyright © Simon Coghlan (Aka Smurf-IV) 2019-2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -58,8 +58,8 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("20.10.240.18")]
-[assembly: AssemblyFileVersion("20.10.241.18")]   // used by the installer
+[assembly: AssemblyVersion("21.3.244.6")]
+[assembly: AssemblyFileVersion("21.3.245.6")]   // used by the installer
 
 // TODO: Add more relevant hints here
 [assembly: Dependency("System", LoadHint.Always)]
@@ -68,7 +68,7 @@ using System.Runtime.InteropServices;
 [assembly: Dependency("System.Windows.Forms", LoadHint.Always)]
 [assembly: Dependency("System.Xml", LoadHint.Always)]
 
-[assembly: Dependency("ComponentFactory.Krypton.Toolkit", LoadHint.Always)]
+[assembly: Dependency("Krypton.Toolkit", LoadHint.Always)]
 [assembly: Dependency("Exceptionless", LoadHint.Always)]
 [assembly: Dependency("Exceptionless.NLog", LoadHint.Always)]
 [assembly: Dependency("Exceptionless.Windows", LoadHint.Always)]

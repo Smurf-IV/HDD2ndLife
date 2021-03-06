@@ -28,12 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnApply = new ComponentFactory.Krypton.Toolkit.KryptonButton();
-            this.chkFormat = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
-            this.chkSingleVolume = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
-            this.chkGPTPartition = new ComponentFactory.Krypton.Toolkit.KryptonCheckBox();
-            this.lbLog = new ComponentFactory.Krypton.Toolkit.KryptonListBox();
-            this.blurPanel = new ComponentFactory.Krypton.Toolkit.KryptonPanel();
+            this.btnApply = new Krypton.Toolkit.KryptonButton();
+            this.chkFormat = new Krypton.Toolkit.KryptonCheckBox();
+            this.chkSingleVolume = new Krypton.Toolkit.KryptonCheckBox();
+            this.chkGPTPartition = new Krypton.Toolkit.KryptonCheckBox();
+            this.lbLog = new Krypton.Toolkit.KryptonListBox();
+            this.blurPanel = new Krypton.Toolkit.KryptonPanel();
             ((System.ComponentModel.ISupportInitialize)(this.blurPanel)).BeginInit();
             this.blurPanel.SuspendLayout();
             this.SuspendLayout();
@@ -82,8 +82,8 @@
             this.lbLog.Location = new System.Drawing.Point(12, 274);
             this.lbLog.Name = "lbLog";
             this.lbLog.Size = new System.Drawing.Size(1004, 407);
-            this.lbLog.StateCommon.Item.Content.LongText.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
-            this.lbLog.StateCommon.Item.Content.ShortText.MultiLine = ComponentFactory.Krypton.Toolkit.InheritBool.True;
+            this.lbLog.StateCommon.Item.Content.LongText.MultiLine = Krypton.Toolkit.InheritBool.True;
+            this.lbLog.StateCommon.Item.Content.ShortText.MultiLine = Krypton.Toolkit.InheritBool.True;
             this.lbLog.TabIndex = 5;
             // 
             // blurPanel
@@ -117,11 +117,11 @@
 
         #endregion
 
-        private ComponentFactory.Krypton.Toolkit.KryptonButton btnApply;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chkFormat;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chkSingleVolume;
-        private ComponentFactory.Krypton.Toolkit.KryptonCheckBox chkGPTPartition;
-        private ComponentFactory.Krypton.Toolkit.KryptonListBox lbLog;
-        private ComponentFactory.Krypton.Toolkit.KryptonPanel blurPanel;
+        private Krypton.Toolkit.KryptonButton btnApply;
+        private Krypton.Toolkit.KryptonCheckBox chkFormat;
+        private Krypton.Toolkit.KryptonCheckBox chkSingleVolume;
+        private Krypton.Toolkit.KryptonCheckBox chkGPTPartition;
+        private Krypton.Toolkit.KryptonListBox lbLog;
+        private Krypton.Toolkit.KryptonPanel blurPanel;
     }
 }
