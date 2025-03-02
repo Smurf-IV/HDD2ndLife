@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="AssemblyInfo.cs" company="Smurf-IV">
 // 
-//  Copyright (C) 2019-2021 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2019-2025 Simon Coghlan (Aka Smurf-IV)
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Smurf-IV")]
 [assembly: AssemblyProduct("HDD2ndLife")]
-[assembly: AssemblyCopyright("Copyright © Simon Coghlan (Aka Smurf-IV) 2019-2021")]
+[assembly: AssemblyCopyright("Copyright © Simon Coghlan (Aka Smurf-IV) 2019-2025")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -55,11 +55,11 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision    -> Day
 //
-// You can specify all the values or you can default the Build and Revision Numbers
+// You can specify all the values, or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("22.7.246.17")]
-[assembly: AssemblyFileVersion("22.7.247.17")]   // used by the installer
+[assembly: AssemblyVersion("25.3.74.2")]
+[assembly: AssemblyFileVersion("25.3.75.2")]   // used by the installer
 
 // TODO: Add more relevant hints here
 [assembly: Dependency("System", LoadHint.Always)]

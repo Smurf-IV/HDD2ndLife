@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="DiskExSet.cs" company="Smurf-IV">
 // 
-//  Copyright (C) 2020 - 2021 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2020 - 2025 Simon Coghlan (Aka Smurf-IV)
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -32,71 +32,70 @@ using DeviceIOControlLib.Wrapper;
 
 using Microsoft.Win32.SafeHandles;
 
-namespace HDD2ndLife.WMI
+namespace HDD2ndLife.WMI;
+
+/// <summary>
+/// The DeviceIOControlLib does not "Do" many Set functions, but it could
+/// </summary>
+internal static class DiskExSet
 {
-    /// <summary>
-    /// The DeviceIOControlLib does not "Do" many Set functions, but it could
-    /// </summary>
-    internal static class DiskExSet
-    {
-        public const uint DISK_ATTRIBUTE_OFFLINE = 0x1;
-        public const uint DISK_ATTRIBUTE_READ_ONLY = 0x2;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="diskHandle"></param>
-        /// <param name="online"></param>
-        /// <param name="persist">If TRUE, these settings are persisted across reboots</param>
-        /// <returns>success</returns>
-        /// <exception cref="Win32Exception"></exception>
-        public static bool SetOnline(SafeFileHandle diskHandle, bool online, bool persist)
-        {
-            SET_DISK_ATTRIBUTES attributes = new SET_DISK_ATTRIBUTES(online ? 0 : DISK_ATTRIBUTE_OFFLINE, persist);
-
-            // https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ni-winioctl-ioctl_disk_set_disk_attributes
-            DeviceIoControlHelper.InvokeIoControl(diskHandle, IOControlCode.DiskSetDiskAttributes, attributes);
-            //new Win32Exception(win32ErrorCode).Message
-            return true;
-        }
-    }
+    public const uint DISK_ATTRIBUTE_OFFLINE = 0x1;
+    public const uint DISK_ATTRIBUTE_READ_ONLY = 0x2;
 
     /// <summary>
-    /// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-set_disk_attributes
+    /// 
     /// </summary>
-    [StructLayout(LayoutKind.Sequential)]
-    public struct SET_DISK_ATTRIBUTES
+    /// <param name="diskHandle"></param>
+    /// <param name="online"></param>
+    /// <param name="persist">If TRUE, these settings are persisted across reboots</param>
+    /// <returns>success</returns>
+    /// <exception cref="Win32Exception"></exception>
+    public static bool SetOnline(SafeFileHandle diskHandle, bool online, bool persist)
     {
-        public uint Version;
-        [MarshalAs(UnmanagedType.I1)]
-        public bool Persist;
-        [MarshalAs(UnmanagedType.I1)]
-        public bool Reserved1A;
-        [MarshalAs(UnmanagedType.I1)]
-        public bool Reserved1B;
-        [MarshalAs(UnmanagedType.I1)]
-        public bool Reserved1C;
-        public ulong Attributes;
-        public ulong AttributesMask;
-        public uint Reserved2A;
-        public uint Reserved2B;
-        public uint Reserved2C;
-        public uint Reserved2D;
+        var attributes = new SET_DISK_ATTRIBUTES(online ? 0 : DISK_ATTRIBUTE_OFFLINE, persist);
 
-        public SET_DISK_ATTRIBUTES(uint diskAttributeOffline, bool persist)
-        {
-            Persist = persist;
-            Attributes = diskAttributeOffline;
-            AttributesMask = DiskExSet.DISK_ATTRIBUTE_OFFLINE;
-            Version = (uint)Marshal.SizeOf(typeof(SET_DISK_ATTRIBUTES));
-            Reserved1A = false;
-            Reserved1B = false;
-            Reserved1C = false;
-            Reserved2A = 0;
-            Reserved2B = 0;
-            Reserved2C = 0;
-            Reserved2D = 0;
-        }
-
+        // https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ni-winioctl-ioctl_disk_set_disk_attributes
+        DeviceIoControlHelper.InvokeIoControl(diskHandle, IOControlCode.DiskSetDiskAttributes, attributes);
+        //new Win32Exception(win32ErrorCode).Message
+        return true;
     }
+}
+
+/// <summary>
+/// https://docs.microsoft.com/en-us/windows/win32/api/winioctl/ns-winioctl-set_disk_attributes
+/// </summary>
+[StructLayout(LayoutKind.Sequential)]
+public struct SET_DISK_ATTRIBUTES
+{
+    public uint Version;
+    [MarshalAs(UnmanagedType.I1)]
+    public bool Persist;
+    [MarshalAs(UnmanagedType.I1)]
+    public bool Reserved1A;
+    [MarshalAs(UnmanagedType.I1)]
+    public bool Reserved1B;
+    [MarshalAs(UnmanagedType.I1)]
+    public bool Reserved1C;
+    public ulong Attributes;
+    public ulong AttributesMask;
+    public uint Reserved2A;
+    public uint Reserved2B;
+    public uint Reserved2C;
+    public uint Reserved2D;
+
+    public SET_DISK_ATTRIBUTES(uint diskAttributeOffline, bool persist)
+    {
+        Persist = persist;
+        Attributes = diskAttributeOffline;
+        AttributesMask = DiskExSet.DISK_ATTRIBUTE_OFFLINE;
+        Version = (uint)Marshal.SizeOf(typeof(SET_DISK_ATTRIBUTES));
+        Reserved1A = false;
+        Reserved1B = false;
+        Reserved1C = false;
+        Reserved2A = 0;
+        Reserved2B = 0;
+        Reserved2C = 0;
+        Reserved2D = 0;
+    }
+
 }

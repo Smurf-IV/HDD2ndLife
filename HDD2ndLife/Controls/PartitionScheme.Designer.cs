@@ -44,6 +44,7 @@
             this.btnApply.Name = "btnApply";
             this.btnApply.Size = new System.Drawing.Size(142, 25);
             this.btnApply.TabIndex = 0;
+            this.btnApply.Values.DropDownArrowColor = System.Drawing.Color.Empty;
             this.btnApply.Values.Text = "&Apply";
             this.btnApply.Click += new System.EventHandler(this.Apply_Click);
             // 
@@ -101,8 +102,7 @@
             // 
             // PartitionScheme
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(1028, 693);
             this.Controls.Add(this.blurPanel);
             this.Name = "PartitionScheme";

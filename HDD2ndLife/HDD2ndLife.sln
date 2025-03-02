@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29009.5
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32708.82
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HDD2ndLife", "HDD2ndLife.csproj", "{ECFAC773-F16E-4413-ACE4-0ED0D3E93ACA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HDD2ndLife", "HDD2ndLife.csproj", "{ECFAC773-F16E-4413-ACE4-0ED0D3E93ACA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TextFiles", "TextFiles", "{FA8D7D82-4D69-4DF0-AB75-C19EBBFD7AD9}"
 	ProjectSection(SolutionItems) = preProject
@@ -15,25 +15,33 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{8E562B16-83C3-400E-A031-1EB3EECD9A84}"
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "HDD2ndLife_Installer", "..\HDD2ndLife_Installer\HDD2ndLife_Installer.wixproj", "{7BA424D3-858E-439D-B45B-E3D637BA6AE6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{ECFAC773-F16E-4413-ACE4-0ED0D3E93ACA} = {ECFAC773-F16E-4413-ACE4-0ED0D3E93ACA}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{868C968A-B4C0-4A42-B87F-763A673C22E9}"
 	ProjectSection(SolutionItems) = preProject
 		..\Docs\Documentation.md = ..\Docs\Documentation.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{549F9885-B889-4616-9829-7A9306B9E9F2}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{ECFAC773-F16E-4413-ACE4-0ED0D3E93ACA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ECFAC773-F16E-4413-ACE4-0ED0D3E93ACA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ECFAC773-F16E-4413-ACE4-0ED0D3E93ACA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ECFAC773-F16E-4413-ACE4-0ED0D3E93ACA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7BA424D3-858E-439D-B45B-E3D637BA6AE6}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{7BA424D3-858E-439D-B45B-E3D637BA6AE6}.Release|Any CPU.ActiveCfg = Release|x86
-		{7BA424D3-858E-439D-B45B-E3D637BA6AE6}.Release|Any CPU.Build.0 = Release|x86
+		{ECFAC773-F16E-4413-ACE4-0ED0D3E93ACA}.Debug|x64.ActiveCfg = Debug|x64
+		{ECFAC773-F16E-4413-ACE4-0ED0D3E93ACA}.Debug|x64.Build.0 = Debug|x64
+		{ECFAC773-F16E-4413-ACE4-0ED0D3E93ACA}.Release|x64.ActiveCfg = Release|x64
+		{ECFAC773-F16E-4413-ACE4-0ED0D3E93ACA}.Release|x64.Build.0 = Release|x64
+		{7BA424D3-858E-439D-B45B-E3D637BA6AE6}.Debug|x64.ActiveCfg = Debug|x64
+		{7BA424D3-858E-439D-B45B-E3D637BA6AE6}.Release|x64.ActiveCfg = Release|x64
+		{7BA424D3-858E-439D-B45B-E3D637BA6AE6}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

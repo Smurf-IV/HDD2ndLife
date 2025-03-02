@@ -1,0 +1,9 @@
+[*.cs]
+# Sort System.* using directives alphabetically, and place them before other using directives
+dotnet_sort_system_directives_first = true
+#Place a blank line between using directive groups.
+dotnet_separate_import_directive_groups = true
+dotnet_code_quality.enable_platform_analyzer_on_pre_net5_target=true
+
+# Using platform dependent API on a component makes the code no longer work across all platforms
+dotnet_diagnostic.CA1416.severity = silent

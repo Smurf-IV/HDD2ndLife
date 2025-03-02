@@ -4,111 +4,124 @@
      xmlns:util="http://schemas.microsoft.com/wix/UtilExtension"
     >
 
-    <?define MgtSource=$(sys.SOURCEFILEDIR)..\HDD2ndLife\bin\Release ?>
+  <?define MgtSource=$(sys.SOURCEFILEDIR)..\HDD2ndLife\bin\x64\Release\net9.0-windows7 ?>
 
-    <Fragment>
+  <Fragment>
 
-        <DirectoryRef Id="INSTALLDIR" />
+    <DirectoryRef Id="INSTALLDIR" >
+      <Directory Id="r" Name="runtimes">
+        <Directory Id="w" Name="win" >
+          <Directory Id="l" Name="lib" >
+            <Directory Id="Runtime" Name="net9.0" />
+          </Directory>
+        </Directory>
+      </Directory>
+    </DirectoryRef>
+    <util:CloseApplication CloseMessage="yes" Id="CloseHDD2ndLife" Target="HDD2ndLife.exe" RebootPrompt="no"/>
 
-        <util:CloseApplication CloseMessage="yes" Id="CloseHDD2ndLife" Target="HDD2ndLife.exe" RebootPrompt="no"/>
+    <ComponentGroup Id="Client" Directory="INSTALLDIR" >
+      <Component Id="Client" Guid="5EBF3F29-9CF1-44FE-A94C-CC1B4FE09367" >
+        <File Id="InstallerIcon" Name="HDD2ndLife.ico" Source="$(sys.SOURCEFILEDIR)..\HDD2ndLife\HDD2ndLife.ico" />
+        <File Id="HDD2ndLife.exe" Name="HDD2ndLife.exe" Source="$(var.MgtSource)\HDD2ndLife.exe" KeyPath="yes" >
+          <netfx:NativeImage Id="ngen.HDD2ndLife" Platform="all" Priority="1" AppBaseDirectory="INSTALLDIR" />
+        </File>
+        <File Id="HDD2ndLife.dll" Name="HDD2ndLife.dll" Source="$(var.MgtSource)\HDD2ndLife.dll" >
+          <netfx:NativeImage Id="ngen.HDD2ndLife.dll" Platform="all" Priority="1" AppBaseDirectory="INSTALLDIR" />
+        </File>
+      </Component>
+      <!-- Event Source creation for all OS with .NET 4 Full -->
+      <Component Id="CreateEventSource64BitFullNet4"
+                 Guid="EED5AB36-9928-49D4-97CC-11B59F906CEC" KeyPath="yes">
+        <Condition><![CDATA[NETFRAMEWORK40FULLINSTALLROOTDIR64 AND VersionNT64]]></Condition>
+        <CreateFolder />
+        <!-- Create an Event Source -->
+        <Util:EventSource
+            xmlns:Util="http://schemas.microsoft.com/wix/UtilExtension"
+            Name="HDD2ndLife"
+            Log="Application"
+            EventMessageFile="[NETFRAMEWORK40FULLINSTALLROOTDIR64]EventLogMessages.dll" />
+      </Component>
+      <Component>
+        <File Source="$(var.MgtSource)\HDD2ndLife.deps.json" KeyPath="yes" />
+      </Component>
+      <Component>
+        <File Source="$(var.MgtSource)\HDD2ndLife.dll.config" KeyPath="yes" />
+      </Component>
+      <Component>
+        <File Source="$(var.MgtSource)\HDD2ndLife.runtimeconfig.json" KeyPath="yes" />
+      </Component>
 
-        <ComponentGroup Id="Client" Directory="INSTALLDIR">
-            <Component Id="Client" Guid="5EBF3F29-9CF1-44FE-A94C-CC1B4FE09367" >
-                <File Id="InstallerIcon" Name="HDD2ndLife.ico" Source="$(sys.SOURCEFILEDIR)..\HDD2ndLife\HDD2ndLife.ico" />
-                <File Id="HDD2ndLife.exe" Name="HDD2ndLife.exe" Source="$(var.MgtSource)\HDD2ndLife.exe" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.HDD2ndLife" Platform="all" Priority="1" AppBaseDirectory="INSTALLDIR" />
-                </File>
-            </Component>
-            <!-- Event Source creation for all OS with .NET 4 Full -->
-            <Component Id="CreateEventSource64BitFullNet4"
-                       Guid="EED5AB36-9928-49D4-97CC-11B59F906CEC" KeyPath="yes">
-                <Condition><![CDATA[NETFRAMEWORK40FULLINSTALLROOTDIR64 AND VersionNT64]]></Condition>
-                <CreateFolder />
-                <!-- Create an Event Source -->
-                <Util:EventSource
-                    xmlns:Util="http://schemas.microsoft.com/wix/UtilExtension"
-                    Name="HDD2ndLife"
-                    Log="Application"
-                    EventMessageFile="[NETFRAMEWORK40FULLINSTALLROOTDIR64]EventLogMessages.dll" />
-            </Component>
-            <Component>
-                <File Source="$(var.MgtSource)\HDD2ndLife.exe.config" KeyPath="yes" />
-            </Component>
+      <Component>
+        <File Source="$(var.MgtSource)\ByteSize.dll" KeyPath="yes" >
+          <netfx:NativeImage Id="ngen.ByteSize" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
+        </File>
+      </Component>
+      <Component>
+        <File Source="$(var.MgtSource)\DeviceIOControlLib.dll" KeyPath="yes" >
+          <netfx:NativeImage Id="ngen.DeviceIOControlLib" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
+        </File>
+      </Component>
+      <Component>
+        <File Source="$(var.MgtSource)\Exceptionless.dll" KeyPath="yes" >
+          <netfx:NativeImage Id="ngen.Exceptionless" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
+        </File>
+      </Component>
+      <Component>
+        <File Source="$(var.MgtSource)\Exceptionless.NLog.dll" KeyPath="yes" >
+          <netfx:NativeImage Id="ngen.Exceptionless.NLog" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
+        </File>
+      </Component>
+      <Component>
+        <File Source="$(var.MgtSource)\Exceptionless.Windows.dll" KeyPath="yes" >
+          <netfx:NativeImage Id="ngen.Exceptionless.Windows" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
+        </File>
+      </Component>
+      <Component>
+        <File Source="$(var.MgtSource)\Krypton.Toolkit.dll" KeyPath="yes" >
+          <netfx:NativeImage Id="ngen.Toolkit" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
+        </File>
+      </Component>
+      <Component>
+        <File Source="$(var.MgtSource)\LoadingIndicator.WinForms.dll" KeyPath="yes" >
+          <netfx:NativeImage Id="ngen.LoadingIndicator.WinForms" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
+        </File>
+      </Component>
+      <Component>
+        <File Source="$(var.MgtSource)\NLog.dll" KeyPath="yes" >
+          <netfx:NativeImage Id="ngen.NLog" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
+        </File>
+        <File Source="$(var.MgtSource)\NLog.config" />
+      </Component>
+      <Component>
+        <File Source="$(var.MgtSource)\RawDiskLib.dll" KeyPath="yes" >
+          <netfx:NativeImage Id="ngen.RawDiskLib" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
+        </File>
+      </Component>
 
-            <Component>
-                <File Source="$(var.MgtSource)\ByteSize.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.ByteSize" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
-                </File>
-            </Component>
-            <Component>
-                <File Source="$(var.MgtSource)\DeviceIOControlLib.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.DeviceIOControlLib" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
-                </File>
-            </Component>
-            <Component>
-                <File Source="$(var.MgtSource)\Exceptionless.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.Exceptionless" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
-                </File>
-            </Component>
-            <Component>
-                <File Source="$(var.MgtSource)\Exceptionless.NLog.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.Exceptionless.NLog" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
-                </File>
-            </Component>
-            <Component>
-                <File Source="$(var.MgtSource)\Exceptionless.Windows.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.Exceptionless.Windows" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
-                </File>
-            </Component>
-            <Component>
-                <File Source="$(var.MgtSource)\Krypton.Toolkit.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.Toolkit" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
-                </File>
-            </Component>
-            <Component>
-                <File Source="$(var.MgtSource)\LoadingIndicator.WinForms.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.LoadingIndicator.WinForms" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
-                </File>
-            </Component>
-            <Component>
-                <File Source="$(var.MgtSource)\NLog.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.NLog" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
-                </File>
-            </Component>
-            <Component>
-                <File Source="$(var.MgtSource)\RawDiskLib.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.RawDiskLib" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
-                </File>
-            </Component>
+      <Component>
+        <File Source="$(var.MgtSource)\Microsoft.Extensions.Configuration.Abstractions.dll" KeyPath="yes" >
+          <netfx:NativeImage Id="ngen.Microsoft.Extensions.Configuration.Abstractions" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
+        </File>
+      </Component>
+      <Component>
+        <File Source="$(var.MgtSource)\Microsoft.Extensions.Primitives.dll" KeyPath="yes" >
+          <netfx:NativeImage Id="ngen.Microsoft.Extensions.Primitives" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
+        </File>
+      </Component>
+      <Component>
+        <File Source="$(var.MgtSource)\System.CodeDom.dll" KeyPath="yes" >
+          <netfx:NativeImage Id="ngen.System.CodeDom" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
+        </File>
+      </Component>
+      <Component>
+        <File Source="$(var.MgtSource)\System.Management.dll" KeyPath="yes" >
+          <netfx:NativeImage Id="ngen.System.Management" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
+        </File>
+      </Component>
 
-            <Component>
-                <File Source="$(var.MgtSource)\System.Buffers.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.System.Buffers" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
-                </File>
-            </Component>
-            <Component>
-                <File Source="$(var.MgtSource)\System.Management.Automation.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.System.Management.Automation" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
-                </File>
-            </Component>
-            <Component>
-                <File Source="$(var.MgtSource)\System.Memory.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.System.Memory" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
-                </File>
-            </Component>
-            <Component>
-                <File Source="$(var.MgtSource)\System.Numerics.Vectors.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.System.Numerics.Vectors" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
-                </File>
-            </Component>
-            <Component>
-                <File Source="$(var.MgtSource)\System.Runtime.CompilerServices.Unsafe.dll" KeyPath="yes" >
-                    <netfx:NativeImage Id="ngen.System.Runtime.CompilerServices.Unsafe" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
-                </File>
-            </Component>
 
-            <!-- Text and help files-->
-            <!--<Component>
+      <!-- Text and help files-->
+      <!--<Component>
                 <File Source="$(sys.SOURCEFILEDIR)GPLv2.rtf" KeyPath="yes" />
             </Component>
             <Component>
@@ -117,7 +130,13 @@
             <Component>
                 <File Source="$(var.MgtSource)\wyDay.Controls\License.txt" KeyPath="yes" />
             </Component>-->
-        </ComponentGroup>
+    </ComponentGroup>
 
-    </Fragment>
+    <ComponentGroup Id="ClientRunTime">
+      <Component Directory="Runtime">
+        <File Id="System.Management.dll_runtime" Source="$(var.MgtSource)\runtimes\win\lib\net9.0\System.Management.dll" KeyPath="yes" />
+      </Component>
+    </ComponentGroup>
+
+  </Fragment>
 </Wix>
