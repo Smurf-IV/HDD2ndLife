@@ -64,13 +64,21 @@ I've heard that as well, and I have tried it on drives that start to report SMAR
   - [x] Allow basic disk scan                               
   - [x] Add feedback (time to complete, speed, etc.)        
   - [x] Detailed scan UI blocks -> failed / reading / writing / verifying / passed / unused
-  - [ ] Test that the updates and UI interactions are not slowing down the throughput of scans. &nbsp; &nbsp; &nbsp; [<- in progress]
-  - [ ] Attempt Basic RePartitioning (e.g. Min Distance from bad blocks to be ignored)
-  - [ ] Start Documentation &nbsp; &nbsp; &nbsp; [<- in progress]
+  - [x] Test that the updates and UI interactions are not slowing down the throughput of scans.
+  - [x] An Installer
+  - [x] Collapsible regions
 
 <br />
 
 - [ ] Phase III
+  - [ ] Attempt Basic RePartitioning (e.g. Min Distance from bad blocks to be ignored) &nbsp; &nbsp; &nbsp; [<- in progress]
+  - [ ] Documentation &nbsp; &nbsp; &nbsp; [<- in progress]
+  - [ ] An Installer that detects the presence of the required .Net version _(Currently 9 is needed !)_
+
+<br />
+
+- [ ] Phase IV
+  - [ ] Attempt to store read speed data
   - [ ] Display (And use) information about the "Slow reads / writes" which can be used to determine a "weakened" block which may indicate signs of wear.
   - [ ] More Detailed UI showing relative Partition locations (& types ?)
   - [ ] Allow selections for Partitioning scheme
