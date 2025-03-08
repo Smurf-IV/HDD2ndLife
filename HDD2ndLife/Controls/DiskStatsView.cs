@@ -37,6 +37,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
+
 namespace HDD2ndLife.Controls;
 
 public partial class DiskStatsView : UserControl
@@ -65,7 +66,6 @@ public partial class DiskStatsView : UserControl
             lblPhase.ContainerControl = ParentForm;
         }
     }
-
 
     public DiskStatsView()
     {
@@ -119,7 +119,9 @@ public partial class DiskStatsView : UserControl
                 $@"{byteSize.LargestWholeNumberBinaryValue:N2} {byteSize.LargestWholeNumberBinarySymbol}";
 
             if (value > 0)
+            {
                 diskSectors1.ScaledClusterCount = (value / (ulong)ScanDrive.DISK_BUFFER_SIZE);
+            }
         }
     }
 
@@ -174,7 +176,7 @@ public partial class DiskStatsView : UserControl
             @"Phase" => scanDrive?.Phase,
             _ => lblPhase.DisplayText
         };
-        lblPhase.Value = (int)Math.Ceiling(scanDrive?.Percent ?? 1);
+        lblPhase.Value = (int)Math.Ceiling(scanDrive?.Percent*100 ?? 1);
     }
 
     private void Cancellation()
@@ -198,13 +200,19 @@ public partial class DiskStatsView : UserControl
 
     private void tmrUpdate_Tick(object sender, System.EventArgs e)
     {
-        ScanDrive local = scanDrive;  // Observe "Window of opportunity"
-        if (local == null) return;
+        ScanDrive local = scanDrive;  
+        if (local == null)
+        {
+            // Observe "Window of opportunity"
+            return;
+        }
+
         TimeSpan timeSpan = local.TimeRemaining;
-        ByteSize speedBytes = ByteSize.FromMegaBytes(local.SpeedInMBytesPerSec);
+        ByteSize speedBytes = ByteSize.FromBytes(local.SpeedInBytesPerSec);
         lblTimeRemaining.Text = timeSpan.ToString(@"dd\.hh\:mm\:ss");
         lblSpeed.Text =
-            $@"{speedBytes.LargestWholeNumberDecimalValue:N2} {speedBytes.LargestWholeNumberDecimalSymbol}/s";
+            $@"{speedBytes.LargestWholeNumberBinaryValue:N2} {speedBytes.LargestWholeNumberBinarySymbol}/s";
+        //$@"{byteSize.LargestWholeNumberBinaryValue:N2} {byteSize.LargestWholeNumberBinarySymbol}";
         diskSectors1.ReCalcStatus();
     }
 
@@ -212,5 +220,4 @@ public partial class DiskStatsView : UserControl
     {
         new PartitionScheme(diskSectors1.Blocks, DeviceId).ShowDialog(this);
     }
-
 }

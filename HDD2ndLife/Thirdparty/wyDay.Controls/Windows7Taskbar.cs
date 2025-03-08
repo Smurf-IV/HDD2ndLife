@@ -33,14 +33,9 @@ public static class Windows7Taskbar
 
     static readonly OperatingSystem osInfo = Environment.OSVersion;
 
-    internal static bool Windows7OrGreater
-    {
-        get
-        {
-            return (osInfo.Version.Major == 6 && osInfo.Version.Minor >= 1)
-                   || (osInfo.Version.Major > 6);
-        }
-    }
+    internal static bool Windows7OrGreater =>
+        (osInfo.Version.Major == 6 && osInfo.Version.Minor >= 1)
+        || (osInfo.Version.Major > 6);
 
     /// <summary>
     /// Sets the progress state of the specified window's

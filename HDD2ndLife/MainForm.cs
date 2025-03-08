@@ -202,7 +202,10 @@ public partial class MainForm : KryptonForm
 
     private void FillInStorageDeviceDirectoryType(TreeNode parentNode, RawDisk disk)
     {
-        if (disk.DiskInfo.MediaType != MEDIA_TYPE.FixedMedia) return;
+        if (disk.DiskInfo.MediaType != MEDIA_TYPE.FixedMedia)
+        {
+            return;
+        }
 
         var thisNode = new TreeNode
         {

@@ -79,8 +79,6 @@ public class Windows7ProgressBar : ProgressBar
         ((Form)ownerForm).Shown -= Windows7ProgressBar_Shown;
     }
 
-
-
     /// <summary>
     /// Show progress in taskbar
     /// </summary>
@@ -101,13 +99,11 @@ public class Windows7ProgressBar : ProgressBar
                     {
                         SetValueInTB();
                     }
-
                     SetStateInTB();
                 }
             }
         }
     }
-
 
     /// <summary>
     /// Gets or sets the current position of the progress bar.
@@ -119,7 +115,10 @@ public class Windows7ProgressBar : ProgressBar
         get => base.Value;
         set
         {
-            if (base.Value == value) return;
+            if (base.Value == value)
+            {
+                return;
+            }
 
             void SetValue()
             {
@@ -129,7 +128,9 @@ public class Windows7ProgressBar : ProgressBar
             }
 
             if (InvokeRequired)
+            {
                 BeginInvoke((MethodInvoker)SetValue);
+            }
             else
             {
                 SetValue();
@@ -230,7 +231,9 @@ public class Windows7ProgressBar : ProgressBar
             }
 
             if (InvokeRequired)
+            {
                 BeginInvoke((MethodInvoker)SetValue);
+            }
             else
             {
                 SetValue();

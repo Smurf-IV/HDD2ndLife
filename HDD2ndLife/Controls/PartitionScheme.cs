@@ -49,7 +49,9 @@ public partial class PartitionScheme : KryptonForm
             @"Destructive Operations about to start", KryptonMessageBoxButtons.YesNo, KryptonMessageBoxIcon.Exclamation,
             KryptonMessageBoxDefaultButton.Button2);
         if (res != DialogResult.Yes)
+        {
             return;
+        }
 
         // https://stackoverflow.com/questions/36111876/positional-parameter-cannot-be-found-that-accepts-argument
         try
@@ -270,7 +272,10 @@ public partial class PartitionScheme : KryptonForm
         {
             BlockStatus status = Blocks[row, col];
             if (status == BlockStatus.Unused)
+            {
                 break;
+            }
+
             switch (status)
             {
                 case BlockStatus.Selected:
@@ -285,7 +290,10 @@ public partial class PartitionScheme : KryptonForm
                 case BlockStatus.NoWork:
                 case BlockStatus.Passed:
                     if (lastGood == -1)
+                    {
                         lastGood = usedOffset;
+                    }
+
                     break;
             }
 
@@ -294,7 +302,9 @@ public partial class PartitionScheme : KryptonForm
 
         // Add in the last one
         if (lastGood != -1)
+        {
             goodPartitions.Add((lastGood, usedOffset));
+        }
 
         var builder = new StringBuilder(@"Expected Partitions:");
         builder.AppendLine();

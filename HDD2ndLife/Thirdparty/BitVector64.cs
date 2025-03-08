@@ -20,9 +20,13 @@ public struct BitVector64
         set
         {
             if (value)
+            {
                 data |= singleBit;
+            }
             else
+            {
                 data &= ~singleBit;
+            }
         }
     }
 
@@ -33,9 +37,15 @@ public struct BitVector64
         set
         {
             if (value < 0)
+            {
                 throw new ArgumentException("Section can't hold negative values");
+            }
+
             if (value > section.Mask)
+            {
                 throw new ArgumentException("Value too large to fit in section");
+            }
+
             value <<= section.Offset;
             var num = ((long)uint.MaxValue & (long)section.Mask) << section.Offset;
             data = ((long)data & ~num | value & num);
@@ -88,7 +98,10 @@ public struct BitVector64
     private static Section CreateSectionHelper(int maxValue, int priorMask, int priorOffset)
     {
         if (maxValue < 1)
+        {
             throw new ArgumentException(nameof(maxValue));
+        }
+
         var offset = (int)(priorOffset + (long)CountBitsSet(priorMask));
         return offset < 64 ? new Section(CreateMaskFromHighValue(maxValue), offset) : throw new InvalidOperationException(@"BitVectorFull");
     }

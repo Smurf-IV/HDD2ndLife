@@ -70,8 +70,8 @@
     </None>
   </ItemGroup>
   <PropertyGroup>
-    <PostBuildEvent>rem md V:\GitHub\Smurf-IV\HDD2ndLife\HDD2ndLife\bin\x64\Debug\net9.0-windows7
-rem xcopy Z:\GitHub\Smurf-IV\HDD2ndLife\HDD2ndLife\bin\x64\Debug\net9.0-windows7\*.* V:\GitHub\Smurf-IV\HDD2ndLife\HDD2ndLife\bin\x64\Debug\net9.0-windows7 /I /C /Y /D /E
+    <PostBuildEvent>md V:\GitHub\Smurf-IV\HDD2ndLife\HDD2ndLife\bin\x64\Debug\net9.0-windows7
+xcopy Z:\GitHub\Smurf-IV\HDD2ndLife\HDD2ndLife\bin\x64\Debug\net9.0-windows7\*.* V:\GitHub\Smurf-IV\HDD2ndLife\HDD2ndLife\bin\x64\Debug\net9.0-windows7 /I /C /Y /D /E
     </PostBuildEvent>
     <EnableNETAnalyzers>True</EnableNETAnalyzers>
     <AnalysisLevel>latest</AnalysisLevel>

@@ -30,7 +30,14 @@
         {
             this.components = new System.ComponentModel.Container();
             this.kryptonPanel1 = new Krypton.Toolkit.KryptonPanel();
+            this.lblPassed = new Krypton.Toolkit.KryptonLabel();
+            this.lblFailed = new Krypton.Toolkit.KryptonLabel();
+            this.lblValidating = new Krypton.Toolkit.KryptonLabel();
+            this.lblWriteDone = new Krypton.Toolkit.KryptonLabel();
+            this.lblWriting = new Krypton.Toolkit.KryptonLabel();
+            this.lblReading = new Krypton.Toolkit.KryptonLabel();
             this.lblNoWork = new Krypton.Toolkit.KryptonLabel();
+            this.lblPhase = new Elucidate.Shared.TextOverProgressBar();
             this.kryptonLabel7 = new Krypton.Toolkit.KryptonLabel();
             this.btnPartitioning = new Krypton.Toolkit.KryptonButton();
             this.btnStartStop = new Krypton.Toolkit.KryptonButton();
@@ -58,14 +65,7 @@
             this.lblDriveSize = new Krypton.Toolkit.KryptonLabel();
             this.kryptonLabel1 = new Krypton.Toolkit.KryptonLabel();
             this.tmrUpdate = new System.Windows.Forms.Timer(this.components);
-            this.lblReading = new Krypton.Toolkit.KryptonLabel();
-            this.lblWriting = new Krypton.Toolkit.KryptonLabel();
-            this.lblWriteDone = new Krypton.Toolkit.KryptonLabel();
-            this.lblValidating = new Krypton.Toolkit.KryptonLabel();
-            this.lblFailed = new Krypton.Toolkit.KryptonLabel();
-            this.lblPassed = new Krypton.Toolkit.KryptonLabel();
             this.diskSectors1 = new HDD2ndLife.Controls.DiskSectors();
-            this.lblPhase = new Elucidate.Shared.TextOverProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonPanel1)).BeginInit();
             this.kryptonPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.kryptonGroupBox2)).BeginInit();
@@ -110,6 +110,66 @@
             this.kryptonPanel1.Size = new System.Drawing.Size(221, 791);
             this.kryptonPanel1.TabIndex = 0;
             // 
+            // lblPassed
+            // 
+            this.lblPassed.Location = new System.Drawing.Point(9, 760);
+            this.lblPassed.Name = "lblPassed";
+            this.lblPassed.Size = new System.Drawing.Size(67, 19);
+            this.lblPassed.StateCommon.ShortText.Font = new System.Drawing.Font("Consolas", 7.5F);
+            this.lblPassed.StateCommon.ShortText.ImageStyle = Krypton.Toolkit.PaletteImageStyle.CenterLeft;
+            this.lblPassed.TabIndex = 19;
+            this.lblPassed.Values.Text = "- Passed";
+            // 
+            // lblFailed
+            // 
+            this.lblFailed.Location = new System.Drawing.Point(9, 741);
+            this.lblFailed.Name = "lblFailed";
+            this.lblFailed.Size = new System.Drawing.Size(67, 19);
+            this.lblFailed.StateCommon.ShortText.Font = new System.Drawing.Font("Consolas", 7.5F);
+            this.lblFailed.StateCommon.ShortText.ImageStyle = Krypton.Toolkit.PaletteImageStyle.CenterLeft;
+            this.lblFailed.TabIndex = 18;
+            this.lblFailed.Values.Text = "- Failed";
+            // 
+            // lblValidating
+            // 
+            this.lblValidating.Location = new System.Drawing.Point(9, 722);
+            this.lblValidating.Name = "lblValidating";
+            this.lblValidating.Size = new System.Drawing.Size(96, 19);
+            this.lblValidating.StateCommon.ShortText.Font = new System.Drawing.Font("Consolas", 7.5F);
+            this.lblValidating.StateCommon.ShortText.ImageStyle = Krypton.Toolkit.PaletteImageStyle.CenterLeft;
+            this.lblValidating.TabIndex = 17;
+            this.lblValidating.Values.Text = "- Validating";
+            // 
+            // lblWriteDone
+            // 
+            this.lblWriteDone.Location = new System.Drawing.Point(9, 703);
+            this.lblWriteDone.Name = "lblWriteDone";
+            this.lblWriteDone.Size = new System.Drawing.Size(96, 19);
+            this.lblWriteDone.StateCommon.ShortText.Font = new System.Drawing.Font("Consolas", 7.5F);
+            this.lblWriteDone.StateCommon.ShortText.ImageStyle = Krypton.Toolkit.PaletteImageStyle.CenterLeft;
+            this.lblWriteDone.TabIndex = 16;
+            this.lblWriteDone.Values.Text = "- Write Done";
+            // 
+            // lblWriting
+            // 
+            this.lblWriting.Location = new System.Drawing.Point(9, 684);
+            this.lblWriting.Name = "lblWriting";
+            this.lblWriting.Size = new System.Drawing.Size(74, 19);
+            this.lblWriting.StateCommon.ShortText.Font = new System.Drawing.Font("Consolas", 7.5F);
+            this.lblWriting.StateCommon.ShortText.ImageStyle = Krypton.Toolkit.PaletteImageStyle.CenterLeft;
+            this.lblWriting.TabIndex = 15;
+            this.lblWriting.Values.Text = "- Writing";
+            // 
+            // lblReading
+            // 
+            this.lblReading.Location = new System.Drawing.Point(9, 665);
+            this.lblReading.Name = "lblReading";
+            this.lblReading.Size = new System.Drawing.Size(74, 19);
+            this.lblReading.StateCommon.ShortText.Font = new System.Drawing.Font("Consolas", 7.5F);
+            this.lblReading.StateCommon.ShortText.ImageStyle = Krypton.Toolkit.PaletteImageStyle.CenterLeft;
+            this.lblReading.TabIndex = 14;
+            this.lblReading.Values.Text = "- Reading";
+            // 
             // lblNoWork
             // 
             this.lblNoWork.Location = new System.Drawing.Point(9, 646);
@@ -119,6 +179,23 @@
             this.lblNoWork.StateCommon.ShortText.ImageStyle = Krypton.Toolkit.PaletteImageStyle.CenterLeft;
             this.lblNoWork.TabIndex = 13;
             this.lblNoWork.Values.Text = "- No Work";
+            // 
+            // lblPhase
+            // 
+            this.lblPhase.BackColor = System.Drawing.Color.Transparent;
+            this.lblPhase.DisplayText = "Test";
+            this.lblPhase.Location = new System.Drawing.Point(4, 573);
+            this.lblPhase.Margin = new System.Windows.Forms.Padding(4);
+            this.lblPhase.Name = "lblPhase";
+            this.lblPhase.ShowInTaskbar = true;
+            this.lblPhase.Size = new System.Drawing.Size(189, 26);
+            this.lblPhase.Step = 1;
+            this.lblPhase.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.lblPhase.TabIndex = 11;
+            this.lblPhase.TabStop = false;
+            this.lblPhase.Text = "Test";
+            this.lblPhase.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.lblPhase.TextColor = System.Drawing.SystemColors.ControlText;
             // 
             // kryptonLabel7
             // 
@@ -385,10 +462,10 @@
             this.kryptonLabel6.Location = new System.Drawing.Point(7, 482);
             this.kryptonLabel6.Margin = new System.Windows.Forms.Padding(4);
             this.kryptonLabel6.Name = "kryptonLabel6";
-            this.kryptonLabel6.Size = new System.Drawing.Size(140, 24);
+            this.kryptonLabel6.Size = new System.Drawing.Size(155, 24);
             this.kryptonLabel6.TabIndex = 4;
             this.kryptonLabel6.TabStop = false;
-            this.kryptonLabel6.Values.Text = "Estimate Time Left:";
+            this.kryptonLabel6.Values.Text = "Phase Time Left (est):";
             // 
             // lblSpeed
             // 
@@ -439,66 +516,6 @@
             this.tmrUpdate.Interval = 250;
             this.tmrUpdate.Tick += new System.EventHandler(this.tmrUpdate_Tick);
             // 
-            // lblReading
-            // 
-            this.lblReading.Location = new System.Drawing.Point(9, 665);
-            this.lblReading.Name = "lblReading";
-            this.lblReading.Size = new System.Drawing.Size(74, 19);
-            this.lblReading.StateCommon.ShortText.Font = new System.Drawing.Font("Consolas", 7.5F);
-            this.lblReading.StateCommon.ShortText.ImageStyle = Krypton.Toolkit.PaletteImageStyle.CenterLeft;
-            this.lblReading.TabIndex = 14;
-            this.lblReading.Values.Text = "- Reading";
-            // 
-            // lblWriting
-            // 
-            this.lblWriting.Location = new System.Drawing.Point(9, 684);
-            this.lblWriting.Name = "lblWriting";
-            this.lblWriting.Size = new System.Drawing.Size(74, 19);
-            this.lblWriting.StateCommon.ShortText.Font = new System.Drawing.Font("Consolas", 7.5F);
-            this.lblWriting.StateCommon.ShortText.ImageStyle = Krypton.Toolkit.PaletteImageStyle.CenterLeft;
-            this.lblWriting.TabIndex = 15;
-            this.lblWriting.Values.Text = "- Writing";
-            // 
-            // lblWriteDone
-            // 
-            this.lblWriteDone.Location = new System.Drawing.Point(9, 703);
-            this.lblWriteDone.Name = "lblWriteDone";
-            this.lblWriteDone.Size = new System.Drawing.Size(96, 19);
-            this.lblWriteDone.StateCommon.ShortText.Font = new System.Drawing.Font("Consolas", 7.5F);
-            this.lblWriteDone.StateCommon.ShortText.ImageStyle = Krypton.Toolkit.PaletteImageStyle.CenterLeft;
-            this.lblWriteDone.TabIndex = 16;
-            this.lblWriteDone.Values.Text = "- Write Done";
-            // 
-            // lblValidating
-            // 
-            this.lblValidating.Location = new System.Drawing.Point(9, 722);
-            this.lblValidating.Name = "lblValidating";
-            this.lblValidating.Size = new System.Drawing.Size(96, 19);
-            this.lblValidating.StateCommon.ShortText.Font = new System.Drawing.Font("Consolas", 7.5F);
-            this.lblValidating.StateCommon.ShortText.ImageStyle = Krypton.Toolkit.PaletteImageStyle.CenterLeft;
-            this.lblValidating.TabIndex = 17;
-            this.lblValidating.Values.Text = "- Validating";
-            // 
-            // lblFailed
-            // 
-            this.lblFailed.Location = new System.Drawing.Point(9, 741);
-            this.lblFailed.Name = "lblFailed";
-            this.lblFailed.Size = new System.Drawing.Size(67, 19);
-            this.lblFailed.StateCommon.ShortText.Font = new System.Drawing.Font("Consolas", 7.5F);
-            this.lblFailed.StateCommon.ShortText.ImageStyle = Krypton.Toolkit.PaletteImageStyle.CenterLeft;
-            this.lblFailed.TabIndex = 18;
-            this.lblFailed.Values.Text = "- Failed";
-            // 
-            // lblPassed
-            // 
-            this.lblPassed.Location = new System.Drawing.Point(9, 760);
-            this.lblPassed.Name = "lblPassed";
-            this.lblPassed.Size = new System.Drawing.Size(67, 19);
-            this.lblPassed.StateCommon.ShortText.Font = new System.Drawing.Font("Consolas", 7.5F);
-            this.lblPassed.StateCommon.ShortText.ImageStyle = Krypton.Toolkit.PaletteImageStyle.CenterLeft;
-            this.lblPassed.TabIndex = 19;
-            this.lblPassed.Values.Text = "- Passed";
-            // 
             // diskSectors1
             // 
             this.diskSectors1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -507,23 +524,6 @@
             this.diskSectors1.Name = "diskSectors1";
             this.diskSectors1.Size = new System.Drawing.Size(844, 791);
             this.diskSectors1.TabIndex = 0;
-            // 
-            // lblPhase
-            // 
-            this.lblPhase.BackColor = System.Drawing.Color.Transparent;
-            this.lblPhase.DisplayText = "Test";
-            this.lblPhase.Location = new System.Drawing.Point(4, 573);
-            this.lblPhase.Margin = new System.Windows.Forms.Padding(4);
-            this.lblPhase.Name = "lblPhase";
-            this.lblPhase.ShowInTaskbar = true;
-            this.lblPhase.Size = new System.Drawing.Size(189, 26);
-            this.lblPhase.Step = 1;
-            this.lblPhase.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
-            this.lblPhase.TabIndex = 11;
-            this.lblPhase.TabStop = false;
-            this.lblPhase.Text = "Test";
-            this.lblPhase.TextAlignment = System.Drawing.StringAlignment.Center;
-            this.lblPhase.TextColor = System.Drawing.SystemColors.ControlText;
             // 
             // DiskStatsView
             // 

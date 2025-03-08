@@ -131,13 +131,24 @@ public class StorageDeviceWrapperEx : DeviceIoWrapperBase
             RawDeviceProperties = descriptor.RawDeviceProperties
         };
         if (returnValue.SerialNumberOffset != 0)
+        {
             returnValue.SerialNumber = ReadNullTerminatedAsciiString(res, (int)returnValue.SerialNumberOffset);
+        }
+
         if (returnValue.VendorIdOffset != 0)
+        {
             returnValue.VendorId = ReadNullTerminatedAsciiString(res, (int)returnValue.VendorIdOffset);
+        }
+
         if (returnValue.ProductIdOffset != 0)
+        {
             returnValue.ProductId = ReadNullTerminatedAsciiString(res, (int)returnValue.ProductIdOffset);
+        }
+
         if (returnValue.ProductRevisionOffset != 0)
+        {
             returnValue.ProductRevision = ReadNullTerminatedAsciiString(res, (int)returnValue.ProductRevisionOffset);
+        }
 
 
         return returnValue;

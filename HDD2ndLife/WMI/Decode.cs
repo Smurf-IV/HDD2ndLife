@@ -108,6 +108,13 @@ internal static class Decode
     {
         var caps = new StringBuilder();
 
+        foreach (var capability in powerManagementCapabilities)
+        {
+            caps.Append(Action(capability)).Append(", ");
+        }
+
+        return caps;
+
         static string Action(int x)
         {
             return x switch
@@ -123,13 +130,6 @@ internal static class Decode
                 _ => $@"Decode Unknown ({x})"
             };
         }
-
-        foreach (var capability in powerManagementCapabilities)
-        {
-            caps.Append(Action(capability)).Append(", ");
-        }
-
-        return caps;
     }
 
     /// <summary>
@@ -305,6 +305,39 @@ internal static class Decode
             21 => @"Quiesce(21)",
             _ => $@"Decode Unknown ({availability})"
         };
+    }
+
+    public static StringBuilder Capabilities(ushort[] capabilities)
+    {
+        var caps = new StringBuilder();
+
+        foreach (var capability in capabilities)
+        {
+            caps.Append(Action(capability)).Append(", ");
+        }
+
+        return caps;
+
+        static string Action(int x)
+        {
+            return x switch
+            {
+                0 => @"Unknown(0)",
+                1 => @"Other(1)",
+                2 => @"Sequential Access(2)",
+                3 => @"Random Access(3)",
+                4 => @"Supports Writing(4)",
+                5 => @"Encryption(5)",
+                6 => @"Compression(6)",
+                7 => @"Supports Removable Media(7)",
+                8 => @"Manual Cleaning(8)",
+                9 => @"Automatic Cleaning(9)",
+                10 => @"SMART Notification(10)",
+                11 => @"Supports Dual Sided Media(11)",
+                12 => @"Predismount Eject Not Required (12)",
+                _ => $@"Decode Unknown ({x})"
+            };
+        }
     }
 
 }

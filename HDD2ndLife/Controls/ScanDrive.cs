@@ -28,14 +28,13 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Clifton.Collections.Generic;
+using AverageBuddy;
 
 using HDD2ndLife.Annotations;
 using HDD2ndLife.WMI;
@@ -55,10 +54,11 @@ internal enum ScanType
     Pass2
 }
 
+
 internal class ScanDrive : INotifyPropertyChanged
 {
     private static readonly Logger Log = LogManager.GetCurrentClassLogger();
-    private static int AVERAGE_BUFFER_SIZE = 64;
+    private static int AVERAGE_BUFFER_SIZE = 500;
     internal static long DISK_BUFFER_SIZE = 1024 * 1024;  // Seems to be "Optimum" for Sata II HDD and PCIE cards, giving > 95% read utilisation
 
     private readonly ScanType scanType;
@@ -66,8 +66,9 @@ internal class ScanDrive : INotifyPropertyChanged
     private readonly int speedOption;
     private readonly string deviceId;
     private readonly CancellationTokenSource cancelTokenSrc;
-    private CircularList<long> lastTimeRemaining;
-    private CircularList<double> lastSpeedInMBytesPerSec;
+
+    private Averager<long> lastTimeRemaining;
+    private Averager<double> lastSpeedInBytesPerSec;
 
     public ScanDrive(ScanType scanType, Action completionAction, bool failFirst, int speedOption, string deviceId)
     {
@@ -77,13 +78,11 @@ internal class ScanDrive : INotifyPropertyChanged
         this.deviceId = deviceId;
         cancelTokenSrc = new CancellationTokenSource();
         cancelTokenSrc.Token.Register(completionAction);
-        lastTimeRemaining = new CircularList<long>(AVERAGE_BUFFER_SIZE);
-        lastTimeRemaining.SetAll(0);
-        lastSpeedInMBytesPerSec = new CircularList<double>(AVERAGE_BUFFER_SIZE);
-        lastSpeedInMBytesPerSec.SetAll(0);
+        lastTimeRemaining = new Averager<long>(AVERAGE_BUFFER_SIZE, 0L);
+        lastSpeedInBytesPerSec = new Averager<double>(AVERAGE_BUFFER_SIZE, 0.0);
     }
 
-    public double SpeedInMBytesPerSec => lastSpeedInMBytesPerSec.Average();
+    public double SpeedInBytesPerSec => lastSpeedInBytesPerSec.Average();
     public TimeSpan TimeRemaining => TimeSpan.FromTicks((long)lastTimeRemaining.Average());
 
     private long currentCluster;
@@ -249,11 +248,9 @@ internal class ScanDrive : INotifyPropertyChanged
             disk.WriteClusters(buffer, currentCluster);
             sw.Stop();
             GC.EndNoGCRegion();
-            var elapsedTicks = sw.Elapsed.Ticks;
-            lastSpeedInMBytesPerSec.Value = (buffer.Length / elapsedTicks) * 10; // Sw.Elapsed.Ticks are always the same distance
-            lastSpeedInMBytesPerSec.Next();
-            lastTimeRemaining.Value = (clusterCount - currentCluster) * elapsedTicks / multiplier;
-            lastTimeRemaining.Next();
+            var timeSpan = sw.Elapsed;
+            lastSpeedInBytesPerSec.Add((buffer.Length / timeSpan.TotalSeconds));
+            lastTimeRemaining.Add((clusterCount - currentCluster) * timeSpan.Ticks / multiplier);
             return true;
         }
         catch (IOException ex1)
@@ -296,7 +293,9 @@ internal class ScanDrive : INotifyPropertyChanged
                 {
                     SetScaledClusterStatus(currentScaledCluster, BlockStatus.Failed);
                     if (failFirst)
+                    {
                         return false;
+                    }
                 }
                 // TODO: When doing a verify the disk read utilisation drops from 98% down to 85%
                 else if (checkPattern != null!)
@@ -306,7 +305,9 @@ internal class ScanDrive : INotifyPropertyChanged
                     {
                         SetScaledClusterStatus(currentScaledCluster, BlockStatus.Failed);
                         if (failFirst)
+                        {
                             return false;
+                        }
                         // TODO: Add to the list of failed sectors
                     }
                     else
@@ -336,7 +337,9 @@ internal class ScanDrive : INotifyPropertyChanged
                 {
                     SetScaledClusterStatus(currentScaledCluster, BlockStatus.Failed);
                     if (failFirst)
+                    {
                         return false;
+                    }
                 }
                 else if (checkPattern != null!)
                 {
@@ -345,7 +348,9 @@ internal class ScanDrive : INotifyPropertyChanged
                     {
                         SetScaledClusterStatus(currentScaledCluster, BlockStatus.Failed);
                         if (failFirst)
+                        {
                             return false;
+                        }
                     }
                     else
                     {
@@ -379,11 +384,9 @@ internal class ScanDrive : INotifyPropertyChanged
             double read = disk.ReadClusters(buffer, 0, currentCluster, (int)multiplier);
             sw.Stop();
             GC.EndNoGCRegion();
-            var elapsedTicks = sw.Elapsed.Ticks;
-            lastSpeedInMBytesPerSec.Value = (read / elapsedTicks) * 10; // Sw.Elapsed.Ticks are always the same distance
-            lastSpeedInMBytesPerSec.Next();
-            lastTimeRemaining.Value = (clusterCount - currentCluster) * elapsedTicks / multiplier;
-            lastTimeRemaining.Next();
+            var timeSpan = sw.Elapsed;
+            lastSpeedInBytesPerSec.Add((buffer.Length / timeSpan.TotalSeconds));
+            lastTimeRemaining.Add((clusterCount - currentCluster) * timeSpan.Ticks / multiplier);
             if (read < bufferLength)
             {
                 throw new FileLoadException($@"read != buffer.Length. [{read}] != [{buffer.Length}]");

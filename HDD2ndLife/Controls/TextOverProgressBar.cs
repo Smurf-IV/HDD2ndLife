@@ -54,13 +54,14 @@ public class TextOverProgressBar : Windows7ProgressBar
                     Invalidate();
                 }
                 if (InvokeRequired)
+                {
                     BeginInvoke((MethodInvoker)SetText);
+                }
                 else
                 {
                     SetText();
                 }
             }
-
         }
     }
 
@@ -100,7 +101,9 @@ public class TextOverProgressBar : Windows7ProgressBar
                 }
 
                 if (InvokeRequired)
+                {
                     BeginInvoke((MethodInvoker)SetState);
+                }
                 else
                 {
                     SetState();
@@ -132,7 +135,9 @@ public class TextOverProgressBar : Windows7ProgressBar
             }
 
             if (InvokeRequired)
+            {
                 BeginInvoke((MethodInvoker)SetStyle1);
+            }
             else
             {
                 SetStyle1();
@@ -160,7 +165,6 @@ public class TextOverProgressBar : Windows7ProgressBar
         e.Graphics.FillRectangle(rgBrush, rec);
     }
 
-
     private void AnimateTimer_OnTick(object sender, EventArgs e)
     {
         if (marqueeTimer.Interval != MarqueeAnimationSpeed)
@@ -183,7 +187,6 @@ public class TextOverProgressBar : Windows7ProgressBar
             }
             Refresh();
         }
-
     }
 
     #region No Style implemented Workaround (i.e. via RDP)

@@ -307,9 +307,14 @@ internal class DiskExGet
             //public int Reserved1;
             details.Append("\t\t").Append("Attributes: ").AppendLine(da1.Attributes.ToString());
             if ((da1.Attributes & 1) == 1)
+            {
                 details.Append("\t\t").Append("Attributes: ").AppendLine(@"DISK_ATTRIBUTE_OFFLINE");
+            }
+
             if ((da1.Attributes & 2) == 2)
+            {
                 details.Append("\t\t").Append("Attributes: ").AppendLine(@"DISK_ATTRIBUTE_READ_ONLY");
+            }
         }
 
         if (vip.HasValue)

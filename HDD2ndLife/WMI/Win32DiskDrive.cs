@@ -178,9 +178,9 @@ internal class Win32DiskDrive
         details.AppendLine(Caption);
         details.Append('\t').Append("Availability: ").Append(Decode.Availability(Availability)).AppendLine();
         details.Append('\t').Append("BytesPerSector: ").Append(BytesPerSector).AppendLine();
-        details.Append('\t').Append("Capabilities: ").Append(Capabilities).AppendLine();
+        details.Append('\t').Append("Capabilities: ").Append(Decode.Capabilities(Capabilities)).AppendLine();
         details.Append('\t').Append("CapabilityDescriptions: ").Append(string.Join(", ", CapabilityDescriptions)).AppendLine();
-        details.Append('\t').Append("CompressionMethod: ").Append(CompressionMethod).AppendLine();
+        details.Append('\t').Append("CompressionMethod: ").Append(CompressionMethod??"N/A").AppendLine();
         details.Append('\t').Append("ConfigManagerErrorCode: ").Append(Decode.ConfigManagerErrorCode(ConfigManagerErrorCode)).AppendLine();
         details.Append('\t').Append("ConfigManagerUserConfig: ").Append(ConfigManagerUserConfig).AppendLine();
         details.Append('\t').Append("CreationClassName: ").Append(CreationClassName).AppendLine();
@@ -188,9 +188,9 @@ internal class Win32DiskDrive
         details.Append('\t').Append("Description: ").Append(Description).AppendLine();
         details.Append('\t').Append("DeviceId: ").Append(DeviceId).AppendLine();
         details.Append('\t').Append("ErrorCleared: ").Append(ErrorCleared).AppendLine();
-        details.Append('\t').Append("ErrorDescription: ").Append(ErrorDescription).AppendLine();
-        details.Append('\t').Append("ErrorMethodology: ").Append(ErrorMethodology).AppendLine();
-        details.Append('\t').Append("FirmwareRevision: ").Append(FirmwareRevision).AppendLine();
+        details.Append('\t').Append("ErrorDescription: ").Append(ErrorDescription??"N/A").AppendLine();
+        details.Append('\t').Append("ErrorMethodology: ").Append(ErrorMethodology ?? "N/A").AppendLine();
+        details.Append('\t').Append("FirmwareRevision: ").Append(FirmwareRevision ?? "N/A").AppendLine();
         details.Append('\t').Append("Index: ").Append(Index).AppendLine();
         details.Append('\t').Append("InterfaceType: ").Append(InterfaceType).AppendLine();
         details.Append('\t').Append("InstallDate: ").Append(InstallDate.ToString("u")).AppendLine();
@@ -229,6 +229,4 @@ internal class Win32DiskDrive
 
         return details.ToString();
     }
-
-
 }

@@ -91,11 +91,15 @@ public class DiskSectors : Control  // Try and use the "Lowest" fastest UI acces
         }
     }
 
-
     public void SetScaledClusterStatus(long readOffset, BlockStatus status)
     {
         var row = Math.DivRem(readOffset, CLUSTERS_PER_VECTOR, out var offset);
-        clusterStatus[row][sections[offset]] = (long)status;
+        var curStat = clusterStatus[row][sections[offset]];
+        if (curStat != (long)BlockStatus.Failed)
+        {
+            // Only set if not failed
+            clusterStatus[row][sections[offset]] = (long)status;
+        }
     }
 
     private int columnCount;
@@ -108,7 +112,7 @@ public class DiskSectors : Control  // Try and use the "Lowest" fastest UI acces
     {
         columnCount = Math.Max((Width / BLOCK_SIZE) - 1, 1);
         rowCount = Math.Max((Height / BLOCK_SIZE) - 2, 1);
-        #region Make sure that if the drive blocks out numbers the clusters it does not fill the scren with rubbish
+        #region Make sure that if the drive blocks out numbers the clusters it does not fill the screen with rubbish
         while (0 >= clusterStatus.LongLength / (columnCount * rowCount)
                && rowCount > 2)
         {
@@ -131,7 +135,10 @@ public class DiskSectors : Control  // Try and use the "Lowest" fastest UI acces
             {
                 var statusOffset = (yOffset + column) * scale;
                 if (statusOffset > clusterStatus.LongLength)
+                {
                     break;
+                }
+
                 long current = 0;
                 for (var count = 0;
                      statusOffset < clusterStatus.LongLength && count < scale;
@@ -197,7 +204,10 @@ public class DiskSectors : Control  // Try and use the "Lowest" fastest UI acces
     {
         base.OnMouseDown(e);
         if (e.Button != MouseButtons.Left)
+        {
             return;
+        }
+
         startCell = FindClosestCell(e.Location);
         lastCell = startCell;
         mouseSelecting = true;
@@ -207,11 +217,16 @@ public class DiskSectors : Control  // Try and use the "Lowest" fastest UI acces
     {
         base.OnMouseMove(e);
         if (!mouseSelecting)
+        {
             return;
+        }
+
         // Find the cell closest
         Point closestCell = FindClosestCell(e.Location);
         if (SetStatesFromLastToThis(closestCell))
+        {
             lastCell = closestCell;
+        }
     }
 
     private Point FindClosestCell(Point eLocation)
@@ -227,7 +242,9 @@ public class DiskSectors : Control  // Try and use the "Lowest" fastest UI acces
     {
         // TODO: Deal with the closestCell being smaller than the Start !
         if (closestCell.Y < startCell.Y)
+        {
             return false;
+        }
 
         if ((closestCell.Y < lastCell.Y)
             || ((closestCell.Y == lastCell.Y)
@@ -242,17 +259,24 @@ public class DiskSectors : Control  // Try and use the "Lowest" fastest UI acces
                 // Remove from end to last last to the end
                 for (var xSteps = lastCell.X; xSteps >= 0; xSteps--)
                     if (Blocks[xSteps, lastCell.Y] != BlockStatus.Failed)
+                    {
                         Blocks[xSteps, lastCell.Y] = BlockStatus.Passed;
+                    }
+
                 for (var xSteps = columnCount - 1; xSteps > lastCell.X; xSteps--)
                     if (Blocks[xSteps, lastCell.Y] != BlockStatus.Failed)
+                    {
                         Blocks[xSteps, lastCell.Y] = BlockStatus.Passed;
+                    }
             }
             else
             {
                 // Remove from last to here
                 for (var xSteps = lastCell.X; xSteps >= closestCell.X; xSteps--)
                     if (Blocks[xSteps, lastCell.Y] != BlockStatus.Failed)
+                    {
                         Blocks[xSteps, lastCell.Y] = BlockStatus.Passed;
+                    }
             }
 
             if (rows > 1)
@@ -262,7 +286,9 @@ public class DiskSectors : Control  // Try and use the "Lowest" fastest UI acces
                 {
                     for (var xSteps = 0; xSteps < columnCount; xSteps++)
                         if (Blocks[xSteps, ySteps] != BlockStatus.Failed)
+                        {
                             Blocks[xSteps, ySteps] = BlockStatus.Passed;
+                        }
                 }
             }
 
@@ -271,8 +297,9 @@ public class DiskSectors : Control  // Try and use the "Lowest" fastest UI acces
                 // Remove last row to the current X
                 for (var xSteps = columnCount - 1; xSteps > closestCell.X; xSteps--)
                     if (Blocks[xSteps, closestCell.Y] != BlockStatus.Failed)
+                    {
                         Blocks[xSteps, closestCell.Y] = BlockStatus.Passed;
-
+                    }
             }
         }
 
@@ -290,7 +317,9 @@ public class DiskSectors : Control  // Try and use the "Lowest" fastest UI acces
                 // Fill in from last to the end
                 for (var xSteps = startCell.X; xSteps < columnCount; xSteps++)
                     if (Blocks[xSteps, lastCell.Y] != BlockStatus.Failed)
+                    {
                         Blocks[xSteps, lastCell.Y] = BlockStatus.Selected;
+                    }
             }
 
             if (rows > 1)
@@ -300,7 +329,9 @@ public class DiskSectors : Control  // Try and use the "Lowest" fastest UI acces
                 {
                     for (var xSteps = 0; xSteps < columnCount; xSteps++)
                         if (Blocks[xSteps, ySteps] != BlockStatus.Failed)
+                        {
                             Blocks[xSteps, ySteps] = BlockStatus.Selected;
+                        }
                 }
             }
 
@@ -309,14 +340,18 @@ public class DiskSectors : Control  // Try and use the "Lowest" fastest UI acces
                 // Fill in from last row to the current X
                 for (var xSteps = 0; xSteps <= closestCell.X; xSteps++)
                     if (Blocks[xSteps, closestCell.Y] != BlockStatus.Failed)
+                    {
                         Blocks[xSteps, closestCell.Y] = BlockStatus.Selected;
+                    }
             }
             else
             {
                 // Fill from last to here
                 for (var xSteps = startCell.X; xSteps <= closestCell.X; xSteps++)
                     if (Blocks[xSteps, closestCell.Y] != BlockStatus.Failed)
+                    {
                         Blocks[xSteps, closestCell.Y] = BlockStatus.Selected;
+                    }
             }
         }
         Invalidate();
@@ -334,7 +369,7 @@ public class DiskSectors : Control  // Try and use the "Lowest" fastest UI acces
 public enum BlockStatus
 {
     // Try not to use more than 3 bits
-    // because th max amount of storage a single entity can have is 2GB of memory,
+    // because the max amount of storage a single entity can have is 2GB of memory,
     // Therefore trying to store the status of a 12TB drive with 512 Bytes per sector
     // Results in a large cluster count size, which far exceeds the "GB Mem limit".
     Unused = 0,
