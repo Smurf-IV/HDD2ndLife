@@ -1,99 +1,104 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
-  <PropertyGroup>
-    <TargetFrameworks>net10.0-windows7</TargetFrameworks>
-    <OutputType>WinExe</OutputType>
-    <ApplicationIcon>HDD2ndLife.ico</ApplicationIcon>
-    <RootNamespace>HDD2ndLife</RootNamespace>
-    <AssemblyName>HDD2ndLife</AssemblyName>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <UseWindowsForms>true</UseWindowsForms>
-    <PlatformTarget>x64</PlatformTarget>
-    <InstallerPlatform>x64</InstallerPlatform>
-    <NeutralLanguage>en</NeutralLanguage>
-    <LangVersion>preview</LangVersion>
-    <Platforms>x64</Platforms>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-  </PropertyGroup>
-  
-  <ItemGroup>
-    <Compile Update="Controls\DiskSectors.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Controls\DiskStatsView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="Controls\TextOverProgressBar.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="Properties\Resources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Update="Properties\Settings.Designer.cs">
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-    <Compile Update="Thirdparty\wyDay.Controls\Windows7ProgressBar.cs">
-      <SubType>Component</SubType>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="HDD2ndLife.ico" />
-    <Content Include="Thirdparty\wyDay.Controls\License.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="ByteSize" Version="2.1.2" />
-    <PackageReference Include="Exceptionless.NLog" Version="6.1.0" />
-    <PackageReference Include="Exceptionless.Windows" Version="6.1.0" />
-    <PackageReference Include="Krypton.Toolkit.Lite" Version="100.26.1.19" />
-    <PackageReference Include="LoadingIndicator.Winforms" Version="1.2.0" />
-    <PackageReference Include="NLog" Version="6.1.2" />
-    <PackageReference Include="System.Management" Version="9.0.2" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DeviceIOControlLib\DeviceIOControlLib.csproj" />
-    <ProjectReference Include="..\RawDiskLib\RawDiskLib.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="NLog.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <PropertyGroup>
-    <PostBuildEvent>md V:\GitHub\Smurf-IV\HDD2ndLife\HDD2ndLife\bin\x64\Debug\net10.0-windows7
-xcopy Z:\GitHub\Smurf-IV\HDD2ndLife\HDD2ndLife\bin\x64\Debug\net10.0-windows7\*.* X:\GitHub\Smurf-IV\HDD2ndLife\HDD2ndLife\bin\x64\Debug\net10.0-windows7 /I /C /Y /D /E
-    </PostBuildEvent>
-    <EnableNETAnalyzers>True</EnableNETAnalyzers>
-    <AnalysisLevel>latest</AnalysisLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net48-windows7|x64'">
-    <DebugType>full</DebugType>
-    <IsPublishable>False</IsPublishable>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-windows7|x64'">
-    <DebugType>full</DebugType>
-    <WarningLevel>8</WarningLevel>
-    <IsPublishable>False</IsPublishable>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net48-windows7|x64'">
-    <DebugType>full</DebugType>
-    <IsPublishable>False</IsPublishable>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-windows7|x64'">
-    <DebugType>full</DebugType>
-    <WarningLevel>8</WarningLevel>
-    <IsPublishable>False</IsPublishable>
-  </PropertyGroup>
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net10.0-windows7</TargetFramework>
+		<OutputType>WinExe</OutputType>
+		<ApplicationIcon>HDD2ndLife.ico</ApplicationIcon>
+		<RootNamespace>HDD2ndLife</RootNamespace>
+		<AssemblyName>HDD2ndLife</AssemblyName>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<UseWindowsForms>true</UseWindowsForms>
+		<PlatformTarget>x64</PlatformTarget>
+		<InstallerPlatform>x64</InstallerPlatform>
+		<NeutralLanguage>en</NeutralLanguage>
+		<LangVersion>preview</LangVersion>
+		<Platforms>x64</Platforms>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Update="Controls\DiskSectors.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="Controls\DiskStatsView.cs">
+			<SubType>UserControl</SubType>
+		</Compile>
+		<Compile Update="Controls\TextOverProgressBar.cs">
+			<SubType>Component</SubType>
+		</Compile>
+		<Compile Update="Properties\Resources.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Resources.resx</DependentUpon>
+		</Compile>
+		<Compile Update="Properties\Settings.Designer.cs">
+			<DesignTimeSharedInput>True</DesignTimeSharedInput>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Settings.settings</DependentUpon>
+		</Compile>
+		<Compile Update="Thirdparty\wyDay.Controls\Windows7ProgressBar.cs">
+			<SubType>Component</SubType>
+		</Compile>
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="HDD2ndLife.ico" />
+		<Content Include="Thirdparty\wyDay.Controls\License.txt" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Include="DeviceIOControlLib\DeviceIOControlLib.csproj" />
+	  <None Include="RawDiskLib\RawDiskLib.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="ByteSize" Version="2.1.2" />
+		<PackageReference Include="Exceptionless.NLog" Version="6.1.0" />
+		<PackageReference Include="Exceptionless.Windows" Version="6.1.0" />
+		<PackageReference Include="Krypton.Toolkit.Lite" Version="100.26.1.19" />
+		<PackageReference Include="LoadingIndicator.Winforms" Version="1.2.0" />
+		<PackageReference Include="NLog" Version="6.1.2" />
+		<PackageReference Include="System.Management" Version="10.0.5" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\DeviceIOControlLib\DeviceIOControlLib.csproj" />
+		<ProjectReference Include="..\RawDiskLib\RawDiskLib.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Update="Properties\Resources.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
+	<ItemGroup>
+		<None Update="NLog.config">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="Properties\Settings.settings">
+			<Generator>SettingsSingleFileGenerator</Generator>
+			<LastGenOutput>Settings.Designer.cs</LastGenOutput>
+		</None>
+	</ItemGroup>
+	<PropertyGroup>
+		<PostBuildEvent>
+			md V:\GitHub\Smurf-IV\HDD2ndLife\HDD2ndLife\bin\x64\Debug\net10.0-windows7
+			xcopy Z:\GitHub\Smurf-IV\HDD2ndLife\HDD2ndLife\bin\x64\Debug\net10.0-windows7\*.* X:\GitHub\Smurf-IV\HDD2ndLife\HDD2ndLife\bin\x64\Debug\net10.0-windows7 /I /C /Y /D /E
+		</PostBuildEvent>
+		<EnableNETAnalyzers>True</EnableNETAnalyzers>
+		<AnalysisLevel>latest</AnalysisLevel>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net48-windows7|x64'">
+		<DebugType>full</DebugType>
+		<IsPublishable>False</IsPublishable>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-windows7|x64'">
+		<DebugType>full</DebugType>
+		<WarningLevel>8</WarningLevel>
+		<IsPublishable>False</IsPublishable>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net48-windows7|x64'">
+		<DebugType>full</DebugType>
+		<IsPublishable>False</IsPublishable>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net9.0-windows7|x64'">
+		<DebugType>full</DebugType>
+		<WarningLevel>8</WarningLevel>
+		<IsPublishable>False</IsPublishable>
+	</PropertyGroup>
 </Project>

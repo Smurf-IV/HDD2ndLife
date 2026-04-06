@@ -109,11 +109,6 @@
         </File>
       </Component>
       <Component>
-        <File Source="$(var.MgtSource)\System.CodeDom.dll" KeyPath="yes" >
-          <netfx:NativeImage Id="ngen.System.CodeDom" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
-        </File>
-      </Component>
-      <Component>
         <File Source="$(var.MgtSource)\System.Management.dll" KeyPath="yes" >
           <netfx:NativeImage Id="ngen.System.Management" Platform="all" Priority="2" AppBaseDirectory="INSTALLDIR" />
         </File>
@@ -134,7 +129,7 @@
 
     <ComponentGroup Id="ClientRunTime">
       <Component Directory="Runtime">
-        <File Id="System.Management.dll_runtime" Source="$(var.MgtSource)\runtimes\win\lib\net9.0\System.Management.dll" KeyPath="yes" />
+        <File Id="System.Management.dll_runtime" Source="$(var.MgtSource)\runtimes\win\lib\net10.0\System.Management.dll" KeyPath="yes" />
       </Component>
     </ComponentGroup>
 

@@ -58,8 +58,8 @@ using System.Runtime.InteropServices;
 // You can specify all the values, or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("25.3.80.2")]
-[assembly: AssemblyFileVersion("25.3.81.2")]   // used by the installer
+[assembly: AssemblyVersion("26.4.7.6")]
+[assembly: AssemblyFileVersion("26.4.7.6")]   // used by the installer
 
 // TODO: Add more relevant hints here
 [assembly: Dependency("System", LoadHint.Always)]

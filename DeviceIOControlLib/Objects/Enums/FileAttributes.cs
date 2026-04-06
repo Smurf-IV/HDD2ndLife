@@ -6,7 +6,6 @@ namespace DeviceIOControlLib.Objects.Enums
     /// File attributes are metadata values stored by the file system on disk and are used by the system and are available to developers via various file I/O APIs.
     /// </summary>
     [Flags]
-    [CLSCompliant(false)]
     public enum FileAttributes : uint
     {
         /// <summary>
