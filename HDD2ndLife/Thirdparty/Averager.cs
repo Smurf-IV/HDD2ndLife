@@ -1,6 +1,5 @@
 using System.Diagnostics;
 using System.Numerics;
-using System.Threading;
 
 using Array = System.Array;
 
@@ -24,7 +23,7 @@ public sealed class Averager<T> where T :struct, /*IDivisionOperators<T, int, T>
 
     private int NextIndex { get; set; }
 
-    private readonly Lock _lock = new();
+    private readonly object @lock = new();
 
     #endregion //Fields
 
@@ -33,12 +32,12 @@ public sealed class Averager<T> where T :struct, /*IDivisionOperators<T, int, T>
     /// <summary>
     /// this holds the history
     /// </summary>
-    private T[] _history;
+    private T[] history;
 
     /// <summary>
     /// The max sample size we want
     /// </summary>
-    private int _maxSize;
+    private int maxSize;
 
     /// <summary>
     /// Set the size of the `Averager` by seconds instead of sample size
@@ -46,7 +45,7 @@ public sealed class Averager<T> where T :struct, /*IDivisionOperators<T, int, T>
     /// </summary>
     public float MaxSeconds
     {
-        set => _maxSize = ToFrames(value);
+        set => maxSize = ToFrames(value);
     }
 
     #endregion //Members
@@ -60,12 +59,12 @@ public sealed class Averager<T> where T :struct, /*IDivisionOperators<T, int, T>
         //start the index at -1 so we can tell if this is the first entry
         NextIndex = -1;
 
-        _maxSize = sampleSize;
+        maxSize = sampleSize;
 
-        lock (_lock)
+        lock (@lock)
         {
-            _history = new T[_maxSize];
-            Array.Fill(_history, zero);
+            history = new T[maxSize];
+            Array.Fill(history, zero);
         }
     }
 
@@ -85,9 +84,9 @@ public sealed class Averager<T> where T :struct, /*IDivisionOperators<T, int, T>
     /// <param name="currentValue">the value for the `Averager` to return</param>
     public void Set(T currentValue)
     {
-        lock (_lock)
+        lock (@lock)
         {
-            Array.Fill(_history, currentValue);
+            Array.Fill(history, currentValue);
         }
     }
 
@@ -111,17 +110,17 @@ public sealed class Averager<T> where T :struct, /*IDivisionOperators<T, int, T>
     public void Add(T mostRecentValue)
     {
         //add the new value to the correct index
-        lock (_lock)
+        lock (@lock)
         {
             //increment first 
             NextIndex++;
-            if (NextIndex >= _maxSize)
+            if (NextIndex >= maxSize)
             {
                 NextIndex = 0;
             }
 
-            Debug.Assert(NextIndex < _history.Length);
-            _history[NextIndex] = mostRecentValue;
+            Debug.Assert(NextIndex < history.Length);
+            history[NextIndex] = mostRecentValue;
         }
     }
 
@@ -131,17 +130,17 @@ public sealed class Averager<T> where T :struct, /*IDivisionOperators<T, int, T>
     /// <returns></returns>
     public T Average()
     {
-        lock (_lock)
+        lock (@lock)
         {
             // This is the first item, use this instead of zero.
-            T sum = _history[0];
-            for (int i = 1; i < _maxSize; i++)
+            T sum = history[0];
+            for (int i = 1; i < maxSize; i++)
             {
-                sum += _history[i];
+                sum += history[i];
             }
 
-            Set((dynamic)sum / _maxSize);
-            return _history[0];
+            Set((dynamic)sum / maxSize);
+            return history[0];
         }
     }
 

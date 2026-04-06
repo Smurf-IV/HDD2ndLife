@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="MainForm.cs" company="Smurf-IV">
 // 
-//  Copyright (C) 2020 - 2025 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2020 - 2026 Simon Coghlan (Aka Smurf-IV)
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -50,7 +50,7 @@ namespace HDD2ndLife;
 
 public partial class MainForm : KryptonForm
 {
-    private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+    private static readonly Logger s_log = LogManager.GetCurrentClassLogger();
     private readonly LongOperation longOperation;
 
     public MainForm()
@@ -138,12 +138,12 @@ public partial class MainForm : KryptonForm
             Icon iconForFile = SystemIcons.WinLogo;
             Invoke(() => driveImageList.Images.Add(iconForFile));
 
-            Log.Debug("Create the root node.");
+            s_log.Debug("Create the root node.");
             var tvwRoot = new TreeNode { Text = Environment.MachineName, ImageIndex = 0 };
             tvwRoot.SelectedImageIndex = tvwRoot.ImageIndex;
             BeginInvoke(() => driveTree.Nodes.Add(tvwRoot));
 
-            Log.Debug("Now we need to add any children to the root node.");
+            s_log.Debug("Now we need to add any children to the root node.");
             foreach (Win32DiskDrive deviceInfo in Win32DiskDrive.Retrieve())
             {
                 try
@@ -152,7 +152,7 @@ public partial class MainForm : KryptonForm
                 }
                 catch (Exception ex)
                 {
-                    Log.Warn(ex, "A storage device failed to enumerate.");
+                    s_log.Warn(ex, "A storage device failed to enumerate.");
                 }
             }
 
@@ -160,7 +160,7 @@ public partial class MainForm : KryptonForm
         }
         catch (Exception ex)
         {
-            Log.Fatal(ex, @"StartTree Threw:");
+            s_log.Fatal(ex, @"StartTree Threw:");
         }
     }
 

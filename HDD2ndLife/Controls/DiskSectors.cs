@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="DiskSectors.cs" company="Smurf-IV">
 // 
-//  Copyright (C) 2020 - 2025 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2020 - 2026 Simon Coghlan (Aka Smurf-IV)
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ namespace HDD2ndLife.Controls;
 
 public class DiskSectors : Control  // Try and use the "Lowest" fastest UI access
 {
-    private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+    private static readonly Logger s_log = LogManager.GetCurrentClassLogger();
     private readonly int BLOCK_SIZE;
     private const int CLUSTERS_PER_VECTOR = 64 / 3; // 64 bits / (5 represented in binary bits)
     private readonly BitVector64.Section[] sections = new BitVector64.Section[CLUSTERS_PER_VECTOR];
@@ -77,7 +77,7 @@ public class DiskSectors : Control  // Try and use the "Lowest" fastest UI acces
         set
         {
             var length = (int)Math.Max(1, Math.Ceiling(value * 1.0 / CLUSTERS_PER_VECTOR));
-            Log.Debug(@"ScaledClusterCount with [{0}], resulted in length of [{1}]", value, length);
+            s_log.Debug(@"ScaledClusterCount with [{0}], resulted in length of [{1}]", value, length);
             clusterStatus = new BitVector64[length];
             for (long index = 0; index < clusterStatus.Length; index++)
             {
@@ -362,7 +362,7 @@ public class DiskSectors : Control  // Try and use the "Lowest" fastest UI acces
     {
         mouseSelecting = false;
         base.OnMouseUp(e);
-        Log.Debug(@"Selected from [{0}] to [{1}]", startCell, lastCell);
+        s_log.Debug(@"Selected from [{0}] to [{1}]", startCell, lastCell);
     }
 }
 

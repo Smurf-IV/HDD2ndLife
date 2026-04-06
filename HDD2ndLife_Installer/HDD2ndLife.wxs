@@ -4,7 +4,7 @@
      xmlns:util="http://schemas.microsoft.com/wix/UtilExtension"
     >
 
-  <?define MgtSource=$(sys.SOURCEFILEDIR)..\HDD2ndLife\bin\x64\Release\net9.0-windows7 ?>
+  <?define MgtSource=$(sys.SOURCEFILEDIR)..\HDD2ndLife\bin\x64\Release\net10.0-windows7 ?>
 
   <Fragment>
 
@@ -12,7 +12,7 @@
       <Directory Id="r" Name="runtimes">
         <Directory Id="w" Name="win" >
           <Directory Id="l" Name="lib" >
-            <Directory Id="Runtime" Name="net9.0" />
+            <Directory Id="Runtime" Name="net10.0" />
           </Directory>
         </Directory>
       </Directory>

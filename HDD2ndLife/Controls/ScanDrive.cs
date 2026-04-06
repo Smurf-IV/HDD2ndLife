@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="ScanDrive.cs" company="Smurf-IV">
 // 
-//  Copyright (C) 2020 - 2025 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2020 - 2026 Simon Coghlan (Aka Smurf-IV)
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -57,8 +57,8 @@ internal enum ScanType
 
 internal class ScanDrive : INotifyPropertyChanged
 {
-    private static readonly Logger Log = LogManager.GetCurrentClassLogger();
-    private static int AVERAGE_BUFFER_SIZE = 500;
+    private static readonly Logger s_log = LogManager.GetCurrentClassLogger();
+    private static int _averageBufferSize = 500;
     internal static long DISK_BUFFER_SIZE = 1024 * 1024;  // Seems to be "Optimum" for Sata II HDD and PCIE cards, giving > 95% read utilisation
 
     private readonly ScanType scanType;
@@ -78,8 +78,8 @@ internal class ScanDrive : INotifyPropertyChanged
         this.deviceId = deviceId;
         cancelTokenSrc = new CancellationTokenSource();
         cancelTokenSrc.Token.Register(completionAction);
-        lastTimeRemaining = new Averager<long>(AVERAGE_BUFFER_SIZE, 0L);
-        lastSpeedInBytesPerSec = new Averager<double>(AVERAGE_BUFFER_SIZE, 0.0);
+        lastTimeRemaining = new Averager<long>(_averageBufferSize, 0L);
+        lastSpeedInBytesPerSec = new Averager<double>(_averageBufferSize, 0.0);
     }
 
     public double SpeedInBytesPerSec => lastSpeedInBytesPerSec.Average();
@@ -90,7 +90,7 @@ internal class ScanDrive : INotifyPropertyChanged
 
     public void Cancel()
     {
-        Log.Info(@"Cancelling");
+        s_log.Info(@"Cancelling");
         cancelTokenSrc.Cancel();
         Phase = @"Errored";
     }
@@ -102,18 +102,18 @@ internal class ScanDrive : INotifyPropertyChanged
         try
         {
             Phase = @"Initialising";
-            Log.Debug(@"Creating Disk interface");
+            s_log.Debug(@"Creating Disk interface");
             var disk = new RawDisk(deviceId, FileAccess.ReadWrite);
-            Log.Info(@"Setting [{0}] offline", deviceId);
+            s_log.Info(@"Setting [{0}] offline", deviceId);
             if (!DiskExSet.SetOnline(disk.DiskHandle, false, false))
             {
-                Log.Warn(@"Unable to take disk offline");
+                s_log.Warn(@"Unable to take disk offline");
             }
             Task.Run(() => ProcessDrive(disk));
         }
         catch (Exception e)
         {
-            Log.Error(e);
+            s_log.Error(e);
             Cancel();
         }
     }
@@ -232,7 +232,7 @@ internal class ScanDrive : INotifyPropertyChanged
         }
         catch (Exception e)
         {
-            Log.Error(e, @"[{2}]: CurrentCluster [{0}] attempting to write to scaled [{1}]",
+            s_log.Error(e, @"[{2}]: CurrentCluster [{0}] attempting to write to scaled [{1}]",
                 currentCluster, currentCluster / multiplier, phaseWrite);
             // TODO: Add to the list of failed sectors
         }
@@ -256,11 +256,11 @@ internal class ScanDrive : INotifyPropertyChanged
         catch (IOException ex1)
         {
             int errorCode1 = GetWin32ErrorCode(ex1);
-            Log.Error(ex1, new Win32Exception(errorCode1).Message);
+            s_log.Error(ex1, new Win32Exception(errorCode1).Message);
         }
         catch (Exception ex2)
         {
-            Log.Error(ex2);
+            s_log.Error(ex2);
         }
 
         return false;
@@ -274,7 +274,7 @@ internal class ScanDrive : INotifyPropertyChanged
         {
             var buffer = new byte[disk.ClusterSize * multiplier];
             var bufferLength = buffer.Length;
-            ReadOnlySpan<byte> checkPattern = null;
+            ReadOnlySpan<byte> checkPattern = Span<byte>.Empty;
             if (pattern.HasValue)
             {
                 phaseRead = $@"Reading [0x{pattern:X}]";
@@ -298,7 +298,7 @@ internal class ScanDrive : INotifyPropertyChanged
                     }
                 }
                 // TODO: When doing a verify the disk read utilisation drops from 98% down to 85%
-                else if (checkPattern != null!)
+                else if (checkPattern != Span<byte>.Empty)
                 {
                     SetScaledClusterStatus(currentScaledCluster, BlockStatus.Validating);
                     if (!checkPattern.SequenceEqual(buffer))
@@ -341,7 +341,7 @@ internal class ScanDrive : INotifyPropertyChanged
                         return false;
                     }
                 }
-                else if (checkPattern != null!)
+                else if (checkPattern != Span<byte>.Empty)
                 {
                     SetScaledClusterStatus(currentScaledCluster, BlockStatus.Validating);
                     if (!checkPattern.SequenceEqual(buffer))
@@ -367,7 +367,7 @@ internal class ScanDrive : INotifyPropertyChanged
         }
         catch (Exception e)
         {
-            Log.Error(e, @"[{2}]: CurrentCluster [{0}] attempting to read to scaled [{1}]",
+            s_log.Error(e, @"[{2}]: CurrentCluster [{0}] attempting to read to scaled [{1}]",
                 currentCluster, currentCluster / multiplier, phaseRead);
             // TODO: Add to the list of failed sectors
         }
@@ -397,11 +397,11 @@ internal class ScanDrive : INotifyPropertyChanged
         catch (IOException ex1)
         {
             int errorCode1 = GetWin32ErrorCode(ex1);
-            Log.Error(ex1, new Win32Exception(errorCode1).Message);
+            s_log.Error(ex1, new Win32Exception(errorCode1).Message);
         }
         catch (Exception ex2)
         {
-            Log.Error(ex2);
+            s_log.Error(ex2);
         }
 
         return false;

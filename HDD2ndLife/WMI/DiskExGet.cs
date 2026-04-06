@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="DiskExGet.cs" company="Smurf-IV">
 // 
-//  Copyright (C) 2020 - 2025 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2020 - 2026 Simon Coghlan (Aka Smurf-IV)
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ namespace HDD2ndLife.WMI;
 /// </summary>
 internal class DiskExGet
 {
-    private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+    private static readonly Logger s_log = LogManager.GetCurrentClassLogger();
 
     internal DISK_GEOMETRY_EX? dge;
     private PARTITION_INFORMATION_EX? pie;
@@ -72,7 +72,7 @@ internal class DiskExGet
             }
             catch (Exception e)
             {
-                Log.Warn(e);
+                s_log.Warn(e);
             }
             try
             {
@@ -80,7 +80,7 @@ internal class DiskExGet
             }
             catch (Exception e)
             {
-                Log.Warn(e);
+                s_log.Warn(e);
             }
             try
             {
@@ -88,7 +88,7 @@ internal class DiskExGet
             }
             catch (Exception e)
             {
-                Log.Warn(e);
+                s_log.Warn(e);
             }
             try
             {
@@ -96,7 +96,7 @@ internal class DiskExGet
             }
             catch (Exception e)
             {
-                Log.Warn(e);
+                s_log.Warn(e);
             }
             try
             {
@@ -104,7 +104,7 @@ internal class DiskExGet
             }
             catch (Exception e)
             {
-                Log.Warn(e);
+                s_log.Warn(e);
             }
             try
             {
@@ -112,7 +112,7 @@ internal class DiskExGet
             }
             catch (Exception e)
             {
-                Log.Warn(e);
+                s_log.Warn(e);
             }
             try
             {
@@ -122,14 +122,14 @@ internal class DiskExGet
             }
             catch (Exception e)
             {
-                Log.Warn(e);
+                s_log.Warn(e);
             }
             //MountManagerWrapper mmw = new MountManagerWrapper(disk.DiskHandle, false);
             //List<MountPoint> mps = mmw.MountQueryPoints();
         }
         catch (Exception e)
         {
-            Log.Warn(e);
+            s_log.Warn(e);
         }
     }
 
