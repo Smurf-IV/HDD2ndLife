@@ -2,7 +2,7 @@
 // ---------------------------------------------------------------------------------------------------------------
 //  <copyright file="StorageDeviceWrapperEx.cs" company="Smurf-IV">
 // 
-//  Copyright (C) 2020 - 2025 Simon Coghlan (Aka Smurf-IV)
+//  Copyright (C) 2020 - 2026 Simon Coghlan (Aka Smurf-IV)
 // 
 //  This program is free software: you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
@@ -82,11 +82,9 @@ public class StorageDeviceWrapperEx : DeviceIoWrapperBase
 
     public static T ByteArrayToStruct<T>(byte[] data, int index) where T : struct
     {
-        using (var mem = new UnmanagedMemory(data.Length - index))
-        {
-            Marshal.Copy(data, index, mem.Handle, data.Length - index);
-            return ToStructure<T>(mem.Handle);
-        }
+        using var mem = new UnmanagedMemory(data.Length - index);
+        Marshal.Copy(data, index, mem.Handle, data.Length - index);
+        return ToStructure<T>(mem.Handle);
     }
 
     public static string ReadNullTerminatedAsciiString(byte[] br, int index)

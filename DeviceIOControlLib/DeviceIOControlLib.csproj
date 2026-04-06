@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<Description>Library to interact with Windows' DeviceIoControl method</Description>
+		<PackageTags>Win32 DeviceIoControl</PackageTags>
+		<NeutralLanguage>en</NeutralLanguage>
+		<LangVersion>preview</LangVersion>
+		<AssemblyVersion>26.4.7.6</AssemblyVersion>
+		<FileVersion>26.4.7.6</FileVersion>
+	</PropertyGroup>
+
+</Project>
