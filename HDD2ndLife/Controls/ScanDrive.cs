@@ -45,13 +45,17 @@ using RawDiskLib;
 
 namespace HDD2ndLife.Controls;
 
+[Flags]
 internal enum ScanType
 {
-    Unknown,
-    Read,
-    Write,
-    Verify,
-    Pass2
+    Unknown = 0x0,
+    ReadNoVerify = 0x1,
+    writeP1 = 0x2,
+    readP1 = 0x4,
+    Write = writeP1 | readP1,
+    readP2 = 0x8,
+    writeP2 = 0x10,
+    Pass2 = Write | writeP2 | readP2
 }
 
 
@@ -86,13 +90,13 @@ internal class ScanDrive : INotifyPropertyChanged
     public TimeSpan TimeRemaining => TimeSpan.FromTicks((long)lastTimeRemaining.Average());
 
     private long currentCluster;
-    private string phase;
+    private string _buttonText;
 
     public void Cancel()
     {
         s_log.Info(@"Cancelling");
         cancelTokenSrc.Cancel();
-        Phase = @"Errored";
+        ButtonText = @"Errored";
     }
 
     public Action<long, BlockStatus> SetScaledClusterStatus { get; set; }
@@ -101,7 +105,7 @@ internal class ScanDrive : INotifyPropertyChanged
     {
         try
         {
-            Phase = @"Initialising";
+            ButtonText = @"Initialising";
             s_log.Debug(@"Creating Disk interface");
             var disk = new RawDisk(deviceId, FileAccess.ReadWrite);
             s_log.Info(@"Setting [{0}] offline", deviceId);
@@ -120,52 +124,53 @@ internal class ScanDrive : INotifyPropertyChanged
 
     private void ProcessDrive(RawDisk disk)
     {
-        switch (scanType)
+        var success = true;
+        if (/*success &&*/ scanType.HasFlag(ScanType.ReadNoVerify))
         {
-            case ScanType.Unknown:
-                break;
-            case ScanType.Read:
-                PerformRead(disk);
-                break;
-            case ScanType.Write:
-                if (PerformWrite(disk))
-                {
-                    PerformRead(disk);
-                }
-                break;
-            case ScanType.Verify:
-                if (PerformWrite(disk, 0xAA))
-                {
-                    PerformRead(disk, 0xAA);
-                }
-                break;
-            case ScanType.Pass2:
-                if (PerformWrite(disk, 0xAA))
-                {
-                    if (PerformRead(disk, 0xAA))
-                    {
-                        if (PerformWrite(disk, 0x55))
-                        {
-                            PerformRead(disk, 0x55);
-                        }
-                    }
-                }
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
+            success = PerformRead(disk);
+        }
+        if (success && scanType.HasFlag(ScanType.writeP1))
+        {
+            // 0xAA = 1010 1010 pattern
+            // 0x55 = 0101 0101 pattern
+            success = PerformWrite(disk, 0xAA);
+        }
+        if (success && scanType.HasFlag(ScanType.readP1))
+        {
+            success = PerformRead(disk, 0xAA);
+        }
+        if (success && scanType.HasFlag(ScanType.writeP2))
+        {
+            success = PerformWrite(disk, 0x55);
+        }
+        if (success && scanType.HasFlag(ScanType.readP2))
+        {
+            /*success*/ _ = PerformRead(disk, 0x55);
         }
         cancelTokenSrc.Cancel();
     }
+    //public string Phase
+    //{
+    //    get => phase;
+    //    set
+    //    {
+    //        if (phase != value)
+    //        {
+    //            phase = value;
+    //            OnPropertyChanged(nameof(Phase));
+    //        }
+    //    }
+    //}
 
-    public string Phase
+    public string ButtonText
     {
-        get => phase;
+        get => _buttonText;
         set
         {
-            if (phase != value)
+            if (_buttonText != value)
             {
-                phase = value;
-                OnPropertyChanged(nameof(Phase));
+                _buttonText = value;
+                OnPropertyChanged(nameof(ButtonText));
             }
         }
     }
@@ -174,11 +179,10 @@ internal class ScanDrive : INotifyPropertyChanged
     private void SetCurrentProgress(string curPhase, long diskClusterSize)
     {
         Percent = currentCluster * 1.0 / diskClusterSize;
-        Phase = $@"{curPhase} [{Percent:P}]";
+        ButtonText = $@"{curPhase} [{Percent:P}]";
     }
 
-    // 0xAA = 1010 1010 pattern
-    private bool PerformWrite(RawDisk disk, byte pattern = 0xAA)
+    private bool PerformWrite(RawDisk disk, byte pattern)
     {
         var phaseWrite = $@"Writing 0x{pattern:X}";
         var multiplier = DISK_BUFFER_SIZE / disk.ClusterSize;

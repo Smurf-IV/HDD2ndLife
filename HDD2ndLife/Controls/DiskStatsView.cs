@@ -72,9 +72,8 @@ public partial class DiskStatsView : UserControl
         InitializeComponent();
         mapOptions = new Dictionary<KryptonRadioButton, ScanType>
         {
-            {rbRead, ScanType.Read},
+            {rbRead, ScanType.ReadNoVerify},
             {rbWrite, ScanType.Write},
-            {rbVerify, ScanType.Verify},
             {rb2Pass, ScanType.Pass2}
         };
         speedOptions = new Dictionary<KryptonRadioButton, int>
@@ -85,9 +84,8 @@ public partial class DiskStatsView : UserControl
             {rb75, 75}
         };
         lblPhase.DisplayText = @"Waiting for Start";
-        //lblPhase.Value = 2;
 
-        const int CLUSTERS_PER_VECTOR = 64 / 3; // 64 bits / (5 represented in binary bits)
+        //const int CLUSTERS_PER_VECTOR = 64 / 3; // 64 bits / (5 represented in binary bits)
 
         var nodeSize = 12 * DeviceDpi / 96;
         var node = new Bitmap(nodeSize, nodeSize);
@@ -173,7 +171,7 @@ public partial class DiskStatsView : UserControl
     {
         lblPhase.DisplayText = e.PropertyName switch
         {
-            @"Phase" => scanDrive?.Phase,
+            @"ButtonText" => scanDrive?.ButtonText,
             _ => lblPhase.DisplayText
         };
         lblPhase.Value = (int)Math.Ceiling(scanDrive?.Percent*100 ?? 1);
