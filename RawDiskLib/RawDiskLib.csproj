@@ -10,8 +10,4 @@
 		<FileVersion>26.4.7.6</FileVersion>
 	</PropertyGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\DeviceIOControlLib\DeviceIOControlLib.csproj" />
-	</ItemGroup>
-
 </Project>

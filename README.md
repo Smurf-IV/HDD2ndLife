@@ -61,8 +61,8 @@ I've heard that as well, and I have tried it on drives that start to report SMAR
 - [x] Phase II
   - [x] More details from windows WMI
   - [x] Create Control for options, feedback, progress, etc.
-  - [x] Allow basic disk scan                               
-  - [x] Add feedback (time to complete, speed, etc.)        
+  - [x] Allow basic disk scan
+  - [x] Add feedback (time to complete, speed, etc.)
   - [x] Detailed scan UI blocks -> failed / reading / writing / verifying / passed / unused
   - [x] Test that the updates and UI interactions are not slowing down the throughput of scans.
   - [x] An Installer
@@ -71,9 +71,9 @@ I've heard that as well, and I have tried it on drives that start to report SMAR
 <br />
 
 - [ ] Phase III
-  - [ ] Attempt Basic RePartitioning (e.g. Min Distance from bad blocks to be ignored) &nbsp; &nbsp; &nbsp; [<- in progress]
+  - [ ] Rewrite the Actions on the HDD's to be a C++ "Standalone exe", to allow for better performance and more direct access to the hardware, and to allow for better error handling and reporting.
+  - [ ] Attempt Basic RePartitioning (e.g. Min Distance from bad blocks to be ignored)
   - [ ] Documentation &nbsp; &nbsp; &nbsp; [<- in progress]
-  - [ ] An Installer that detects the presence of the required .Net version _(Currently 9 is needed !)_
 
 <br />
 

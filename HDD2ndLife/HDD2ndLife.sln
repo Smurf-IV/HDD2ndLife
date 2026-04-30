@@ -29,10 +29,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RawDiskLib", "..\RawDiskLib\RawDiskLib.csproj", "{1EF9D262-1570-3657-0AE2-D6A4EA0A908D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeviceIOControlLib", "..\DeviceIOControlLib\DeviceIOControlLib.csproj", "{BE0DBC2D-50D4-11BB-3CF6-C8BF63BFACA1}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -46,14 +42,6 @@ Global
 		{7BA424D3-858E-439D-B45B-E3D637BA6AE6}.Debug|x64.ActiveCfg = Debug|x64
 		{7BA424D3-858E-439D-B45B-E3D637BA6AE6}.Release|x64.ActiveCfg = Release|x64
 		{7BA424D3-858E-439D-B45B-E3D637BA6AE6}.Release|x64.Build.0 = Release|x64
-		{1EF9D262-1570-3657-0AE2-D6A4EA0A908D}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{1EF9D262-1570-3657-0AE2-D6A4EA0A908D}.Debug|x64.Build.0 = Debug|Any CPU
-		{1EF9D262-1570-3657-0AE2-D6A4EA0A908D}.Release|x64.ActiveCfg = Release|Any CPU
-		{1EF9D262-1570-3657-0AE2-D6A4EA0A908D}.Release|x64.Build.0 = Release|Any CPU
-		{BE0DBC2D-50D4-11BB-3CF6-C8BF63BFACA1}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{BE0DBC2D-50D4-11BB-3CF6-C8BF63BFACA1}.Debug|x64.Build.0 = Debug|Any CPU
-		{BE0DBC2D-50D4-11BB-3CF6-C8BF63BFACA1}.Release|x64.ActiveCfg = Release|Any CPU
-		{BE0DBC2D-50D4-11BB-3CF6-C8BF63BFACA1}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

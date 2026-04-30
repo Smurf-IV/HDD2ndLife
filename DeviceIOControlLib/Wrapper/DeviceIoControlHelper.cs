@@ -9,6 +9,43 @@ namespace DeviceIOControlLib.Wrapper
 {
     public static class DeviceIoControlHelper
     {
+        /// <summary>
+        /// Sends a control code directly to a specified device driver, causing the corresponding device to perform the corresponding operation.
+        /// </summary>
+        /// <typeparam name="TOut">The type of the <paramref name="outVal"/>.</typeparam>
+        /// <param name="hDev">
+        /// A handle to the device on which the operation is to be performed. The device is typically a volume, directory, file, or stream.
+        /// To retrieve a device handle, use the CreateFile function. For more information, see Remarks.
+        /// </param>
+        /// <param name="ioControlCode">
+        /// The control code for the operation. This value identifies the specific operation to be performed and the type of device on which
+        /// to perform it.
+        /// </param>
+        /// <param name="outVal">
+        /// The data returned by the operation. The format of this data depends on the value of the dwIoControlCode parameter.
+        /// </param>
+        /// <param name="outSz">
+        /// The amount of memory to allocate for <paramref name="outVal"/> retrieval. If this value is <c>0</c>, then initialize the default structure.
+        /// </param>
+        /// <returns><c>true</c> if successful.</returns>
+        [PInvokeData("Winbase.h", MSDNShortId = "aa363216")]
+        public static bool DeviceIoControl<TOut>(HFILE hDev, uint ioControlCode, out TOut outVal, SizeT outSz = default) where TOut : struct
+        {
+            using var ptrOut = outSz == 0 ? SafeHGlobalHandle.CreateFromStructure<TOut>() : new(outSz);
+            var ret = DeviceIoControl(hDev, ioControlCode, IntPtr.Zero, 0, ptrOut, ptrOut.Size, out var bRet, IntPtr.Zero);
+            var err = Win32Error.GetLastError();
+            if (!ret && err == Win32Error.ERROR_INSUFFICIENT_BUFFER)
+            {
+                ptrOut.Size = bRet == 0 ? ptrOut.Size * 16 : bRet;
+                ret = DeviceIoControl(hDev, ioControlCode, IntPtr.Zero, 0, ptrOut, ptrOut.Size, out bRet, IntPtr.Zero);
+#if DEBUG
+			err = Win32Error.GetLastError();
+#endif
+            }
+            outVal = ret ? ptrOut.ToStructure<TOut>() : default;
+            return ret;
+        }
+        
         [DllImport("Kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
         private static extern bool DeviceIoControl(
             SafeFileHandle hDevice,
